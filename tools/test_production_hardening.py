@@ -3,6 +3,7 @@ These do NOT prove Unity compiles or the game takes 90 minutes.
 Run locally: python -m unittest discover -s tools -p 'test_*.py'
 """
 import unittest
+import csv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,24 @@ class ProductionHardeningContracts(unittest.TestCase):
         self.assertIn("[SYNTERA UNITY VALIDATION] PASS", self.gate)
         self.assertIn("SynteraReleaseGate.Run();", self.build)
         self.assertIn("StandaloneWindows64", self.build)
+
+    def test_voice_recording_manifest_is_honest(self):
+        with (ROOT / "Docs" / "VOICE_RECORDING_CUES.csv").open(newline="", encoding="utf-8") as fh:
+            rows = list(csv.DictReader(fh))
+        self.assertEqual(len(rows), 120)
+        self.assertTrue(all(row["recording_status"] == "NOT_RECORDED" for row in rows))
+        self.assertTrue(all(row["rights_status"] == "NOT_VERIFIED" for row in rows))
+
+    def test_playtime_is_tracked_and_saves_use_atomic_replacement(self):
+        self.assertIn("State.elapsedSeconds += Time.unscaledDeltaTime", self.game)
+        self.assertIn("File.Replace(temp, SavePath, backup)", self.game)
+        self.assertIn("recoveredFromBackup", self.game)
+
+    def test_player_and_cinematic_production_paths(self):
+        self.assertIn("SynteraPlayerPresentation", self.game)
+        cinematic = (S / "SynteraCinematicDirector.cs").read_text()
+        self.assertIn("PlayAt(", cinematic)
+        self.assertIn("three distinct shots", cinematic.lower())
 
     def test_no_github_actions_configuration(self):
         self.assertFalse((ROOT / ".github" / "workflows").exists())
