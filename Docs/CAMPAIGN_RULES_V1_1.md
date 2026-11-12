@@ -56,6 +56,15 @@ How each was run:
 - **Python reference:** 4 of 4 tests passed.
 - **Unity Editor run of the same tests:** NOT RUN YET. It needs Unity 6000.3.0f1 to be installed. Then run `tools/verify-unity-local.ps1`.
 
+## Dialogue data
+
+`syntera_campaign_dialogue.json` holds all 12 chapters. For each one it has the staging beats, the main dialogue, the reactions to each option, the CH11 charter speeches and the CH12 ending scripts. It also holds the conditional lines from section 8. There are 210 lines, all copied word for word from the screenplay.
+
+- **Line IDs** look like `ST01_KATO_003` (chapter, speaker, number) and are **permanent**. A new line gets the next free number for that speaker. Existing lines are never renumbered, because audio, subtitles and translations will refer to these IDs.
+- **What dialogue can do.** It can only test flags. It never changes Credits, Treasury or ownership. `DialogueLibrary.Load` rejects any reference to an unknown decision, option, charter, ending, flag or speaker.
+- **Conditional beats.** The game picks exactly one matching variant. If none matches, the beat is skipped. The screenplay doesn't write neutral fallback lines, and I haven't invented any.
+- **Not transcribed.** The CH04 Luganda line is only described in the screenplay, not written out. It needs the cultural consultant.
+
 ## Any balance change
 
 Edit the JSON, then run both test suites. The section 14 assertions will fail on purpose. Update the PDF's figures and the test expectations together.

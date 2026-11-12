@@ -170,5 +170,62 @@ class Section14(unittest.TestCase):
                          [sim.vote(c) for c in self.charters])
 
 
+DIALOGUE_PATH = RULES_PATH.with_name("syntera_campaign_dialogue.json")
+
+
+def iter_lines(doc):
+    for ch in doc["chapters"]:
+        for line in ch["dialogue"]:
+            yield ch["id"], line
+        for group in ("optionDialogue", "charterDialogue"):
+            for lines in ch.get(group, {}).values():
+                for line in lines:
+                    yield ch["id"], line
+        for ending in ch.get("endings", {}).values():
+            for line in ending["dialogue"]:
+                yield ch["id"], line
+    for beat in doc["conditionalBeats"]:
+        for line in beat["variants"]:
+            yield beat["chapter"], line
+
+
+class Dialogue(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.rules = load_rules()
+        cls.doc = json.loads(DIALOGUE_PATH.read_text(encoding="utf-8"))
+        cls.lines = list(iter_lines(cls.doc))
+
+    def test_ids_unique_well_formed_and_filed(self):
+        import re
+        pattern = re.compile(r"^ST(0[1-9]|1[0-2])_([A-Z0-9]+)_[0-9]{3}$")
+        ids = [line["id"] for _, line in self.lines]
+        self.assertEqual(len(ids), len(set(ids)), "duplicate line IDs")
+        self.assertEqual(210, len(ids))
+        for chapter_id, line in self.lines:
+            m = pattern.match(line["id"])
+            self.assertIsNotNone(m, line["id"])
+            self.assertTrue(line["id"].startswith(chapter_id + "_"), line["id"])
+            self.assertEqual(m.group(2), line["speaker"], line["id"])
+            self.assertIn(line["speaker"], self.doc["speakers"], line["id"])
+            self.assertTrue(line["text"].strip(), line["id"])
+
+    def test_references_match_rules(self):
+        decisions = {d["id"]: d for d in self.rules["decisions"]}
+        flags = {f for d in decisions.values() for o in d["options"] for f in o.get("setFlags", [])}
+        flags |= {cf["flag"] for d in decisions.values() for o in d["options"] for cf in o.get("conditionalFlags", [])}
+        flags |= set(self.rules["creditLine"]["setFlags"])
+        covered = set()
+        for ch in self.doc["chapters"]:
+            if ch["decision"]:
+                covered.add(ch["decision"])
+                options = {o["id"] for o in decisions[ch["decision"]]["options"]}
+                self.assertEqual(options, set(ch["optionDialogue"]), ch["id"])
+        self.assertEqual(set(decisions), covered)
+        for _, line in self.lines:
+            for cond in line.get("whenAll", []):
+                self.assertIn(cond["flag"], flags, line["id"])
+
+
 if __name__ == "__main__":
     unittest.main()
