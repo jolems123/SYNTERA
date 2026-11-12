@@ -26,7 +26,7 @@ namespace Syntera
 
         private static Material Material(Color c)
         {
-            var m = new Material(Shader.Find("Standard"));
+            var m = SynteraMaterials.Make(Color.white);
             m.color = c;
             return m;
         }

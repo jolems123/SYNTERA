@@ -36,7 +36,7 @@ namespace Syntera
             marker.transform.position = exact ?? new Vector3(roadX + (even ? 0f : 5f), 1.25f, roadZ + (even ? -5f : 0f));
             marker.transform.localScale = new Vector3(.85f, 1.25f, .85f);
             marker.GetComponent<Collider>().isTrigger = true;
-            var material = new Material(Shader.Find("Standard")) { color = new Color(1f, .74f, .16f) };
+            var material = SynteraMaterials.Make(new Color(1f, .74f, .16f));
             marker.GetComponent<Renderer>().material = material;
         }
 

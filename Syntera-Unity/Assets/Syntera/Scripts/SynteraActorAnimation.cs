@@ -38,7 +38,7 @@ namespace Syntera
             var collider=part.GetComponent<Collider>();
             if(collider!=null) Destroy(collider);
             var renderer=part.GetComponent<Renderer>();
-            renderer.material=new Material(Shader.Find("Standard"));
+            renderer.material=SynteraMaterials.Make(Color.white);
             renderer.material.color=new Color(.32f,.48f,.66f);
             return part.transform;
         }

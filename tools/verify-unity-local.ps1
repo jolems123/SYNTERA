@@ -74,5 +74,11 @@ if ($BuildWindows) {
     $exe = Join-Path $project "Builds\Windows\SYNTERA.exe"
     if (-not (Test-Path $exe)) { throw "Unity returned successfully but the executable is missing: $exe" }
     Write-Host "Build produced: $exe"
+    # Run the built player itself: it plays the campaign by itself and exits 0 (pass) or 1 (fail).
+    $smokeLog = Join-Path $logs "syntera-player-smoke.log"
+    $smoke = Start-Process -FilePath $exe -ArgumentList @("-syntera-smoke", "-screen-fullscreen", "0", "-screen-width", "960", "-screen-height", "540", "-logFile", "`"$smokeLog`"") -Wait -PassThru
+    $line = Select-String -Path $smokeLog -Pattern "\[SYNTERA SMOKE\]" | Select-Object -Last 1
+    Write-Host ("Built player smoke test: exit " + $smoke.ExitCode + " " + $(if ($line) { $line.Line } else { "(no result line)" }))
+    if ($smoke.ExitCode -ne 0 -or -not $line -or $line.Line -notmatch "PASS") { throw "Built player smoke test failed. Inspect $smokeLog" }
     Write-Host "You must still launch the executable and manually test the campaign."
 }

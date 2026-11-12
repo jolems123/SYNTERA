@@ -84,7 +84,7 @@ namespace Syntera
             pod.name = "Playable rescue and delivery pod";
             pod.transform.position = new Vector3(-8, 0.9f, -11);
             pod.transform.localScale = new Vector3(2.5f, 1.35f, 3.8f);
-            var material = new Material(Shader.Find("Standard"));
+            var material = SynteraMaterials.Make(Color.white);
             material.color = new Color(.07f,.79f,.94f);
             pod.GetComponent<Renderer>().material = material;
             var rigidbody = pod.AddComponent<Rigidbody>();
