@@ -38,6 +38,9 @@ namespace Syntera
         private float cameraPitch = 23f;
         private bool showMap;
         private bool showHelp;
+        private bool dialogueOpen;
+        private SynteraCharacter missionCharacter;
+        private string responseText = "";
         private bool showCredits;
         private string notice = "Welcome to Syntera City.";
         private readonly string[] districts = {"Nexus Central", "Horizon Commons", "Quantum Valley", "Nova Heights", "Helix Medical", "Forge Industrial", "Eden Gardens", "The Underground"};
@@ -64,15 +67,17 @@ namespace Syntera
             "Negotiate with the robots", "Protect company independence", "Demand a public election",
             "Fund human teachers", "Rescue the wedding guests", "Power homes first",
             "Preserve neighborhood housing", "Expose the transfers", "Protect the protesters",
-            "Forgive Kato with conditions", "Human oversight of AI", "Start another run"
+            "Forgive Kato with conditions", "Human oversight of AI", "Create an independent citizen council"
         };
         private static readonly string[] rightChoices = {
             "Replace the robot workforce", "Accept VANTAGE's financing", "Let an AI manage the city",
             "Automate the school", "Sell drone footage rights", "Power businesses first",
             "Approve smart redevelopment", "Sell the evidence", "Give SENTINEL emergency control",
-            "Fire Kato immediately", "Transfer authority to AI", "Continue toward 2050"
+            "Fire Kato immediately", "Transfer authority to AI", "Give corporations emergency powers"
         };
         private const int MaxChapters = 12;
+        private static readonly string[] missionContacts = {"Kato Mercer", "VANTAGE", "Mayor Adrian Cross", "Grace Kim", "Kato Mercer", "AURA", "Amara Reed", "Raven Black", "Amara Reed", "Kato Mercer", "AURA", "Amara Reed"};
+        private const float InteractionRadius = 5f;
         private string SavePath => Path.Combine(Application.persistentDataPath, "syntera-city-save.json");
         private GUIStyle heading, paragraph, action, small;
 
@@ -106,7 +111,7 @@ namespace Syntera
             SynteraWorld.Build();
             player = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             player.name = "Player - " + State.playerName;
-            player.transform.position = new Vector3(0, 1.3f, 0);
+            player.transform.position = new Vector3(-9.5f, 1.3f, -7.5f);
             Destroy(player.GetComponent<Collider>());
             controller = player.AddComponent<CharacterController>();
             controller.height = 2.25f;
@@ -128,11 +133,34 @@ namespace Syntera
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) showHelp = !showHelp;
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (dialogueOpen) dialogueOpen = false;
+                else if (showMap) showMap = false;
+                else showHelp = !showHelp;
+            }
             if (Input.GetKeyDown(KeyCode.M)) showMap = !showMap;
-            InputLocked = showMap || State.finished || showHelp;
+            InputLocked = showMap || State.finished || showHelp || dialogueOpen;
+            if (Input.GetKeyDown(KeyCode.E) && !InputLocked && State.chapter < MaxChapters)
+            {
+                var nearby = GetMissionCharacter();
+                if (nearby != null && Vector3.Distance(player.transform.position, nearby.transform.position) <= InteractionRadius)
+                {
+                    missionCharacter = nearby;
+                    dialogueOpen = true;
+                }
+            }
             if (!InputLocked) MovePlayer();
             UpdateCamera();
+        }
+
+        private SynteraCharacter GetMissionCharacter()
+        {
+            if (State.chapter >= MaxChapters) return null;
+            string target = missionContacts[State.chapter];
+            foreach (var actor in FindObjectsByType<SynteraCharacter>(FindObjectsSortMode.None))
+                if (actor.characterName == target) return actor;
+            return null;
         }
 
         private void MovePlayer()
@@ -185,7 +213,7 @@ namespace Syntera
             {
                 GUI.Box(new Rect(12, 124, width, 165), "");
                 GUI.Label(new Rect(26, 136, width - 24, 35), "Syntera City Controls", heading);
-                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD or arrows: walk     Shift: sprint\nRight mouse drag: orbit camera\nM: district overview     Esc: close help\nResolve each city crisis to progress to 2028.", paragraph);
+                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD or arrows: walk     Shift: sprint\nRight mouse drag: orbit camera\nE: speak to highlighted mission contact\nM: map     Esc: close dialogue or help.", paragraph);
                 if (GUI.Button(new Rect(20, 293, 140, 35), "Start playing")) showHelp = false;
                 return;
             }
@@ -228,10 +256,19 @@ namespace Syntera
                 return;
             }
             GUI.Box(new Rect(12, panelY, width, 244), "");
-            GUI.Label(new Rect(26, panelY + 8, width - 30, 32), (State.chapter + 1) + ". " + titles[Mathf.Min(State.chapter, MaxChapters - 1)], heading);
-            GUI.Label(new Rect(26, panelY + 45, width - 36, 90), State.chapter < MaxChapters ? summaries[State.chapter] : notice, paragraph);
-            if (GUI.Button(new Rect(25, panelY + 139, width / 2 - 24, 74), leftChoices[Mathf.Min(State.chapter, 11)], action)) Choose(false);
-            if (GUI.Button(new Rect(width / 2 + 7, panelY + 139, width / 2 - 22, 74), rightChoices[Mathf.Min(State.chapter, 11)], action)) Choose(true);
+            GUI.Label(new Rect(26, panelY + 8, width - 30, 32), (State.chapter + 1) + ". " + titles[State.chapter], heading);
+            var contact = GetMissionCharacter();
+            float distance = contact == null ? float.PositiveInfinity : Vector3.Distance(player.transform.position, contact.transform.position);
+            if (!dialogueOpen)
+            {
+                GUI.Label(new Rect(26, panelY + 50, width - 38, 76), "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
+                GUI.Label(new Rect(26, panelY + 142, width - 38, 72), responseText.Length > 0 ? responseText : "Your choices will influence Syntera's economic and political future.", small);
+                return;
+            }
+            GUI.Label(new Rect(26, panelY + 39, width - 36, 24), missionCharacter != null ? missionCharacter.characterName + ":" : "Mission contact:", small);
+            GUI.Label(new Rect(26, panelY + 66, width - 36, 67), summaries[State.chapter], paragraph);
+            if (GUI.Button(new Rect(25, panelY + 139, width / 2 - 24, 74), leftChoices[State.chapter], action)) Choose(false);
+            if (GUI.Button(new Rect(width / 2 + 7, panelY + 139, width / 2 - 22, 74), rightChoices[State.chapter], action)) Choose(true);
         }
 
         private void AdvanceFuture(bool automate)
@@ -249,8 +286,10 @@ namespace Syntera
 
         private void Choose(bool right)
         {
-            if (State.chapter >= MaxChapters) return;
+            if (State.chapter >= MaxChapters || !dialogueOpen) return;
             int i = State.chapter;
+            dialogueOpen = false;
+            missionCharacter = null;
             if (i == 11)
             {
                 if (right) { State.aiInfluence += 10; State.trust -= 8; }
@@ -280,6 +319,7 @@ namespace Syntera
             State.chapter++;
             State.year = State.chapter < 4 ? 2026 : State.chapter < 8 ? 2027 : 2028;
             notice = "Your decision changed the city.";
+            responseText = (right ? rightChoices[i] : leftChoices[i]) + " — Trust " + State.trust + ", Jobs " + State.jobs + ", AI " + State.aiInfluence + ".";
             Save();
         }
 
@@ -296,6 +336,10 @@ namespace Syntera
             State = new CityState { version = next };
             Save();
             showHelp = false;
+            showMap = false;
+            dialogueOpen = false;
+            responseText = "";
+            if (player != null) player.transform.position = new Vector3(-9.5f, 1.3f, -7.5f);
         }
 
         public void Save()
@@ -303,7 +347,9 @@ namespace Syntera
             try
             {
                 string temp = SavePath + ".tmp";
+                string backup = SavePath + ".bak";
                 File.WriteAllText(temp, JsonUtility.ToJson(State, true));
+                if (File.Exists(SavePath)) File.Copy(SavePath, backup, true);
                 if (File.Exists(SavePath)) File.Delete(SavePath);
                 File.Move(temp, SavePath);
             }
@@ -312,19 +358,23 @@ namespace Syntera
 
         private void Load()
         {
-            try
+            foreach (string path in new[] { SavePath, SavePath + ".bak" })
             {
-                if (File.Exists(SavePath))
+                if (!File.Exists(path)) continue;
+                try
                 {
-                    var parsed = JsonUtility.FromJson<CityState>(File.ReadAllText(SavePath));
-                    if (parsed != null && parsed.decisions != null && parsed.decisions.Length == 12 && parsed.chapter >= 0 && parsed.chapter <= 12)
-                    {
-                        State = parsed;
-                        return;
-                    }
+                    CityState parsed = JsonUtility.FromJson<CityState>(File.ReadAllText(path));
+                    if (parsed == null || parsed.decisions == null || parsed.decisions.Length != 12 ||
+                        parsed.chapter < 0 || parsed.chapter > 12 || parsed.year < 2026 || parsed.year > 2050 ||
+                        parsed.credits < 0 || parsed.trust < 0 || parsed.trust > 100 ||
+                        parsed.aiInfluence < 0 || parsed.aiInfluence > 100)
+                        continue;
+                    State = parsed;
+                    if (path.EndsWith(".bak")) Debug.LogWarning("Recovered SYNTERA from backup save.");
+                    return;
                 }
+                catch (Exception ex) { Debug.LogWarning("Invalid SYNTERA save: " + ex.Message); }
             }
-            catch (Exception ex) { Debug.LogWarning("Save recovery: " + ex.Message); }
             State = new CityState();
         }
 
