@@ -90,6 +90,18 @@ namespace Syntera
             foreach (var r in playerRenderers) r.enabled = !IsDriving;
         }
 
+        public void ForceExit()
+        {
+            if (!IsDriving || player == null) return;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+            IsDriving = false;
+            playerController.enabled = false;
+            player.transform.position = transform.position + transform.right * 4f + Vector3.up;
+            playerController.enabled = true;
+            foreach (var renderer in playerRenderers) renderer.enabled = true;
+        }
+
         private void Update()
         {
             if (!IsDriving) return;
