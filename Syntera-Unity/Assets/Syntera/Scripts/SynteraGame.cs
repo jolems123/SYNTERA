@@ -141,6 +141,8 @@ namespace Syntera
             drivePod = SynteraDrivePod.Spawn();
             drivePod.RegisterPlayer(player, controller);
             drivePod.ConfigureDelivery(State.chapter);
+            if ((State.completedRouteMask & (1 << State.chapter)) != 0)
+                drivePod.RestoreCompletedRoute();
             cinematic = gameObject.AddComponent<SynteraCinematicDirector>();
             cinematic.Initialize(followCamera, player.transform);
             audioDirector = gameObject.AddComponent<SynteraAudioDirector>();
@@ -160,7 +162,7 @@ namespace Syntera
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (dialogueOpen) { dialogueOpen = false; if (audioDirector != null) audioDirector.StopVoice();
-                    if (missionCharacter != null) missionCharacter.GetComponent<SynteraActorAnimation>()?.SetSpeaking(false); }
+                    NotifySpeaking(missionCharacter, false); }
                 else if (showMap) showMap = false;
                 else showHelp = !showHelp;
             }
@@ -196,15 +198,22 @@ namespace Syntera
                     dialogueIndex = 0;
                     dialogueOpen = true;
                     if (audioDirector != null) audioDirector.PlayVoice(0);
-                    nearby.GetComponent<SynteraActorAnimation>()?.SetSpeaking(true);
+                    NotifySpeaking(nearby, true);
                 }
                 }
             }
             if (dialogueOpen && missionCharacter != null)
-                missionCharacter.GetComponent<SynteraActorAnimation>()?.SetSpeaking(true,
+                NotifySpeaking(missionCharacter, true,
                     audioDirector != null && audioDirector.VoicePlaying ? audioDirector.DialogueLevel : .35f);
             if (!InputLocked && (drivePod == null || !drivePod.IsDriving)) MovePlayer();
             UpdateCamera();
+        }
+
+        private static void NotifySpeaking(SynteraCharacter actor, bool speaking, float level = .35f)
+        {
+            if (actor == null) return;
+            actor.GetComponent<SynteraActorAnimation>()?.SetSpeaking(speaking, level);
+            actor.GetComponent<SynteraHumanoidMotionBridge>()?.SetTalking(speaking);
         }
 
         private SynteraCharacter GetMissionCharacter()
@@ -392,7 +401,7 @@ namespace Syntera
             dialogueOpen = false;
             dialogueIndex = 0;
             if (audioDirector != null) audioDirector.StopVoice();
-            if (missionCharacter != null) missionCharacter.GetComponent<SynteraActorAnimation>()?.SetSpeaking(false);
+            NotifySpeaking(missionCharacter, false);
             missionCharacter = null;
             State.credits += outcome.credits;
             State.treasury += outcome.treasury;
@@ -413,7 +422,12 @@ namespace Syntera
                 return;
             }
             State.chapter++;
-            if (drivePod != null) drivePod.ConfigureDelivery(State.chapter);
+            if (drivePod != null)
+            {
+                drivePod.ConfigureDelivery(State.chapter);
+                if ((State.completedRouteMask & (1 << State.chapter)) != 0)
+                    drivePod.RestoreCompletedRoute();
+            }
             if (investigations != null)
             {
                 investigations.Configure(State.chapter, State.investigationStages[State.chapter], player.transform);
