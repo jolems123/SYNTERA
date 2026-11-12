@@ -52,7 +52,7 @@ These scripts do NOT invoke GitHub Actions. The Unity Editor validation only che
 ## Voice and music
 
 - Built-in background is original generated tone, not a mastered score.
-- Record or license narration clips and import AudioClips at Assets/Resources/Voice/Chapter_00_Line_00.wav, etc. Indexing is zero-based; each of the 12 scenes currently contains 3 voice lines.
+- Record or license narration clips and import AudioClips at Assets/Resources/Voice/Chapter_00_Line_00.wav, etc. Indexing is zero-based; the authored chapter scenes now contain 10 voice lines each (120 in total).
 - Missing recordings keep subtitles available. The local Unity Editor gate reports missing clips. F3 mutes/unmutes audio.
 - Amplitude-based mouth gestures are not phoneme lip sync. Retargeted expressions, visemes and a voice-direction pass remain unfinished.
 
