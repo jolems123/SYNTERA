@@ -25,8 +25,8 @@ namespace Syntera
         private const float SuspensionForce = 18000f;
         private const float SuspensionDamping = 2000f;
         private readonly Vector3[] wheelOffsets = {
-            new Vector3(-.8f,0f,1.15f), new Vector3(.8f,0f,1.15f),
-            new Vector3(-.8f,0f,-1.15f), new Vector3(.8f,0f,-1.15f)
+            new Vector3(-.35f,0f,.35f), new Vector3(.35f,0f,.35f),
+            new Vector3(-.35f,0f,-.35f), new Vector3(.35f,0f,-.35f)
         };
         public float SpeedKph => body == null ? 0 : body.velocity.magnitude * 3.6f;
 
