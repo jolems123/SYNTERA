@@ -56,6 +56,18 @@ class NarrativeVehicleContracts(unittest.TestCase):
         self.assertIn("drivePod.ForceExit();", self.game)
         self.assertIn("SavePath + \".bak\"", self.game)
 
+    def test_mission_outcomes_are_specific_and_budget_checked(self):
+        self.assertIn("private static readonly Outcome[,] Outcomes", self.story)
+        self.assertEqual(self.story.count("new Outcome("), 24)
+        self.assertIn("State.credits + outcome.credits < 0", self.game)
+        self.assertIn("State.treasury + outcome.treasury < 0", self.game)
+        self.assertIn("State.lastOutcome = outcome.consequence;", self.game)
+
+    def test_replay_repositions_player_pod_and_contact(self):
+        self.assertIn("drivePod.ResetPod();", self.game)
+        self.assertIn("PositionMissionContact();", self.game)
+        self.assertIn("public void ResetPod()", self.pod)
+
     def test_no_github_actions(self):
         self.assertFalse((ROOT / ".github/workflows").exists())
 
