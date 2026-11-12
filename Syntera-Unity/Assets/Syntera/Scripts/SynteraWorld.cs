@@ -44,7 +44,8 @@ namespace Syntera
             for (int i = 0; i < People.Length; i++)
             {
                 float x = (i % 4 - 1.5f)*19, z = (i / 4 - .5f)*24;
-                Shape(PrimitiveType.Capsule, "Character - " + People[i], new Vector3(x,1.15f,z), new Vector3(.9f,1.15f,.9f),i%2==0?new Color(.85f,.65f,.39f):new Color(.25f,.45f,.87f),root);
+                var actor = Shape(PrimitiveType.Capsule, "Character - " + People[i], new Vector3(x,1.15f,z), new Vector3(.9f,1.15f,.9f),i%2==0?new Color(.85f,.65f,.39f):new Color(.25f,.45f,.87f),root);
+                actor.AddComponent<SynteraCharacter>().characterName = People[i];
             }
             for (int i = 0; i < Names.Length; i++)
             {
@@ -63,6 +64,11 @@ namespace Syntera
                 car.AddComponent<SynteraTraffic>().speed=4+i*.4f;
             }
         }
+    }
+
+    public sealed class SynteraCharacter : MonoBehaviour
+    {
+        public string characterName;
     }
 
     public sealed class SynteraTraffic : MonoBehaviour
