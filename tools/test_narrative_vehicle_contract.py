@@ -40,11 +40,16 @@ class NarrativeVehicleContracts(unittest.TestCase):
     def test_npc_animation_and_contact_placement(self):
         for text in ("SetHomePosition", "leftArm.localRotation", "rightArm.localRotation"):
             self.assertIn(text, self.animation)
-        self.assertIn("SetHomePosition(home)", self.game)
+        self.assertIn("anim.SetHomePosition(at)", self.game)
 
     def test_dialogue_is_advanced_one_line_at_a_time(self):
         self.assertIn("Director.Advance()", self.game)
         self.assertIn("Director.CurrentLine", self.game)
+
+    def test_ride_assists_never_softlock(self):
+        for text in ("Autopilot", "ResetToRoadside()", "Impacts"):
+            self.assertIn(text, self.pod)
+        self.assertIn("drivePod.Impacts >= 3", self.game)
 
     def test_replay_resets_pod(self):
         self.assertIn("drivePod.ResetPod();", self.game)

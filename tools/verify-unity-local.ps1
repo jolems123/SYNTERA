@@ -56,6 +56,17 @@ if (-not (Test-Path $testResults)) { throw "Unity did not write test results: $t
 $run = $results.'test-run'
 Write-Host "EditMode tests: $($run.passed) passed, $($run.failed) failed, $($run.skipped) skipped (total $($run.total))"
 if ([int]$run.failed -gt 0 -or [int]$run.total -eq 0) { throw "EditMode tests did not all pass. Inspect $testResults" }
+
+# PlayMode smoke tests: the full campaign played through the real City scene.
+$playLog = Join-Path $logs "syntera-playmode-tests.log"
+$playResults = Join-Path $logs "syntera-playmode-results.xml"
+if (Test-Path $playResults) { Remove-Item $playResults }
+$code = Invoke-Unity @("-batchmode", "-projectPath", "`"$project`"", "-runTests", "-testPlatform", "PlayMode", "-testResults", "`"$playResults`"", "-logFile", "`"$playLog`"")
+if (-not (Test-Path $playResults)) { throw "Unity did not write PlayMode results ($code). Inspect $playLog" }
+[xml]$play = Get-Content $playResults
+$prun = $play.'test-run'
+Write-Host "PlayMode tests: $($prun.passed) passed, $($prun.failed) failed, $($prun.skipped) skipped (total $($prun.total))"
+if ($code -ne 0 -or [int]$prun.failed -gt 0 -or [int]$prun.total -eq 0) { throw "PlayMode tests did not all pass. Inspect $playResults" }
 if ($BuildWindows) {
     $buildLog = Join-Path $logs "syntera-windows-build.log"
     $code = Invoke-Unity @("-batchmode", "-nographics", "-quit", "-projectPath", "`"$project`"", "-executeMethod", "Syntera.Editor.SynteraEditorTools.BatchBuildWindows", "-logFile", "`"$buildLog`"")

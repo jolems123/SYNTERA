@@ -387,6 +387,28 @@ namespace Syntera.Core
         }
     }
 
+    // A consequence of how an objective was played (e.g. CH01 rescue by safety drone: Trust -2).
+    public sealed class ObjectiveOutcomeDef
+    {
+        public string Id { get; private set; }
+        public string StepId { get; private set; }
+        public string Label { get; private set; }
+        public IList<Effect> Effects { get; private set; }
+
+        internal static ObjectiveOutcomeDef Parse(object raw)
+        {
+            var o = Json.Obj(raw, "objectiveOutcome");
+            var d = new ObjectiveOutcomeDef();
+            d.Id = Json.Str(o, "id", "objectiveOutcome");
+            d.StepId = Json.Str(o, "step", d.Id);
+            d.Label = Json.Str(o, "label", d.Id);
+            var effects = new List<Effect>();
+            foreach (var e in Json.Arr(o, "effects", d.Id)) effects.Add(Effect.Parse(e, d.Id));
+            d.Effects = effects.AsReadOnly();
+            return d;
+        }
+    }
+
     public sealed class EndingDef
     {
         public string Id { get; private set; }
@@ -429,6 +451,7 @@ namespace Syntera.Core
         public IList<CharterDef> Charters { get; private set; }
         public IList<FallbackDef> Fallbacks { get; private set; }
         public IList<EndingDef> Endings { get; private set; }
+        public IList<ObjectiveOutcomeDef> ObjectiveOutcomes { get; private set; }
         public int PassSeats { get; private set; }
         private IDictionary<string, string> statLabels;
 
@@ -490,6 +513,10 @@ namespace Syntera.Core
             foreach (var e in Json.Arr(root, "endings", "rules")) endings.Add(EndingDef.Parse(e));
             r.Endings = endings.AsReadOnly();
 
+            var outcomes = new List<ObjectiveOutcomeDef>();
+            foreach (var x in Json.OptArr(root, "objectiveOutcomes")) outcomes.Add(ObjectiveOutcomeDef.Parse(x));
+            r.ObjectiveOutcomes = outcomes.AsReadOnly();
+
             r.Validate();
             return r;
         }
@@ -532,6 +559,11 @@ namespace Syntera.Core
                 }
             }
             if (Fallbacks.Count == 0) throw new FormatException("council needs at least one fallback");
+            foreach (var oc in ObjectiveOutcomes)
+            {
+                if (FindDecision(oc.StepId) == null) throw new FormatException(oc.Id + ": outcome step must be a decision");
+                foreach (var e in oc.Effects) if (!known.Contains(e.Stat)) throw new FormatException(oc.Id + ": unknown stat " + e.Stat);
+            }
             foreach (var f in Fallbacks)
                 if (FindEnding(f.Ending) == null) throw new FormatException("fallback: unknown ending " + f.Ending);
         }
@@ -551,6 +583,12 @@ namespace Syntera.Core
         public CharterDef FindCharter(string id)
         {
             foreach (var c in Charters) if (c.Id == id) return c;
+            return null;
+        }
+
+        public ObjectiveOutcomeDef FindOutcome(string id)
+        {
+            foreach (var o in ObjectiveOutcomes) if (o.Id == id) return o;
             return null;
         }
 

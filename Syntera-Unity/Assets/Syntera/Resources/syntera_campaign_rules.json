@@ -226,6 +226,9 @@
       { "ending": "HumanFrontier", "reason": "The deadlocked council defaults to human control.", "whenAny": [ [] ] }
     ]
   },
+  "objectiveOutcomes": [
+    { "id": "ST01_RESCUE_BY_DRONE", "step": "ST01_STRIKE", "label": "A safety drone rescued Noah before you reached him", "effects": [ { "stat": "trust", "delta": -2 } ] }
+  ],
   "endings": [
     { "id": "SharedDawn", "title": "Shared Dawn", "summary": "Accountable human-AI co-governance." },
     { "id": "CorporateSunrise", "title": "Corporate Sunrise", "summary": "VANTAGE becomes the licensed city operator." },

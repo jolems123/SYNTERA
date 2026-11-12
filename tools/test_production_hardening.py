@@ -13,13 +13,13 @@ E = ROOT / "Syntera-Unity" / "Assets" / "Syntera" / "Editor"
 class ProductionHardeningContracts(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.game = (S / "SynteraGame.cs").read_text()
-        cls.mission = (S / "SynteraMissionObjectives.cs").read_text()
-        cls.audio = (S / "SynteraAudioDirector.cs").read_text()
-        cls.pod = (S / "SynteraDrivePod.cs").read_text()
-        cls.characters = (S / "SynteraCharacterAssets.cs").read_text()
-        cls.gate = (E / "SynteraReleaseGate.cs").read_text()
-        cls.build = (E / "SynteraEditorTools.cs").read_text()
+        cls.game = (S / "SynteraGame.cs").read_text(encoding="utf-8")
+        cls.mission = (S / "SynteraMissionObjectives.cs").read_text(encoding="utf-8")
+        cls.audio = (S / "SynteraAudioDirector.cs").read_text(encoding="utf-8")
+        cls.pod = (S / "SynteraDrivePod.cs").read_text(encoding="utf-8")
+        cls.characters = (S / "SynteraCharacterAssets.cs").read_text(encoding="utf-8")
+        cls.gate = (E / "SynteraReleaseGate.cs").read_text(encoding="utf-8")
+        cls.build = (E / "SynteraEditorTools.cs").read_text(encoding="utf-8")
 
     def test_field_objectives_require_physical_presence(self):
         self.assertIn("InteractRange", self.mission)
@@ -27,7 +27,7 @@ class ProductionHardeningContracts(unittest.TestCase):
         self.assertIn("Director.CompleteObjective(next.Id)", self.game)
 
     def test_objectives_persist_through_the_save(self):
-        core = (S.parent / "Core" / "CampaignSave.cs").read_text()
+        core = (S.parent / "Core" / "CampaignSave.cs").read_text(encoding="utf-8")
         self.assertIn("CompletedObjectives", core)
         self.assertIn('"objectives"', core)
 
@@ -73,7 +73,7 @@ class ProductionHardeningContracts(unittest.TestCase):
 
     def test_player_and_cinematic_production_paths(self):
         self.assertIn("SynteraPlayerPresentation", self.game)
-        cinematic = (S / "SynteraCinematicDirector.cs").read_text()
+        cinematic = (S / "SynteraCinematicDirector.cs").read_text(encoding="utf-8")
         self.assertIn("PlayAt(", cinematic)
         self.assertIn("three distinct shots", cinematic.lower())
 

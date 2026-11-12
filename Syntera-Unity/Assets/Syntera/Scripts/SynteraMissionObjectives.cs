@@ -17,10 +17,10 @@ namespace Syntera
         public float Distance => marker == null || player == null ? 0f :
             Vector3.Distance(player.position, marker.transform.position);
 
-        public void Show(ObjectiveDef objective, Transform playerTransform, Vector3 anchor, int sequence)
+        public void Show(ObjectiveDef objective, Transform playerTransform, Vector3 anchor, int sequence, Vector3? exact = null)
         {
             player = playerTransform;
-            string id = objective != null && objective.Kind == ObjectiveKind.Interact ? objective.Id : null;
+            string id = objective != null && objective.Kind != ObjectiveKind.Drive ? objective.Id : null;
             if (id == objectiveId) return;
             Clear();
             objectiveId = id;
@@ -33,7 +33,7 @@ namespace Syntera
             bool even = sequence % 2 == 0;
             marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             marker.name = "Objective: " + objective.Label;
-            marker.transform.position = new Vector3(roadX + (even ? 0f : 5f), 1.25f, roadZ + (even ? -5f : 0f));
+            marker.transform.position = exact ?? new Vector3(roadX + (even ? 0f : 5f), 1.25f, roadZ + (even ? -5f : 0f));
             marker.transform.localScale = new Vector3(.85f, 1.25f, .85f);
             marker.GetComponent<Collider>().isTrigger = true;
             var material = new Material(Shader.Find("Standard")) { color = new Color(1f, .74f, .16f) };

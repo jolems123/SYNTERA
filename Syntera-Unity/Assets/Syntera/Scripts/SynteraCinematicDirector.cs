@@ -6,6 +6,8 @@ namespace Syntera
     public sealed class SynteraCinematicDirector : MonoBehaviour
     {
         public bool IsPlaying { get; private set; }
+        // Accessibility: static shot instead of moving camera.
+        public static bool ReduceMotion { get; set; }
         private Camera sceneCamera;
         private Transform player;
         private Transform sceneFocus;
@@ -45,7 +47,7 @@ namespace Syntera
         private void Update()
         {
             if (!IsPlaying) return;
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0))
             {
                 Finish();
                 return;
@@ -57,6 +59,14 @@ namespace Syntera
         public void UpdateCamera()
         {
             if (!IsPlaying || sceneCamera == null || player == null) return;
+            if (ReduceMotion)
+            {
+                Transform t = sceneFocus != null ? sceneFocus : player;
+                sceneCamera.fieldOfView = 60f;
+                sceneCamera.transform.position = t.position + new Vector3(0, 6, -12);
+                sceneCamera.transform.LookAt(t.position + Vector3.up * 1.4f);
+                return;
+            }
             float progress = 1f - Mathf.Clamp01(remaining / duration);
             Transform target = sceneFocus != null ? sceneFocus : player;
             Vector3 focus = target.position + Vector3.up * 1.45f;

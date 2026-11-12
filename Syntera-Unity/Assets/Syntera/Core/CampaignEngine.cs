@@ -151,6 +151,18 @@ namespace Syntera.Core
             return Commit("creditLine", decisionId, optionId, "Naomi's credit line accepted for option " + optionId + ": " + string.Join(", ", detail.ToArray()));
         }
 
+        // Applies an authored objective consequence once, during the chapter it belongs to.
+        public TransactionResult ApplyOutcome(string outcomeId)
+        {
+            var outcome = Rules.FindOutcome(outcomeId);
+            if (outcome == null) return TransactionResult.Reject(outcomeId, "Unknown outcome.");
+            if (CurrentStepId != outcome.StepId) return TransactionResult.Reject(outcome.StepId, "Not the current mission.");
+            foreach (var t in transactions) if (t.Kind == "outcome" && t.OptionId == outcomeId) return TransactionResult.Reject(outcome.StepId, "Outcome already applied.");
+            var detail = new List<string>();
+            foreach (var e in outcome.Effects) AddStat(e.Stat, e.Delta, detail);
+            return Commit("outcome", outcome.StepId, outcomeId, outcome.Label + ": " + string.Join(", ", detail.ToArray()));
+        }
+
         public TransactionResult Choose(string decisionId, string optionId)
         {
             if (CurrentStepKind != CampaignStepKind.Decision || CurrentStepId != decisionId)
