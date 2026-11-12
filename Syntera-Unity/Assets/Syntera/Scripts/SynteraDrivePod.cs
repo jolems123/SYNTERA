@@ -9,6 +9,7 @@ namespace Syntera
         public bool IsDriving { get; private set; }
         public bool RouteComplete { get; private set; }
         public Transform FollowTarget => transform;
+        public float DistanceToWaypoint => destination == null ? 0 : Vector3.Distance(transform.position, routeTarget);
         public string Status => IsDriving ? "DRIVING · WASD steer / accelerate · Space brake · F exit" : "Press F near the cyan pod to drive";
         private Rigidbody body;
         private GameObject player;
