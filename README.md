@@ -29,6 +29,18 @@ Adjust path for your installed editor version. This is an **example only**; it h
 
 **Never create or enable GitHub Actions workflows, or run GitHub-hosted CI/build jobs.** All tests and builds must run locally or on an explicitly approved, non-GitHub runner. Do not confuse "no CI" with "no testing."
 
+## Story, driving and cinematic controls (source milestone)
+
+This version adds authored dialogue across twelve chapters, chapter-specific economic outcomes, two orange-beacon delivery objectives (chapters 5 and 8), a cyan drivable pod, procedural NPC gestures and skippable in-engine captioned camera sequences.
+
+- **WASD**: walk or drive; **Shift**: sprint on foot.
+- **E**: talk to the current mission contact within range; advance dialogue on-screen.
+- **F**: enter/exit the cyan pod while stopped; **Space**: brake in the pod.
+- Drive to the orange mission beacon for delivery objectives before a choice can be completed.
+- **Space/Enter**: skip cinematic; **M**: city map; **Esc**: close help or dialogue.
+
+Run local source tests using `python -m unittest discover -s tools -p 'test_*.py'` and `python tools/verify_source.py`. See `Docs/NARRATIVE_DRIVING_MILESTONE.md` for Unity Play Mode acceptance cases. **Neither script certifies a real Unity build or a 90-minute playthrough.** Do not enable GitHub Actions.
+
 ## Next requirements
 
 - Resolve Unity compile errors found by the editor, add local EditMode and PlayMode tests.
