@@ -215,7 +215,16 @@ namespace Syntera
                 GUI.Label(new Rect(26, panelY - 72, width - 32, 35), "Your Syntera ending", heading);
                 GUI.Label(new Rect(26, panelY - 33, width - 40, 112), EndingText(), paragraph);
                 if (GUI.Button(new Rect(26, panelY + 102, width / 2 - 26, 52), "Replay 2026–2028")) Restart();
-                if (GUI.Button(new Rect(width / 2 + 8, panelY + 102, width / 2 - 10, 52), "Continue to 2050")) { State.finished = false; State.year = 2029; Save(); }
+                if (GUI.Button(new Rect(width / 2 + 8, panelY + 102, width / 2 - 10, 52), "Continue to 2050")) { State.finished = false; State.year = 2029; State.chapter = 12; Save(); }
+                return;
+            }
+            if (State.chapter >= MaxChapters)
+            {
+                GUI.Box(new Rect(12, panelY, width, 244), "");
+                GUI.Label(new Rect(26, panelY + 10, width - 30, 34), "Beyond 2028 · " + State.year, heading);
+                GUI.Label(new Rect(26, panelY + 57, width - 35, 90), "Your city keeps evolving. Decide whether to fund citizens or speed up AI automation as you approach 2050.", paragraph);
+                if (GUI.Button(new Rect(25, panelY + 140, width / 2 - 24, 72), "Invest in citizens", action)) AdvanceFuture(false);
+                if (GUI.Button(new Rect(width / 2 + 7, panelY + 140, width / 2 - 22, 72), "Expand AI automation", action)) AdvanceFuture(true);
                 return;
             }
             GUI.Box(new Rect(12, panelY, width, 244), "");
@@ -223,6 +232,19 @@ namespace Syntera
             GUI.Label(new Rect(26, panelY + 45, width - 36, 90), State.chapter < MaxChapters ? summaries[State.chapter] : notice, paragraph);
             if (GUI.Button(new Rect(25, panelY + 139, width / 2 - 24, 74), leftChoices[Mathf.Min(State.chapter, 11)], action)) Choose(false);
             if (GUI.Button(new Rect(width / 2 + 7, panelY + 139, width / 2 - 22, 74), rightChoices[Mathf.Min(State.chapter, 11)], action)) Choose(true);
+        }
+
+        private void AdvanceFuture(bool automate)
+        {
+            if (State.year >= 2050) { State.finished = true; Save(); return; }
+            State.year++;
+            State.credits += automate ? 90 : 35;
+            State.aiInfluence = Mathf.Clamp(State.aiInfluence + (automate ? 4 : -1), 0, 100);
+            State.jobs = Mathf.Clamp(State.jobs + (automate ? -1 : 2), 0, 100);
+            State.trust = Mathf.Clamp(State.trust + (automate ? -2 : 2), 0, 100);
+            State.environment = Mathf.Clamp(State.environment + (automate ? -1 : 2), 0, 100);
+            if (State.year >= 2050) State.finished = true;
+            Save();
         }
 
         private void Choose(bool right)
@@ -295,7 +317,7 @@ namespace Syntera
                 if (File.Exists(SavePath))
                 {
                     var parsed = JsonUtility.FromJson<CityState>(File.ReadAllText(SavePath));
-                    if (parsed != null && parsed.decisions != null && parsed.decisions.Length == 12 && parsed.chapter >= 0 && parsed.chapter < 12)
+                    if (parsed != null && parsed.decisions != null && parsed.decisions.Length == 12 && parsed.chapter >= 0 && parsed.chapter <= 12)
                     {
                         State = parsed;
                         return;
