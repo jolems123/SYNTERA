@@ -10,6 +10,11 @@ if (-not (Test-Path (Join-Path $project "ProjectSettings\ProjectVersion.txt"))) 
     throw "Unity project not found at $project"
 }
 if (-not $UnityExe) {
+    $required = ((Get-Content (Join-Path $project "ProjectSettings\ProjectVersion.txt") | Select-String "m_EditorVersion:") -split ":\s*")[1].Trim()
+    $direct = @("D:\Unity\$required\Editor\Unity.exe", "C:\Program Files\Unity\Hub\Editor\$required\Editor\Unity.exe", "C:\Program Files\Unity $required\Editor\Unity.exe")
+    foreach ($binary in $direct) { if (Test-Path $binary) { $UnityExe = $binary; break } }
+}
+if (-not $UnityExe) {
     $editorDir = "C:\Program Files\Unity\Hub\Editor"
     if (Test-Path $editorDir) {
         $candidates = @(Get-ChildItem $editorDir -Directory | Sort-Object Name -Descending)
@@ -32,6 +37,17 @@ if (-not (Select-String -Path $logPath -Pattern "\[SYNTERA UNITY VALIDATION\] PA
     throw "Unity verification did not record its PASS marker. Inspect $logPath"
 }
 Write-Host "Unity validation passed. Logs: $logPath"
+
+# EditMode tests: rules core, section 14 simulation parity, audit chain. -runTests must not be combined with -quit.
+$testLog = Join-Path $logs "syntera-editmode-tests.log"
+$testResults = Join-Path $logs "syntera-editmode-results.xml"
+& $UnityExe -batchmode -nographics -projectPath $project -runTests -testPlatform EditMode -testResults $testResults -logFile $testLog
+if ($LASTEXITCODE -ne 0) { throw "EditMode tests failed ($LASTEXITCODE). Inspect $testResults and $testLog" }
+if (-not (Test-Path $testResults)) { throw "Unity did not write test results: $testResults" }
+[xml]$results = Get-Content $testResults
+$run = $results.'test-run'
+Write-Host "EditMode tests: $($run.passed) passed, $($run.failed) failed, $($run.skipped) skipped (total $($run.total))"
+if ([int]$run.failed -gt 0 -or [int]$run.total -eq 0) { throw "EditMode tests did not all pass. Inspect $testResults" }
 if ($BuildWindows) {
     $buildLog = Join-Path $logs "syntera-windows-build.log"
     & $UnityExe -batchmode -nographics -quit -projectPath $project -executeMethod Syntera.Editor.SynteraEditorTools.BatchBuildWindows -logFile $buildLog

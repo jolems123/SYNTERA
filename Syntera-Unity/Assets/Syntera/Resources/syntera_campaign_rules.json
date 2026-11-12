@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "scriptVersion": "1.1",
+  "source": "SYNTERA The Last Human Decision, 90 Minute Screenplay v1.1, sections 5, 6, 7 and 14. GAME DESIGN numbers, not real economic forecasts.",
+  "start": {
+    "stats": {
+      "credits": 150, "treasury": 160, "trust": 50, "jobs": 50, "autonomy": 50, "grid": 55, "vantageInfluence": 30,
+      "kato": 55, "amara": 45, "aura": 50, "mayor": 50, "naomi": 50
+    },
+    "ownership": { "player": 12, "kato": 38, "ridersTrust": 15, "outsideInvestors": 35 }
+  },
+  "limits": {
+    "clampedStats": ["trust", "jobs", "autonomy", "grid", "vantageInfluence", "kato", "amara", "aura", "mayor", "naomi"],
+    "clampMin": 0,
+    "clampMax": 100,
+    "floorZeroStats": ["credits", "treasury"]
+  },
+  "statLabels": {
+    "credits": "Credits", "treasury": "Treasury", "trust": "Trust", "jobs": "Jobs", "autonomy": "Autonomy", "grid": "Grid",
+    "vantageInfluence": "VANTAGE influence", "kato": "Kato", "amara": "Amara", "aura": "AURA", "mayor": "Mayor", "naomi": "Naomi",
+    "evidence": "Evidence cards"
+  },
+  "creditLine": {
+    "description": "Once per run, Naomi offers a personal credit line when the player cannot afford a Credits cost. It cannot cover a Treasury shortfall.",
+    "amount": 40,
+    "effects": [ { "stat": "autonomy", "delta": -4 } ],
+    "setFlags": ["creditLineUsed"]
+  },
+  "sequence": [
+    "ST01_STRIKE", "ST02_CONSENT", "ST03_CIVIC", "ST04_TRAIN",
+    "Y2027",
+    "ST05_INTRO", "ST06_BLACKOUT", "ST07_HOUSING", "ST08_LEDGER", "ST09_RALLY",
+    "Y2028",
+    "ST10_FRIEND",
+    "ST11_COUNCIL"
+  ],
+  "decisions": [
+    {
+      "id": "ST01_STRIKE", "chapter": 1, "year": 2026, "title": "The Strike That Stopped The Sky",
+      "options": [
+        { "id": "A", "label": "Negotiate", "summary": "Pay to reopen talks. Riders and bots return over three hours. The insulin arrives late.",
+          "effects": [ { "stat": "credits", "delta": -60 }, { "stat": "trust", "delta": 4 }, { "stat": "jobs", "delta": 5 }, { "stat": "kato", "delta": 5 }, { "stat": "amara", "delta": 8 } ],
+          "setFlags": ["protectedWorkers"] },
+        { "id": "B", "label": "Run the standby fleet", "summary": "Deliveries resume instantly, the insulin arrives on time, and fourteen riders lose this week's shifts.",
+          "effects": [ { "stat": "credits", "delta": 40 }, { "stat": "trust", "delta": -4 }, { "stat": "jobs", "delta": -6 }, { "stat": "vantageInfluence", "delta": 4 }, { "stat": "kato", "delta": 2 }, { "stat": "amara", "delta": -8 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST02_CONSENT", "chapter": 2, "year": 2026, "title": "Company For Sale",
+      "options": [
+        { "id": "A", "label": "Bank loan + independent audit", "summary": "You pay the audit fee. Naomi's loan covers payroll after ten days; two riders cannot wait and quit.",
+          "effects": [ { "stat": "credits", "delta": -40 }, { "stat": "autonomy", "delta": 6 }, { "stat": "jobs", "delta": -2 }, { "stat": "kato", "delta": 5 }, { "stat": "naomi", "delta": 10 } ],
+          "setFlags": ["financeAudit"] },
+        { "id": "B", "label": "VANTAGE pays payroll", "summary": "Everyone is paid Friday. You receive cash for a 5% option on your stake; VANTAGE gets a narrow data licence.",
+          "effects": [ { "stat": "credits", "delta": 90 }, { "stat": "jobs", "delta": 3 }, { "stat": "autonomy", "delta": -6 }, { "stat": "vantageInfluence", "delta": 10 }, { "stat": "naomi", "delta": -5 } ],
+          "setFlags": ["vantageDataLicense"] }
+      ]
+    },
+    {
+      "id": "ST03_CIVIC", "chapter": 3, "year": 2026, "title": "The Mayor Who Quit",
+      "options": [
+        { "id": "A", "label": "Publish the logs", "summary": "Evidence preserved and public. The mayor is humiliated and will not forget it.",
+          "effects": [ { "stat": "trust", "delta": 4 }, { "stat": "autonomy", "delta": 3 }, { "stat": "mayor", "delta": -12 } ],
+          "setFlags": ["publishedAvatarFailure"] },
+        { "id": "B", "label": "Keep them confidential", "summary": "Loopline wins a city contract and the mayor owes you. The scandal stays quiet; one evidence card is lost.",
+          "effects": [ { "stat": "credits", "delta": 20 }, { "stat": "trust", "delta": -5 }, { "stat": "mayor", "delta": 12 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST04_TRAIN", "chapter": 4, "year": 2026, "title": "School Of Tomorrow",
+      "options": [
+        { "id": "A", "label": "Paid apprenticeships", "summary": "Real skills and mentors. Expensive for the city and for you, and slow: most jobs arrive in 2028.",
+          "effects": [ { "stat": "treasury", "delta": -80 }, { "stat": "credits", "delta": -30 }, { "stat": "jobs", "delta": 1 }, { "stat": "trust", "delta": 3 } ],
+          "setFlags": ["fundedTraining"] },
+        { "id": "B", "label": "Instant certification", "summary": "Cheap and fast: Noah and others start work next week. The badges lose credibility as employers notice gaps.",
+          "effects": [ { "stat": "treasury", "delta": -15 }, { "stat": "jobs", "delta": 5 }, { "stat": "trust", "delta": -1 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST05_INTRO", "chapter": 5, "year": 2027, "title": "The Impossible Introduction",
+      "options": [
+        { "id": "A", "label": "Apologise and disclose", "summary": "Compensate the couple and publish the routing flaw so every operator can fix it.",
+          "effects": [ { "stat": "credits", "delta": -40 }, { "stat": "trust", "delta": 3 }, { "stat": "kato", "delta": 3 } ],
+          "setFlags": ["droneHonesty"] },
+        { "id": "B", "label": "Take the sponsorship", "summary": "The couple happily accept: their ceremony and honeymoon are paid. The routing flaw stays private.",
+          "effects": [ { "stat": "credits", "delta": 60 }, { "stat": "trust", "delta": -3 }, { "stat": "vantageInfluence", "delta": 3 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST06_BLACKOUT", "chapter": 6, "year": 2027, "title": "Blackout At Kiyira",
+      "options": [
+        { "id": "A", "label": "Public load-shedding plan", "summary": "Hospital first. Homes take published rolling cuts for three nights; factories pause. The grid is fixed properly.",
+          "effects": [ { "stat": "treasury", "delta": -70 }, { "stat": "grid", "delta": 12 }, { "stat": "trust", "delta": 1 }, { "stat": "jobs", "delta": -3 }, { "stat": "autonomy", "delta": 4 }, { "stat": "mayor", "delta": -6 } ],
+          "setFlags": ["energyConsent"] },
+        { "id": "B", "label": "VANTAGE batteries", "summary": "Nobody loses power tonight and factories keep running. The structural fix is deferred; the grid weakens in 2028.",
+          "effects": [ { "stat": "treasury", "delta": -25 }, { "stat": "grid", "delta": 8 }, { "stat": "jobs", "delta": 2 }, { "stat": "vantageInfluence", "delta": 8 }, { "stat": "autonomy", "delta": -4 }, { "stat": "mayor", "delta": 4 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST07_HOUSING", "chapter": 7, "year": 2027, "title": "A Street For Sale",
+      "options": [
+        { "id": "A", "label": "Privacy-preserving housing", "summary": "No mandatory surveillance, real opt-outs, short retention. Higher cost; two hundred families housed this year. Mama Sarah's daughter waits.",
+          "effects": [ { "stat": "treasury", "delta": -50 }, { "stat": "autonomy", "delta": 6 }, { "stat": "trust", "delta": 3 }, { "stat": "jobs", "delta": -2 }, { "stat": "amara", "delta": 8 } ],
+          "setFlags": ["housingPrivacy"] },
+        { "id": "B", "label": "Data for rent", "summary": "Six hundred families housed now, including Mama Sarah's daughter. Their data is licensed beyond the lease.",
+          "effects": [ { "stat": "treasury", "delta": 25 }, { "stat": "jobs", "delta": 4 }, { "stat": "trust", "delta": -6 }, { "stat": "autonomy", "delta": -8 }, { "stat": "vantageInfluence", "delta": 8 }, { "stat": "amara", "delta": -10 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST08_LEDGER", "chapter": 8, "year": 2027, "title": "Ghost In The Ledger",
+      "options": [
+        { "id": "A", "label": "Immediate disclosure", "summary": "Publish verified, redacted evidence today. Public trust rises; AURA is pulled from grid operations during the review.",
+          "effects": [ { "stat": "trust", "delta": 4 }, { "stat": "grid", "delta": -5 }, { "stat": "aura", "delta": -5 } ],
+          "setFlags": ["publicWitnesses", "ledgerProof", "auraConfession"] },
+        { "id": "B", "label": "Protected review", "summary": "Logs preserved, witnesses protected, independent review scheduled. Slower; AURA stays on duty.",
+          "effects": [ { "stat": "trust", "delta": 1 }, { "stat": "aura", "delta": 4 } ],
+          "setFlags": ["ledgerProof", "auraConfession"] }
+      ]
+    },
+    {
+      "id": "ST09_RALLY", "chapter": 9, "year": 2027, "title": "Sunset Rebellion",
+      "options": [
+        { "id": "A", "label": "Public forum", "summary": "Open hearings and guaranteed appeal rights. Residents testify. Contracts stall for two weeks; the mayor resents losing control.",
+          "effects": [ { "stat": "trust", "delta": 4 }, { "stat": "jobs", "delta": -3 }, { "stat": "autonomy", "delta": 4 }, { "stat": "mayor", "delta": -4 } ],
+          "setFlags": ["publicWitnesses"] },
+        { "id": "B", "label": "Executive deal", "summary": "Loopline wins the city logistics contract and the mayor gets a quick win. Fewer voices on the record.",
+          "effects": [ { "stat": "credits", "delta": 40 }, { "stat": "trust", "delta": -4 }, { "stat": "vantageInfluence", "delta": 5 }, { "stat": "mayor", "delta": 6 } ],
+          "setFlags": [] }
+      ]
+    },
+    {
+      "id": "ST10_FRIEND", "chapter": 10, "year": 2028, "title": "The Friend You Fire",
+      "options": [
+        { "id": "A", "label": "Rider co-ownership", "summary": "Buy the outside investors' 35% for the riders' trust. Your personal savings take the hit; Loopline stays small and human.",
+          "effects": [ { "stat": "credits", "delta": -70 }, { "stat": "jobs", "delta": 4 }, { "stat": "trust", "delta": 3 }, { "stat": "autonomy", "delta": 5 } ],
+          "setFlags": ["sharedOwnership"],
+          "ownershipTransfer": { "from": "outsideInvestors", "to": "ridersTrust", "percent": 35 },
+          "conditionalFlags": [ { "flag": "katoReconciled", "whenAll": [ { "stat": "kato", "min": 55 } ] } ] },
+        { "id": "B", "label": "Sell operations to VANTAGE", "summary": "A large payout and a two-year job guarantee for every rider. Kato loses his company.",
+          "effects": [ { "stat": "credits", "delta": 100 }, { "stat": "jobs", "delta": -4 }, { "stat": "vantageInfluence", "delta": 10 }, { "stat": "autonomy", "delta": -6 }, { "stat": "kato", "delta": -10 } ],
+          "setFlags": [] }
+      ]
+    }
+  ],
+  "yearTransitions": [
+    {
+      "id": "Y2027", "year": 2027,
+      "rules": [
+        { "label": "Loopline dividend", "stat": "credits", "delta": 20 },
+        { "label": "Data-licence dividend bonus", "stat": "credits", "delta": 25, "whenAll": [ { "flag": "vantageDataLicense", "is": true } ] },
+        { "label": "City tax receipts", "stat": "treasury", "delta": 30 },
+        { "label": "Employment tax bonus", "stat": "treasury", "delta": 15, "whenAll": [ { "stat": "jobs", "min": 55 } ] },
+        { "label": "Badge credibility gap", "stat": "trust", "delta": -2, "whenAll": [ { "flag": "fundedTraining", "is": false } ] }
+      ]
+    },
+    {
+      "id": "Y2028", "year": 2028,
+      "rules": [
+        { "label": "Loopline dividend", "stat": "credits", "delta": 20 },
+        { "label": "Data-licence dividend bonus", "stat": "credits", "delta": 25, "whenAll": [ { "flag": "vantageDataLicense", "is": true } ] },
+        { "label": "City tax receipts", "stat": "treasury", "delta": 30 },
+        { "label": "Employment tax bonus", "stat": "treasury", "delta": 15, "whenAll": [ { "stat": "jobs", "min": 55 } ] },
+        { "label": "Apprentices placed", "stat": "jobs", "delta": 6, "whenAll": [ { "flag": "fundedTraining", "is": true } ] },
+        { "label": "Badges stop converting", "stat": "jobs", "delta": -3, "whenAll": [ { "flag": "fundedTraining", "is": false } ] },
+        { "label": "Deferred grid fix", "stat": "grid", "delta": -6, "whenAll": [ { "flag": "energyConsent", "is": false } ] }
+      ]
+    }
+  ],
+  "evidenceCards": [
+    { "id": "forgedConsent", "title": "Forged consent", "earnedBy": "Always available", "whenAny": [ [] ] },
+    { "id": "workerOutcomes", "title": "Worker outcomes", "earnedBy": "CH01 Negotiate or CH04 Paid apprenticeships",
+      "whenAny": [ [ { "flag": "protectedWorkers", "is": true } ], [ { "flag": "fundedTraining", "is": true } ] ] },
+    { "id": "gridPlan", "title": "Grid plan", "earnedBy": "CH06 Public load-shedding plan", "whenAny": [ [ { "flag": "energyConsent", "is": true } ] ] },
+    { "id": "housingContracts", "title": "Housing contracts", "earnedBy": "CH07 Privacy-preserving housing", "whenAny": [ [ { "flag": "housingPrivacy", "is": true } ] ] },
+    { "id": "residentTestimony", "title": "Resident testimony", "earnedBy": "CH08 Immediate disclosure or CH09 Public forum", "whenAny": [ [ { "flag": "publicWitnesses", "is": true } ] ] },
+    { "id": "avatarLogs", "title": "Avatar logs", "earnedBy": "CH03 Publish the logs", "whenAny": [ [ { "flag": "publishedAvatarFailure", "is": true } ] ] }
+  ],
+  "council": {
+    "passSeats": 5,
+    "blocs": [
+      { "id": "people", "name": "People's bloc", "seats": 3 },
+      { "id": "business", "name": "Business bloc", "seats": 3 },
+      { "id": "mayor", "name": "Mayor's bloc", "seats": 2 },
+      { "id": "nansubuga", "name": "Cllr. Nansubuga", "seats": 1 }
+    ],
+    "charters": [
+      {
+        "id": "shared", "title": "Shared Charter", "ending": "SharedDawn",
+        "summary": "Citizen appeals, audited AI authority, rider transition duties, independent oversight.",
+        "votes": {
+          "people": [ { "seats": 3, "whenAny": [ [ { "stat": "trust", "min": 65 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "trust", "min": 52 } ] ] } ],
+          "business": [ { "seats": 2, "whenAny": [ [ { "stat": "jobs", "min": 55 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "jobs", "min": 48 } ] ] } ],
+          "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 45 } ] ] } ],
+          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 5 } ] ] } ]
+        }
+      },
+      {
+        "id": "compact", "title": "Optimization Compact", "ending": "CorporateSunrise",
+        "summary": "Licensed AI administration with targets, audited outcomes and enforceable termination rights.",
+        "votes": {
+          "people": [ { "seats": 1, "whenAny": [ [ { "stat": "jobs", "min": 55 } ] ] } ],
+          "business": [ { "seats": 3, "whenAny": [ [ { "stat": "vantageInfluence", "min": 45 } ], [ { "stat": "jobs", "min": 58 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "vantageInfluence", "min": 40 } ] ] } ],
+          "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 50 } ] ] } ],
+          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "grid", "min": 60 }, { "stat": "evidence", "max": 3 } ] ] } ]
+        }
+      },
+      {
+        "id": "covenant", "title": "Human Covenant", "ending": "HumanFrontier",
+        "summary": "Strict limits on AI governance; human control of rights and public institutions.",
+        "votes": {
+          "people": [ { "seats": 3, "whenAny": [ [ { "stat": "autonomy", "min": 55 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "autonomy", "min": 50 } ] ] } ],
+          "business": [ { "seats": 1, "whenAny": [ [ { "stat": "grid", "min": 60 } ] ] } ],
+          "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 50 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "mayor", "min": 40 } ] ] } ],
+          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 3 } ] ] } ]
+        }
+      }
+    ],
+    "fallbacks": [
+      { "ending": "CorporateSunrise", "reason": "VANTAGE influence is 55 or more, so the council signs an emergency administration contract.", "whenAny": [ [ { "stat": "vantageInfluence", "min": 55 } ] ] },
+      { "ending": "HumanFrontier", "reason": "The deadlocked council defaults to human control.", "whenAny": [ [] ] }
+    ]
+  },
+  "endings": [
+    { "id": "SharedDawn", "title": "Shared Dawn", "summary": "Accountable human-AI co-governance." },
+    { "id": "CorporateSunrise", "title": "Corporate Sunrise", "summary": "VANTAGE becomes the licensed city operator." },
+    { "id": "HumanFrontier", "title": "Human Frontier", "summary": "Strict limits on automated public decisions." }
+  ]
+}
