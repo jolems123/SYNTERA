@@ -1,84 +1,53 @@
+using Syntera.Core;
 using UnityEngine;
 
 namespace Syntera
 {
-    // Two searchable scene objectives per chapter (non-driving chapters).
-    // Each marker requires physically approaching it and pressing E.
+    // Shows one world marker for the director's next "interact" objective. The player
+    // must physically reach it and press E. Objective content lives in the dialogue data.
     public sealed class SynteraMissionObjectives : MonoBehaviour
     {
-        private static readonly string[,] Tasks =
-        {
-            {"Inspect striking dispatch robots", "Retrieve the fleet's charging log"},
-            {"Review the independence contract", "Collect evidence of VANTAGE ownership"},
-            {"Inspect the forged resignation terminal", "Collect signatures for an election"},
-            {"Visit the school resource terminal", "Review teacher and AI cost projections"},
-            {"Secure wedding guests", "Deliver emergency supplies"},
-            {"Survey the hospital power grid", "Inspect the neighborhood substation"},
-            {"Record residents' housing concerns", "Inspect the redevelopment site"},
-            {"Trace the missing ledger transfer", "Authenticate the archive evidence"},
-            {"Check the public assembly route", "Verify the emergency surveillance orders"},
-            {"Inspect Kato's contract", "Speak with affected delivery workers"},
-            {"Review the proposed AI charter", "Check public oversight safeguards"},
-            {"Visit the neighborhood council", "Inspect the city's new decision record"}
-        };
+        public const float InteractRange = 3.25f;
         private GameObject marker;
-        private int chapter = -1;
-        private int stage;
+        private string objectiveId;
         private Transform player;
-        private Vector3 anchor;
 
-        public bool Complete => stage >= 2;
-        public int Stage => stage;
+        public ObjectiveDef Current { get; private set; }
+
         public float Distance => marker == null || player == null ? 0f :
             Vector3.Distance(player.position, marker.transform.position);
-        public string Task => chapter < 0 || Complete ? "Investigation complete" : Tasks[chapter, stage];
 
-        public void Configure(int chapterNumber, int savedStage, Transform playerTransform)
+        public void Show(ObjectiveDef objective, Transform playerTransform, Vector3 anchor, int sequence)
         {
-            if (marker != null) Destroy(marker);
-            marker = null;
-            chapter = Mathf.Clamp(chapterNumber, 0, 11);
-            stage = Mathf.Clamp(savedStage, 0, 2);
             player = playerTransform;
-            anchor = player == null ? Vector3.zero : player.position;
-            if (!Complete) ShowMarker();
-        }
+            string id = objective != null && objective.Kind == ObjectiveKind.Interact ? objective.Id : null;
+            if (id == objectiveId) return;
+            Clear();
+            objectiveId = id;
+            Current = id == null ? null : objective;
+            if (id == null || player == null) return;
 
-        private void ShowMarker()
-        {
-            if (player == null) return;
-            // Place investigation points on walkable open ground near the player.
+            // Place on open ground at the chapter location's road crossing, alternating sides per step.
             float roadX = Mathf.Round(anchor.x / 32f) * 32f;
             float roadZ = Mathf.Round(anchor.z / 32f) * 32f;
-            Vector3 position = new Vector3(roadX + (stage == 0 ? 0f : 5f), 1.25f,
-                                           roadZ + (stage == 0 ? -5f : 0f));
+            bool even = sequence % 2 == 0;
             marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            marker.name = "Mission investigation: " + Tasks[chapter, stage];
-            marker.transform.position = position;
+            marker.name = "Objective: " + objective.Label;
+            marker.transform.position = new Vector3(roadX + (even ? 0f : 5f), 1.25f, roadZ + (even ? -5f : 0f));
             marker.transform.localScale = new Vector3(.85f, 1.25f, .85f);
-            var collider = marker.GetComponent<Collider>();
-            collider.isTrigger = true;
-            var renderer = marker.GetComponent<Renderer>();
-            var material = new Material(Shader.Find("Standard"));
-            material.color = new Color(1f, .74f, .16f);
-            renderer.material = material;
+            marker.GetComponent<Collider>().isTrigger = true;
+            var material = new Material(Shader.Find("Standard")) { color = new Color(1f, .74f, .16f) };
+            marker.GetComponent<Renderer>().material = material;
         }
 
-        public bool TryInteract()
-        {
-            if (Complete || marker == null || player == null || Distance > 3.25f) return false;
-            stage++;
-            Destroy(marker);
-            marker = null;
-            if (!Complete) ShowMarker();
-            return true;
-        }
+        public bool InRange => marker != null && player != null && Distance <= InteractRange;
 
-        public void MarkComplete()
+        public void Clear()
         {
-            stage = 2;
             if (marker != null) Destroy(marker);
             marker = null;
+            objectiveId = null;
+            Current = null;
         }
     }
 }

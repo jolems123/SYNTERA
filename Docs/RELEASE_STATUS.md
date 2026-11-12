@@ -1,3 +1,16 @@
-SYNTERA clean Unity source baseline. Editor compilation: NOT RUN. Windows build: NOT RUN. Real gameplay: NOT RUN. Content and art: prototype. GitHub Actions CI: DISABLED by policy.
+SYNTERA release status. GitHub Actions CI: DISABLED by policy. Content and art: procedural placeholder (not production art).
 
-Campaign rules core (screenplay v1.1): implemented; tested outside Unity (csc C# 5 compile + 15 tests, Python reference 6 tests, section 14 parity exact). Dialogue data: 12 chapters, 210 lines with stable IDs, transcribed verbatim. Tested-in-editor: NOT RUN. Not yet wired into the playable game; the scene still runs the v1.0 prototype campaign. See Docs/CAMPAIGN_RULES_V1_1.md.
+| Feature | Status |
+|---|---|
+| Campaign rules core (screenplay v1.1) | implemented; tested outside Unity (csc + NUnit shim, Python reference); section 14 parity exact |
+| Dialogue data (12 chapters, 210 lines, stable IDs) | implemented; tested outside Unity |
+| Campaign director + replay save format 2 | implemented; tested outside Unity (full headless playthroughs, save/reload every step, tamper rejection) |
+| Unity Editor compilation (6000.3.0f1) | PASS: 0 errors, 0 warnings after the linearVelocity fix (batch mode, 2026-11-12) |
+| In-editor release gate | PASS: 12 chapters, 210 lines, section 14 parity exact (242/466/348, 280, 922, 32); 0 of 210 voice clips recorded |
+| EditMode tests in Unity | BLOCKED: test runner exits 198 "No valid Unity Editor license found". Needs a Unity licence activated on this PC |
+| Play Mode / real gameplay | NOT RUN |
+| Windows build | NOT RUN |
+
+Environment note: this PC runs Windows 10 build 18363, and Unity 6.3 officially needs build 19043 (21H1) or newer. Unity runs here, but it warns that it may behave unexpectedly.
+
+See Docs/CAMPAIGN_RULES_V1_1.md.

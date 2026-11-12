@@ -27,12 +27,19 @@ if (-not $UnityExe) {
 if (-not $UnityExe -or -not (Test-Path $UnityExe)) {
     throw "Unity Editor executable not located. Install Unity 6.3 with Unity Hub, or pass -UnityExe 'C:\...\Unity.exe'."
 }
+
+# Unity.exe is a GUI-subsystem program: "& $UnityExe" returns before it finishes and leaves
+# $LASTEXITCODE unset. Always wait for the real process and use its exit code.
+function Invoke-Unity([string[]]$UnityArgs) {
+    $proc = Start-Process -FilePath $UnityExe -ArgumentList $UnityArgs -Wait -PassThru -NoNewWindow
+    return $proc.ExitCode
+}
 $logs = Join-Path $root "local-unity-logs"
 New-Item -ItemType Directory -Force -Path $logs | Out-Null
 $logPath = Join-Path $logs "syntera-editor-validation.log"
 Write-Host "Running local Unity Editor verification..."
-& $UnityExe -batchmode -nographics -quit -projectPath $project -executeMethod Syntera.Editor.SynteraReleaseGate.Run -logFile $logPath
-if ($LASTEXITCODE -ne 0) { throw "Unity verification failed ($LASTEXITCODE). Inspect $logPath" }
+$code = Invoke-Unity @("-batchmode", "-nographics", "-quit", "-projectPath", "`"$project`"", "-executeMethod", "Syntera.Editor.SynteraReleaseGate.Run", "-logFile", "`"$logPath`"")
+if ($code -ne 0) { throw "Unity verification failed ($code). Inspect $logPath" }
 if (-not (Select-String -Path $logPath -Pattern "\[SYNTERA UNITY VALIDATION\] PASS" -Quiet)) {
     throw "Unity verification did not record its PASS marker. Inspect $logPath"
 }
@@ -41,8 +48,9 @@ Write-Host "Unity validation passed. Logs: $logPath"
 # EditMode tests: rules core, section 14 simulation parity, audit chain. -runTests must not be combined with -quit.
 $testLog = Join-Path $logs "syntera-editmode-tests.log"
 $testResults = Join-Path $logs "syntera-editmode-results.xml"
-& $UnityExe -batchmode -nographics -projectPath $project -runTests -testPlatform EditMode -testResults $testResults -logFile $testLog
-if ($LASTEXITCODE -ne 0) { throw "EditMode tests failed ($LASTEXITCODE). Inspect $testResults and $testLog" }
+if (Test-Path $testResults) { Remove-Item $testResults }
+$code = Invoke-Unity @("-batchmode", "-nographics", "-projectPath", "`"$project`"", "-runTests", "-testPlatform", "EditMode", "-testResults", "`"$testResults`"", "-logFile", "`"$testLog`"")
+if ($code -ne 0) { throw "EditMode tests failed ($code). Inspect $testResults and $testLog" }
 if (-not (Test-Path $testResults)) { throw "Unity did not write test results: $testResults" }
 [xml]$results = Get-Content $testResults
 $run = $results.'test-run'
@@ -50,8 +58,8 @@ Write-Host "EditMode tests: $($run.passed) passed, $($run.failed) failed, $($run
 if ([int]$run.failed -gt 0 -or [int]$run.total -eq 0) { throw "EditMode tests did not all pass. Inspect $testResults" }
 if ($BuildWindows) {
     $buildLog = Join-Path $logs "syntera-windows-build.log"
-    & $UnityExe -batchmode -nographics -quit -projectPath $project -executeMethod Syntera.Editor.SynteraEditorTools.BatchBuildWindows -logFile $buildLog
-    if ($LASTEXITCODE -ne 0) { throw "Windows build failed ($LASTEXITCODE). Inspect $buildLog" }
+    $code = Invoke-Unity @("-batchmode", "-nographics", "-quit", "-projectPath", "`"$project`"", "-executeMethod", "Syntera.Editor.SynteraEditorTools.BatchBuildWindows", "-logFile", "`"$buildLog`"")
+    if ($code -ne 0) { throw "Windows build failed ($code). Inspect $buildLog" }
     $exe = Join-Path $project "Builds\Windows\SYNTERA.exe"
     if (-not (Test-Path $exe)) { throw "Unity returned successfully but the executable is missing: $exe" }
     Write-Host "Build produced: $exe"

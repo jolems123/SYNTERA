@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Syntera
 {
     // Original synthesized tonal bed plus optional professionally recorded dialogue.
-    // Files are opt-in Resources/Voice/Chapter_00_Line_00.wav, ... (zero-indexed).
+    // Files are opt-in Resources/Voice/<line ID>.wav, e.g. Voice/ST01_KATO_003 (see Docs/VOICE_RECORDING_CUES.csv).
     // The dialogue remains playable entirely with subtitles if a recording is absent.
     public sealed class SynteraAudioDirector : MonoBehaviour
     {
@@ -66,11 +66,12 @@ namespace Syntera
             }
         }
 
-        public bool PlayVoice(int index)
+        public bool PlayVoice(string lineId)
         {
             if (voiceSource == null) return false;
             voiceSource.Stop();
-            var file = "Voice/Chapter_" + chapter.ToString("00") + "_Line_" + index.ToString("00");
+            if (string.IsNullOrEmpty(lineId)) return false;
+            var file = "Voice/" + lineId;
             var audio = Resources.Load<AudioClip>(file);
             if (audio == null) return false;
             voiceSource.clip = audio;

@@ -19,8 +19,8 @@ for name in REQUIRED:
 
 game=(PROJECT/REQUIRED[0]).read_text(encoding="utf-8") if (PROJECT/REQUIRED[0]).exists() else ""
 editor=(PROJECT/REQUIRED[2]).read_text(encoding="utf-8") if (PROJECT/REQUIRED[2]).exists() else ""
-for token in ("The Strike That Stopped the Sky","The Last Human Decision","AdvanceFuture","Save()","Load()","WASD",""):
-    if token and token not in (game+ROOT.joinpath("README.md").read_text(encoding="utf-8")):
+for token in ("CampaignDirector","CampaignSave.Read(","CampaignSave.Write(","public void Save()","WASD","Continue to 2050"):
+    if token not in game:
         errors.append(f"Missing gameplay contract: {token}")
 for token in ("MenuItem(\"SYNTERA/Create Starter Scene\")", "BuildPipeline.BuildPlayer","StandaloneWindows64"):
     if token not in editor: errors.append(f"Missing Unity editor contract: {token}")
@@ -32,8 +32,11 @@ if (ROOT/".github/workflows").exists():
     errors.append("Forbidden GitHub Actions workflow directory exists")
 if "m_EditorVersion:" not in (PROJECT/"ProjectSettings/ProjectVersion.txt").read_text():
     errors.append("ProjectVersion missing editor marker")
-if len(re.findall(r'"(?:The Strike That Stopped the Sky|Company for Sale|The Mayor Who Quit|School of Tomorrow|The Impossible Wedding|Blackout at Nexus|A Street for Sale|Ghost in the Ledger|Sunset Rebellion|The Friend You Fire|The Last Human Decision|Tomorrow Morning)"',game)) < 12:
-    errors.append("Missing 12 named story chapters")
+try:
+    story=json.loads((PROJECT/"Assets/Syntera/Resources/syntera_campaign_dialogue.json").read_text(encoding="utf-8"))
+    titles=[c["title"] for c in story["chapters"]]
+    if len(titles)!=12 or len(set(titles))!=12: errors.append("Missing 12 named story chapters")
+except (ValueError, OSError, KeyError) as exc: errors.append(f"Invalid dialogue data: {exc}")
 for e in errors: print("FAIL:",e)
 print(f"Local source audit: {'FAILED' if errors else 'PASS'} ({len(errors)} errors)")
 sys.exit(1 if errors else 0)

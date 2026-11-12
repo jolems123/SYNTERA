@@ -21,22 +21,21 @@ class ProductionHardeningContracts(unittest.TestCase):
         cls.gate = (E / "SynteraReleaseGate.cs").read_text()
         cls.build = (E / "SynteraEditorTools.cs").read_text()
 
-    def test_field_missions_require_two_visits(self):
-        self.assertIn("stage >= 2", self.mission)
-        self.assertIn("stage++", self.mission)
-        self.assertIn("investigations.TryInteract()", self.game)
-        self.assertIn("investigations.Complete", self.game)
+    def test_field_objectives_require_physical_presence(self):
+        self.assertIn("InteractRange", self.mission)
+        self.assertIn("objectives.InRange", self.game)
+        self.assertIn("Director.CompleteObjective(next.Id)", self.game)
 
-    def test_investigation_persists_in_twelve_chapters(self):
-        self.assertIn("investigationStages = new int[12]", self.game)
-        self.assertIn("State.investigationStages[State.chapter] = investigations.Stage", self.game)
-        self.assertIn("State.investigationStages.Length != 12", self.game)
+    def test_objectives_persist_through_the_save(self):
+        core = (S.parent / "Core" / "CampaignSave.cs").read_text()
+        self.assertIn("CompletedObjectives", core)
+        self.assertIn('"objectives"', core)
 
     def test_voices_are_optional_and_subtitles_remain(self):
         self.assertIn('Resources.Load<AudioClip>(file)', self.audio)
         self.assertIn("if (audio == null) return false", self.audio)
-        self.assertIn("dialogue[dialogueIndex]", self.game)
-        self.assertIn("audioDirector.PlayVoice(dialogueIndex)", self.game)
+        self.assertIn("line.Text", self.game)
+        self.assertIn("audioDirector.PlayVoice(line.Id)", self.game)
 
     def test_original_audio_and_mute_control(self):
         self.assertIn("AudioClip.Create", self.audio)
@@ -62,12 +61,13 @@ class ProductionHardeningContracts(unittest.TestCase):
     def test_voice_recording_manifest_is_honest(self):
         with (ROOT / "Docs" / "VOICE_RECORDING_CUES.csv").open(newline="", encoding="utf-8") as fh:
             rows = list(csv.DictReader(fh))
-        self.assertEqual(len(rows), 120)
+        self.assertEqual(len(rows), 210)
+        self.assertTrue(all(row["resource_filename"].endswith(row["line_id"] + ".wav") for row in rows))
         self.assertTrue(all(row["recording_status"] == "NOT_RECORDED" for row in rows))
         self.assertTrue(all(row["rights_status"] == "NOT_VERIFIED" for row in rows))
 
     def test_playtime_is_tracked_and_saves_use_atomic_replacement(self):
-        self.assertIn("State.elapsedSeconds += Time.unscaledDeltaTime", self.game)
+        self.assertIn("ElapsedSeconds += Time.unscaledDeltaTime", self.game)
         self.assertIn("File.Replace(temp, SavePath, backup)", self.game)
         self.assertIn("recoveredFromBackup", self.game)
 

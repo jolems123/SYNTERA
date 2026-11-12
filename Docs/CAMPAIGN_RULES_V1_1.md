@@ -93,6 +93,26 @@ The v1.0 prototype characters are not part of the new structure: Mayor Adrian Cr
 - **Conditional beats.** The game picks exactly one matching variant. If none matches, the beat is skipped. The screenplay doesn't write neutral fallback lines, and I haven't invented any.
 - **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms that are part of the English script stay as written: boda, rolex, kwanjula, Circuit Market.
 
+## How the game runs a chapter (Sprint 2)
+
+`CampaignDirector` (in `Syntera.Core`) steps through each chapter in this order:
+
+1. Intro title card.
+2. Field work: the objectives must be done in order, then the player talks to the chapter's contact.
+3. Conversation, including the conditional lines from section 8.
+4. Decision.
+5. Reaction.
+6. Year summary, when a new year starts.
+
+CH11 then goes through evidence, charter proposal, charter speeches and the seat-by-seat vote. CH12 plays the ending and then the recap.
+
+`SynteraGame` (Unity) only draws the current stage and passes on what the player does. It never changes numbers itself.
+
+- **Saves (format 2, `syntera-campaign.json` plus `.bak`).** A save stores the player's committed actions and the current stage. Loading replays every action through the engine and checks the audit chain, so a hand-edited or out-of-step save is rejected and the backup is used instead. A save from the old v1.0 prototype (`syntera-city-save.json`) is never changed or deleted. The player is told a new campaign has started.
+- **Play again** asks for confirmation first, and keeps the finished run as the backup.
+- **Continue to 2050** is a clearly labelled prototype. It works on a separate copy of the final numbers with its own save file, and never changes the 2026–2028 record.
+- **Voice clips** are optional files at `Resources/Voice/<line ID>`. The full list of 210 recording cues is in `Docs/VOICE_RECORDING_CUES.csv`. Every line works with subtitles alone.
+
 ## Any balance change
 
 Edit the JSON, then run both test suites. The section 14 assertions will fail on purpose. Update the PDF's figures and the test expectations together.
