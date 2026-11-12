@@ -150,7 +150,7 @@ namespace Syntera
                 else showHelp = !showHelp;
             }
             if (Input.GetKeyDown(KeyCode.M) && (cinematic == null || !cinematic.IsPlaying)) showMap = !showMap;
-            if (cinematic != null && cinematic.IsPlaying) { cinematic.UpdateCamera(); return; }
+            if (cinematic != null && cinematic.IsPlaying) { InputLocked = true; cinematic.UpdateCamera(); return; }
             if (Input.GetKeyDown(KeyCode.F) && !InputLocked && drivePod != null) drivePod.ToggleDriver();
             if (drivePod != null && drivePod.RouteComplete && SynteraCampaignContent.NeedsDelivery(State.chapter) &&
                 (State.completedRouteMask & (1 << State.chapter)) == 0)
@@ -237,6 +237,7 @@ namespace Syntera
         private void OnGUI()
         {
             InitStyles();
+            if (cinematic != null && cinematic.IsPlaying) return;
             float width = Mathf.Min(Screen.width - 24, 620);
             GUI.Box(new Rect(12, 12, Mathf.Min(Screen.width - 24, 470), 97), "");
             GUI.Label(new Rect(23, 18, 450, 33), "SYNTERA · " + State.year, heading);
@@ -384,7 +385,11 @@ namespace Syntera
         {
             int next = State.version + 1;
             State = new CityState { version = next };
-            if (drivePod != null) drivePod.ConfigureDelivery(0);
+            if (drivePod != null)
+            {
+                drivePod.ForceExit();
+                drivePod.ConfigureDelivery(0);
+            }
             PositionMissionContact();
             Save();
             showHelp = false;
