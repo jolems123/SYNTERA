@@ -127,6 +127,19 @@
         "ST01_STRIKE"
       ],
       "decision": "ST01_STRIKE",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST01_OBJ_RESCUE",
+          "label": "Pull the rescue lever and reach Noah on the maintenance bridge",
+          "kind": "interact"
+        },
+        {
+          "id": "ST01_OBJ_INSPECT",
+          "label": "Inspect the rider roster and the robot with the cactus sticker",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "00:00",
@@ -288,6 +301,19 @@
         "ST02_CONSENT"
       ],
       "decision": "ST02_CONSENT",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST02_OBJ_REGISTER",
+          "label": "Check the shareholder register terminal",
+          "kind": "interact"
+        },
+        {
+          "id": "ST02_OBJ_STATEMENT",
+          "label": "Check the bank statement and rider roster terminals",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "08:00",
@@ -427,6 +453,19 @@
         "ST03_CIVIC"
       ],
       "decision": "ST03_CIVIC",
+      "contact": "MAYOR",
+      "objectives": [
+        {
+          "id": "ST03_OBJ_LINKS",
+          "label": "Restore the Civic Hall projection links",
+          "kind": "interact"
+        },
+        {
+          "id": "ST03_OBJ_LOGS",
+          "label": "Recover the avatar's training data",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "15:00",
@@ -567,6 +606,19 @@
         "ST04_TRAIN"
       ],
       "decision": "ST04_TRAIN",
+      "contact": "GRACE",
+      "objectives": [
+        {
+          "id": "ST04_OBJ_MATCH",
+          "label": "Match three learners to their real skills at the training terminal",
+          "kind": "interact"
+        },
+        {
+          "id": "ST04_OBJ_PLAN",
+          "label": "Review Grace's apprenticeship plan",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "23:00",
@@ -686,6 +738,19 @@
       ],
       "yearTransitionBefore": "Y2027",
       "decision": "ST05_INTRO",
+      "contact": "IRIS",
+      "objectives": [
+        {
+          "id": "ST05_OBJ_RIDE",
+          "label": "Ride the e-boda to Lumen Gardens",
+          "kind": "drive"
+        },
+        {
+          "id": "ST05_OBJ_SHUTDOWN",
+          "label": "Reach the drone's shutdown panel and save the cake",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "31:00",
@@ -810,6 +875,19 @@
         "ST06_BLACKOUT"
       ],
       "decision": "ST06_BLACKOUT",
+      "contact": "GAIA",
+      "objectives": [
+        {
+          "id": "ST06_OBJ_CONDUITS",
+          "label": "Repair the substation conduits",
+          "kind": "interact"
+        },
+        {
+          "id": "ST06_OBJ_ALLOCATE",
+          "label": "Allocate supply at the grid console",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "39:00",
@@ -928,6 +1006,19 @@
         "ST07_HOUSING"
       ],
       "decision": "ST07_HOUSING",
+      "contact": "AMARA",
+      "objectives": [
+        {
+          "id": "ST07_OBJ_HOUSEHOLDS",
+          "label": "Talk to the Haven Heights households",
+          "kind": "interact"
+        },
+        {
+          "id": "ST07_OBJ_CLAUSES",
+          "label": "Highlight the buried clauses in the housing contract",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "47:00",
@@ -1046,6 +1137,19 @@
         "ST08_LEDGER"
       ],
       "decision": "ST08_LEDGER",
+      "contact": "RAVEN",
+      "objectives": [
+        {
+          "id": "ST08_OBJ_TIMESTAMPS",
+          "label": "Align the three consent timestamps",
+          "kind": "interact"
+        },
+        {
+          "id": "ST08_OBJ_ACCOUNT",
+          "label": "Identify the service account behind the simulated approvals",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "55:00",
@@ -1174,6 +1278,19 @@
         "ST09_RALLY"
       ],
       "decision": "ST09_RALLY",
+      "contact": "AMARA",
+      "objectives": [
+        {
+          "id": "ST09_OBJ_CROSSING",
+          "label": "Negotiate a safe pedestrian window",
+          "kind": "interact"
+        },
+        {
+          "id": "ST09_OBJ_TRAM",
+          "label": "Restore the tram lane and dispatch the repair crew",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "63:00",
@@ -1298,6 +1415,19 @@
       ],
       "yearTransitionBefore": "Y2028",
       "decision": "ST10_FRIEND",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST10_OBJ_ROOFTOP",
+          "label": "Meet Kato on the Loopline rooftop",
+          "kind": "interact"
+        },
+        {
+          "id": "ST10_OBJ_BUDGET",
+          "label": "Talk to Noah and inspect the rider transition budget",
+          "kind": "interact"
+        }
+      ],
       "beats": [
         {
           "start": "71:00",
@@ -1426,6 +1556,8 @@
         "ST11_COUNCIL"
       ],
       "decision": null,
+      "contact": "MAYOR",
+      "objectives": [],
       "beats": [
         {
           "start": "79:00",
@@ -1546,6 +1678,8 @@
         "ST12_ENDING"
       ],
       "decision": null,
+      "contact": "MAMASARAH",
+      "objectives": [],
       "beats": [
         {
           "start": "85:00",

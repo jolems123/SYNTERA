@@ -20,6 +20,82 @@ namespace Syntera.Core
             return value;
         }
 
+        // Writes Dictionary<string, object>, IList, string, int, long, double, float, bool or null.
+        public static string Serialize(object value)
+        {
+            var sb = new StringBuilder();
+            Write(sb, value);
+            return sb.ToString();
+        }
+
+        private static void Write(StringBuilder sb, object value)
+        {
+            if (value == null) { sb.Append("null"); return; }
+            var s = value as string;
+            if (s != null) { WriteString(sb, s); return; }
+            if (value is bool) { sb.Append((bool)value ? "true" : "false"); return; }
+            if (value is int || value is long) { sb.Append(Convert.ToInt64(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture)); return; }
+            if (value is double || value is float)
+            {
+                double d = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                if (double.IsNaN(d) || double.IsInfinity(d)) throw new ArgumentException("JSON cannot represent " + d);
+                sb.Append(d.ToString("R", CultureInfo.InvariantCulture));
+                return;
+            }
+            var dict = value as IDictionary<string, object>;
+            if (dict != null)
+            {
+                sb.Append('{');
+                bool first = true;
+                foreach (var kv in dict)
+                {
+                    if (!first) sb.Append(',');
+                    first = false;
+                    WriteString(sb, kv.Key);
+                    sb.Append(':');
+                    Write(sb, kv.Value);
+                }
+                sb.Append('}');
+                return;
+            }
+            var list = value as System.Collections.IEnumerable;
+            if (list != null)
+            {
+                sb.Append('[');
+                bool first = true;
+                foreach (var item in list)
+                {
+                    if (!first) sb.Append(',');
+                    first = false;
+                    Write(sb, item);
+                }
+                sb.Append(']');
+                return;
+            }
+            throw new ArgumentException("Cannot serialize " + value.GetType().Name);
+        }
+
+        private static void WriteString(StringBuilder sb, string s)
+        {
+            sb.Append('"');
+            foreach (char c in s)
+            {
+                switch (c)
+                {
+                    case '"': sb.Append("\\\""); break;
+                    case '\\': sb.Append("\\\\"); break;
+                    case '\n': sb.Append("\\n"); break;
+                    case '\r': sb.Append("\\r"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    default:
+                        if (c < ' ') sb.Append("\\u").Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
+                        else sb.Append(c);
+                        break;
+                }
+            }
+            sb.Append('"');
+        }
+
         private sealed class Parser
         {
             private readonly string text;

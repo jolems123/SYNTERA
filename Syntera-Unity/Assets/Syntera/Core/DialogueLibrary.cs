@@ -27,6 +27,15 @@ namespace Syntera.Core
         public string Text { get; internal set; }
     }
 
+    public enum ObjectiveKind { Interact, Drive }
+
+    public sealed class ObjectiveDef
+    {
+        public string Id { get; internal set; }
+        public string Label { get; internal set; }
+        public ObjectiveKind Kind { get; internal set; }
+    }
+
     public sealed class EndingScript
     {
         public string EndingId { get; internal set; }
@@ -48,6 +57,9 @@ namespace Syntera.Core
         public IList<string> Quests { get; internal set; }
         public string YearTransitionBefore { get; internal set; }
         public string DecisionId { get; internal set; }
+        public string Contact { get; internal set; }
+        public string ContactName { get; internal set; }
+        public IList<ObjectiveDef> Objectives { get; internal set; }
         public IList<StagingBeat> Beats { get; internal set; }
         public IList<DialogueLine> Dialogue { get; internal set; }
         public IDictionary<string, IList<DialogueLine>> OptionDialogue { get; internal set; }
@@ -155,6 +167,24 @@ namespace Syntera.Core
                 c.Quests = quests.AsReadOnly();
                 c.YearTransitionBefore = Json.OptStr(o, "yearTransitionBefore");
                 c.DecisionId = Json.OptStr(o, "decision");
+                c.Contact = Json.Str(o, "contact", c.Id);
+                string contactName;
+                if (!names.TryGetValue(c.Contact, out contactName)) throw new FormatException(c.Id + ": unknown contact " + c.Contact);
+                c.ContactName = contactName;
+                var objectives = new List<ObjectiveDef>();
+                foreach (var ob in Json.Arr(o, "objectives", c.Id))
+                {
+                    var oo = Json.Obj(ob, c.Id + "/objective");
+                    var def = new ObjectiveDef { Id = Json.Str(oo, "id", c.Id), Label = Json.Str(oo, "label", c.Id) };
+                    string kind = Json.Str(oo, "kind", def.Id);
+                    if (kind == "interact") def.Kind = ObjectiveKind.Interact;
+                    else if (kind == "drive") def.Kind = ObjectiveKind.Drive;
+                    else throw new FormatException(def.Id + ": unknown objective kind " + kind);
+                    if (!def.Id.StartsWith(c.Id + "_OBJ_", StringComparison.Ordinal)) throw new FormatException(def.Id + " must start with " + c.Id + "_OBJ_");
+                    foreach (var existing in objectives) if (existing.Id == def.Id) throw new FormatException("Duplicate objective " + def.Id);
+                    objectives.Add(def);
+                }
+                c.Objectives = objectives.AsReadOnly();
                 c.Consequence = Json.Str(o, "consequence", c.Id);
                 c.Implementation = Json.Str(o, "implementation", c.Id);
 

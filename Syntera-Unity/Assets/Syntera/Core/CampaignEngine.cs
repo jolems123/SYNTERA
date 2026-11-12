@@ -35,6 +35,21 @@ namespace Syntera.Core
         }
     }
 
+    // One committed player-level action; replaying the list rebuilds the exact campaign.
+    public sealed class CampaignTransaction
+    {
+        public string Kind { get; private set; }
+        public string StepId { get; private set; }
+        public string OptionId { get; private set; }
+
+        public CampaignTransaction(string kind, string stepId, string optionId)
+        {
+            Kind = kind;
+            StepId = stepId ?? string.Empty;
+            OptionId = optionId ?? string.Empty;
+        }
+    }
+
     // The only path by which campaign state changes. Follows screenplay section 10:
     // validate mission, verify funds, commit one deterministic action, append a
     // hash-linked audit event, then notify listeners (save checkpoint, reactions).
@@ -43,6 +58,8 @@ namespace Syntera.Core
         public CampaignRules Rules { get; private set; }
         public CampaignState State { get; private set; }
         public AuditLog Log { get; private set; }
+        private readonly List<CampaignTransaction> transactions = new List<CampaignTransaction>();
+        public IList<CampaignTransaction> Transactions { get { return transactions.AsReadOnly(); } }
 
         // Raised after every committed transaction; the Unity layer saves a checkpoint here.
         public event Action<TransactionResult> Committed;
@@ -131,7 +148,7 @@ namespace Syntera.Core
             AddStat("credits", Rules.CreditLineAmount, detail);
             foreach (var e in Rules.CreditLineEffects) AddStat(e.Stat, e.Delta, detail);
             foreach (var f in Rules.CreditLineFlags) State.AddFlag(f);
-            return Commit("creditLine", decisionId, "Naomi's credit line accepted for option " + optionId + ": " + string.Join(", ", detail.ToArray()));
+            return Commit("creditLine", decisionId, optionId, "Naomi's credit line accepted for option " + optionId + ": " + string.Join(", ", detail.ToArray()));
         }
 
         public TransactionResult Choose(string decisionId, string optionId)
@@ -159,7 +176,7 @@ namespace Syntera.Core
 
             State.RecordChoice(decisionId, optionId);
             State.StepIndex++;
-            return Commit("decision", decisionId, option.Id + " " + option.Label + ": " + string.Join(", ", detail.ToArray()));
+            return Commit("decision", decisionId, optionId, option.Id + " " + option.Label + ": " + string.Join(", ", detail.ToArray()));
         }
 
         public TransactionResult AdvanceYear(string yearId)
@@ -176,7 +193,7 @@ namespace Syntera.Core
                 detail.Add(rule.Label + " (" + parts[0] + ")");
             }
             State.StepIndex++;
-            return Commit("year", yearId, year.Year + ": " + string.Join("; ", detail.ToArray()));
+            return Commit("year", yearId, null, year.Year + ": " + string.Join("; ", detail.ToArray()));
         }
 
         // Preview never changes state; use it for the live seat display before the player commits.
@@ -195,7 +212,7 @@ namespace Syntera.Core
             State.CharterId = charterId;
             State.EndingId = council.EndingId;
             State.StepIndex++;
-            var result = Commit("council", CampaignRules.CouncilStepId, council.CharterTitle + " " + council.SeatsFor + "/" + council.TotalSeats + " -> " + council.EndingId + ". " + council.EndingReason);
+            var result = Commit("council", CampaignRules.CouncilStepId, charterId, council.CharterTitle + " " + council.SeatsFor + "/" + council.TotalSeats + " -> " + council.EndingId + ". " + council.EndingReason);
             result.Council = council;
             return result;
         }
@@ -208,9 +225,10 @@ namespace Syntera.Core
             detail.Add(stat + " " + (delta >= 0 ? "+" : "") + delta + " (" + before + "->" + after + ")");
         }
 
-        private TransactionResult Commit(string kind, string stepId, string detail)
+        private TransactionResult Commit(string kind, string stepId, string optionId, string detail)
         {
             var result = new TransactionResult { Committed = true, StepId = stepId, Message = detail };
+            transactions.Add(new CampaignTransaction(kind, stepId, optionId));
             result.Audit = Log.Append(kind, stepId, detail);
             var handler = Committed;
             if (handler != null) handler(result);
