@@ -24,6 +24,7 @@ namespace Syntera
         public string[] decisions = new string[12];
         public bool finished;
         public int completedRouteMask;
+        public string lastOutcome = "";
     }
 
     public sealed class SynteraGame : MonoBehaviour
@@ -315,7 +316,7 @@ namespace Syntera
                 GUI.Label(new Rect(26, panelY + 146, width - 40, 70), "Complete the highlighted driving objective before deciding. Esc to close.", paragraph);
                 return;
             }
-            GUI.Label(new Rect(26, panelY + 66, width - 36, 67), summaries[State.chapter], paragraph);
+            GUI.Label(new Rect(26, panelY + 66, width - 36, 67), responseText.StartsWith("Not enough") ? responseText : summaries[State.chapter], paragraph);
             if (GUI.Button(new Rect(25, panelY + 139, width / 2 - 24, 74), leftChoices[State.chapter], action)) Choose(false);
             if (GUI.Button(new Rect(width / 2 + 7, panelY + 139, width / 2 - 22, 74), rightChoices[State.chapter], action)) Choose(true);
         }
@@ -337,46 +338,47 @@ namespace Syntera
         {
             if (State.chapter >= MaxChapters || !dialogueOpen) return;
             int i = State.chapter;
+            if (dialogueIndex < SynteraCampaignContent.Dialogue[i].Length || !IsRouteSatisfied(i)) return;
+
+            var outcome = SynteraCampaignContent.GetOutcome(i, right);
+            if (State.credits + outcome.credits < 0 || State.treasury + outcome.treasury < 0)
+            {
+                responseText = "Not enough credits or public funds for that decision.";
+                return;
+            }
             dialogueOpen = false;
+            dialogueIndex = 0;
             missionCharacter = null;
+            State.credits += outcome.credits;
+            State.treasury += outcome.treasury;
+            State.jobs = Mathf.Clamp(State.jobs + outcome.jobs, 0, 100);
+            State.trust = Mathf.Clamp(State.trust + outcome.trust, 0, 100);
+            State.aiInfluence = Mathf.Clamp(State.aiInfluence + outcome.aiInfluence, 0, 100);
+            State.environment = Mathf.Clamp(State.environment + outcome.environment, 0, 100);
+            State.reputation = Mathf.Clamp(State.reputation + outcome.reputation, 0, 100);
+            State.decisions[i] = right ? rightChoices[i] : leftChoices[i];
+            State.lastOutcome = outcome.consequence;
+            responseText = outcome.consequence;
+
             if (i == 11)
             {
-                if (right) { State.aiInfluence += 10; State.trust -= 8; }
-                else { State.trust += 6; State.aiInfluence -= 5; }
-                State.decisions[i] = right ? rightChoices[i] : leftChoices[i];
                 State.finished = true;
                 State.year = 2028;
                 Save();
                 return;
             }
-            if (right)
-            {
-                State.credits += 60;
-                State.aiInfluence = Mathf.Clamp(State.aiInfluence + 5, 0, 100);
-                State.jobs = Mathf.Clamp(State.jobs - 2, 0, 100);
-                State.trust = Mathf.Clamp(State.trust - 3, 0, 100);
-            }
-            else
-            {
-                if (State.credits >= 25) State.credits -= 25;
-                State.trust = Mathf.Clamp(State.trust + 4, 0, 100);
-                State.jobs = Mathf.Clamp(State.jobs + 2, 0, 100);
-                State.aiInfluence = Mathf.Clamp(State.aiInfluence - 1, 0, 100);
-            }
-            State.environment = Mathf.Clamp(State.environment + (right ? -2 : 2), 0, 100);
-            State.decisions[i] = right ? rightChoices[i] : leftChoices[i];
             State.chapter++;
             if (drivePod != null) drivePod.ConfigureDelivery(State.chapter);
             PositionMissionContact();
-            if (cinematic != null) cinematic.Play("SYNTERA · " + State.year + "\\n" + titles[Mathf.Min(State.chapter, 11)], 2.5f);
             State.year = State.chapter < 4 ? 2026 : State.chapter < 8 ? 2027 : 2028;
-            notice = "Your decision changed the city.";
-            responseText = (right ? rightChoices[i] : leftChoices[i]) + " — Trust " + State.trust + ", Jobs " + State.jobs + ", AI " + State.aiInfluence + ".";
+            if (cinematic != null)
+                cinematic.Play("SYNTERA · " + State.year + "\n" + titles[Mathf.Min(State.chapter, 11)], 2.5f);
             Save();
         }
 
         private string EndingText()
         {
+            if (State.year >= 2050) return "SYNTERA 2050: Twenty-four years of decisions have shaped the city. Trust " + State.trust + ", jobs " + State.jobs + ", AI influence " + State.aiInfluence + ". The future remains open.";
             if (State.aiInfluence > 55) return "THE AUTOMATED CITY: AI governance accelerates. Prosperity rises, but who can challenge the machines? Your decisions shaped the outcome.";
             if (State.trust >= 65) return "THE COOPERATIVE CITY: Human institutions and AI agree to share power with transparent public oversight. You built trust during the crisis.";
             return "THE DIVIDED CITY: Businesses, people and AI factions remain in uneasy competition. Syntera's future is still unwritten.";
@@ -426,9 +428,11 @@ namespace Syntera
                     if (parsed == null || parsed.decisions == null || parsed.decisions.Length != 12 ||
                         parsed.chapter < 0 || parsed.chapter > 12 || parsed.year < 2026 || parsed.year > 2050 ||
                         parsed.credits < 0 || parsed.trust < 0 || parsed.trust > 100 ||
-                        parsed.aiInfluence < 0 || parsed.aiInfluence > 100)
+                        parsed.aiInfluence < 0 || parsed.aiInfluence > 100 || parsed.jobs < 0 || parsed.jobs > 100 ||
+                        parsed.environment < 0 || parsed.environment > 100 || parsed.treasury < 0)
                         continue;
                     State = parsed;
+                    responseText = parsed.lastOutcome ?? "";
                     if (path.EndsWith(".bak")) Debug.LogWarning("Recovered SYNTERA from backup save.");
                     return;
                 }
