@@ -157,6 +157,7 @@ namespace Syntera
             {
                 State.completedRouteMask |= 1 << State.chapter;
                 responseText = "Delivery completed. Find your mission contact.";
+                PositionMissionContact(true);
                 Save();
             }
             InputLocked = showMap || State.finished || showHelp || dialogueOpen || (cinematic != null && cinematic.IsPlaying);
@@ -186,11 +187,11 @@ namespace Syntera
         private bool IsRouteSatisfied(int chapter) => !SynteraCampaignContent.NeedsDelivery(chapter) ||
             (State.completedRouteMask & (1 << chapter)) != 0;
 
-        private void PositionMissionContact()
+        private void PositionMissionContact(bool nearVehicle = false)
         {
             var npc = GetMissionCharacter();
             if (npc == null || player == null) return;
-            Vector3 target = player.transform.position + new Vector3(3.5f, -.15f, -1.5f);
+            Vector3 target = ((nearVehicle && drivePod != null) ? drivePod.transform.position : player.transform.position) + new Vector3(3.5f, -.15f, -1.5f);
             Vector3 position = new Vector3(target.x, 1.15f, target.z);
             var animator = npc.GetComponent<SynteraActorAnimation>();
             if (animator != null) animator.SetHomePosition(position);
@@ -296,7 +297,7 @@ namespace Syntera
             float distance = contact == null ? float.PositiveInfinity : Vector3.Distance(player.transform.position, contact.transform.position);
             if (!dialogueOpen)
             {
-                string routeObjective = !IsRouteSatisfied(State.chapter) ? SynteraCampaignContent.DeliveryDescription(State.chapter) + " (F near cyan pod)\\n" : "";
+                string routeObjective = !IsRouteSatisfied(State.chapter) ? SynteraCampaignContent.DeliveryDescription(State.chapter) + " • Orange beacon: " + (drivePod == null ? "?" : Mathf.CeilToInt(drivePod.DistanceToWaypoint).ToString()) + "m.\\n" : "";
                 GUI.Label(new Rect(26, panelY + 50, width - 38, 76), routeObjective + "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
                 GUI.Label(new Rect(26, panelY + 142, width - 38, 72), responseText.Length > 0 ? responseText : "Your choices will influence Syntera's economic and political future.", small);
                 return;
