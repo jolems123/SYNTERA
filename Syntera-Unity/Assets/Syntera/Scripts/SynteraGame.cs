@@ -67,13 +67,13 @@ namespace Syntera
             "Negotiate with the robots", "Protect company independence", "Demand a public election",
             "Fund human teachers", "Rescue the wedding guests", "Power homes first",
             "Preserve neighborhood housing", "Expose the transfers", "Protect the protesters",
-            "Forgive Kato with conditions", "Human oversight of AI", "Start another run"
+            "Forgive Kato with conditions", "Human oversight of AI", "Create an independent citizen council"
         };
         private static readonly string[] rightChoices = {
             "Replace the robot workforce", "Accept VANTAGE's financing", "Let an AI manage the city",
             "Automate the school", "Sell drone footage rights", "Power businesses first",
             "Approve smart redevelopment", "Sell the evidence", "Give SENTINEL emergency control",
-            "Fire Kato immediately", "Transfer authority to AI", "Continue toward 2050"
+            "Fire Kato immediately", "Transfer authority to AI", "Give corporations emergency powers"
         };
         private const int MaxChapters = 12;
         private static readonly string[] missionContacts = {"Kato Mercer", "VANTAGE", "Mayor Adrian Cross", "Grace Kim", "Kato Mercer", "AURA", "Amara Reed", "Raven Black", "Amara Reed", "Kato Mercer", "AURA", "Amara Reed"};
