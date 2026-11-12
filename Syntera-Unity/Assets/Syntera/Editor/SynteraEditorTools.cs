@@ -29,6 +29,7 @@ namespace Syntera.Editor
         [MenuItem("SYNTERA/Build Windows Player Locally")]
         public static void BuildWindows()
         {
+            SynteraReleaseGate.Run();
             CreateScene();
             Directory.CreateDirectory("Builds/Windows");
             var options=new BuildPlayerOptions {
