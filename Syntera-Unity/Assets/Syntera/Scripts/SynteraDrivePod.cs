@@ -91,6 +91,17 @@ namespace Syntera
             foreach (var r in playerRenderers) r.enabled = !IsDriving;
         }
 
+        public void ResetPod()
+        {
+            ForceExit();
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+            body.position = new Vector3(-8f, .9f, -11f);
+            body.rotation = Quaternion.identity;
+            transform.position = body.position;
+            transform.rotation = body.rotation;
+        }
+
         public void ForceExit()
         {
             if (!IsDriving || player == null) return;
