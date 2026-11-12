@@ -23,6 +23,7 @@ namespace Syntera
         public string district = "Nexus Central";
         public string[] decisions = new string[12];
         public bool finished;
+        public int completedRouteMask;
     }
 
     public sealed class SynteraGame : MonoBehaviour
@@ -40,6 +41,9 @@ namespace Syntera
         private bool showHelp;
         private bool dialogueOpen;
         private SynteraCharacter missionCharacter;
+        private SynteraDrivePod drivePod;
+        private SynteraCinematicDirector cinematic;
+        private int dialogueIndex;
         private string responseText = "";
         private bool showCredits;
         private string notice = "Welcome to Syntera City.";
@@ -129,6 +133,12 @@ namespace Syntera
             }
             followCamera.fieldOfView = 65;
             followCamera.nearClipPlane = .08f;
+            drivePod = SynteraDrivePod.Spawn();
+            drivePod.RegisterPlayer(player, controller);
+            drivePod.ConfigureDelivery(State.chapter);
+            cinematic = gameObject.AddComponent<SynteraCinematicDirector>();
+            cinematic.Initialize(followCamera, player.transform);
+            PositionMissionContact();
         }
 
         private void Update()
@@ -139,18 +149,28 @@ namespace Syntera
                 else if (showMap) showMap = false;
                 else showHelp = !showHelp;
             }
-            if (Input.GetKeyDown(KeyCode.M)) showMap = !showMap;
-            InputLocked = showMap || State.finished || showHelp || dialogueOpen;
-            if (Input.GetKeyDown(KeyCode.E) && !InputLocked && State.chapter < MaxChapters)
+            if (Input.GetKeyDown(KeyCode.M) && (cinematic == null || !cinematic.IsPlaying)) showMap = !showMap;
+            if (cinematic != null && cinematic.IsPlaying) { cinematic.UpdateCamera(); return; }
+            if (Input.GetKeyDown(KeyCode.F) && !InputLocked && drivePod != null) drivePod.ToggleDriver();
+            if (drivePod != null && drivePod.RouteComplete && SynteraCampaignContent.NeedsDelivery(State.chapter) &&
+                (State.completedRouteMask & (1 << State.chapter)) == 0)
+            {
+                State.completedRouteMask |= 1 << State.chapter;
+                responseText = "Delivery completed. Find your mission contact.";
+                Save();
+            }
+            InputLocked = showMap || State.finished || showHelp || dialogueOpen || (cinematic != null && cinematic.IsPlaying);
+            if (Input.GetKeyDown(KeyCode.E) && !InputLocked && (drivePod == null || !drivePod.IsDriving) && State.chapter < MaxChapters)
             {
                 var nearby = GetMissionCharacter();
                 if (nearby != null && Vector3.Distance(player.transform.position, nearby.transform.position) <= InteractionRadius)
                 {
                     missionCharacter = nearby;
+                    dialogueIndex = 0;
                     dialogueOpen = true;
                 }
             }
-            if (!InputLocked) MovePlayer();
+            if (!InputLocked && (drivePod == null || !drivePod.IsDriving)) MovePlayer();
             UpdateCamera();
         }
 
@@ -161,6 +181,17 @@ namespace Syntera
             foreach (var actor in FindObjectsByType<SynteraCharacter>(FindObjectsSortMode.None))
                 if (actor.characterName == target) return actor;
             return null;
+        }
+
+        private bool IsRouteSatisfied(int chapter) => !SynteraCampaignContent.NeedsDelivery(chapter) ||
+            (State.completedRouteMask & (1 << chapter)) != 0;
+
+        private void PositionMissionContact()
+        {
+            var npc = GetMissionCharacter();
+            if (npc == null || player == null) return;
+            Vector3 target = player.transform.position + new Vector3(3.5f, -.15f, -1.5f);
+            npc.transform.position = new Vector3(target.x, 1.15f, target.z);
         }
 
         private void MovePlayer()
@@ -185,7 +216,7 @@ namespace Syntera
                 cameraYaw += Input.GetAxis("Mouse X") * 3f;
                 cameraPitch = Mathf.Clamp(cameraPitch - Input.GetAxis("Mouse Y") * 2f, 10f, 65f);
             }
-            Vector3 focus = player.transform.position + Vector3.up * 1.4f;
+            Vector3 focus = ((drivePod != null && drivePod.IsDriving) ? drivePod.FollowTarget.position : player.transform.position) + Vector3.up * 1.4f;
             Quaternion orbit = Quaternion.Euler(cameraPitch, cameraYaw, 0);
             followCamera.transform.position = Vector3.Lerp(followCamera.transform.position, focus + orbit * new Vector3(0, 0, -9), 12f * Time.deltaTime);
             followCamera.transform.LookAt(focus);
@@ -213,7 +244,7 @@ namespace Syntera
             {
                 GUI.Box(new Rect(12, 124, width, 165), "");
                 GUI.Label(new Rect(26, 136, width - 24, 35), "Syntera City Controls", heading);
-                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD or arrows: walk     Shift: sprint\nRight mouse drag: orbit camera\nE: speak to highlighted mission contact\nM: map     Esc: close dialogue or help.", paragraph);
+                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD: walk or drive · Shift: sprint\nF near cyan pod: drive/exit · Space: brake\nE: interact with mission NPC · M: map\nEsc: close dialogue or help.", paragraph);
                 if (GUI.Button(new Rect(20, 293, 140, 35), "Start playing")) showHelp = false;
                 return;
             }
@@ -261,11 +292,24 @@ namespace Syntera
             float distance = contact == null ? float.PositiveInfinity : Vector3.Distance(player.transform.position, contact.transform.position);
             if (!dialogueOpen)
             {
-                GUI.Label(new Rect(26, panelY + 50, width - 38, 76), "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
+                string routeObjective = !IsRouteSatisfied(State.chapter) ? SynteraCampaignContent.DeliveryDescription(State.chapter) + " (F near cyan pod)\\n" : "";
+                GUI.Label(new Rect(26, panelY + 50, width - 38, 76), routeObjective + "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
                 GUI.Label(new Rect(26, panelY + 142, width - 38, 72), responseText.Length > 0 ? responseText : "Your choices will influence Syntera's economic and political future.", small);
                 return;
             }
             GUI.Label(new Rect(26, panelY + 39, width - 36, 24), missionCharacter != null ? missionCharacter.characterName + ":" : "Mission contact:", small);
+            string[] dialogue = SynteraCampaignContent.Dialogue[State.chapter];
+            if (dialogueIndex < dialogue.Length)
+            {
+                GUI.Label(new Rect(26, panelY + 66, width - 36, 67), dialogue[dialogueIndex], paragraph);
+                if (GUI.Button(new Rect(26, panelY + 149, width - 52, 56), "Continue dialogue (" + (dialogueIndex + 1) + "/" + dialogue.Length + ")", action)) dialogueIndex++;
+                return;
+            }
+            if (!IsRouteSatisfied(State.chapter))
+            {
+                GUI.Label(new Rect(26, panelY + 146, width - 40, 70), "Complete the highlighted driving objective before deciding. Esc to close.", paragraph);
+                return;
+            }
             GUI.Label(new Rect(26, panelY + 66, width - 36, 67), summaries[State.chapter], paragraph);
             if (GUI.Button(new Rect(25, panelY + 139, width / 2 - 24, 74), leftChoices[State.chapter], action)) Choose(false);
             if (GUI.Button(new Rect(width / 2 + 7, panelY + 139, width / 2 - 22, 74), rightChoices[State.chapter], action)) Choose(true);
@@ -317,6 +361,9 @@ namespace Syntera
             State.environment = Mathf.Clamp(State.environment + (right ? -2 : 2), 0, 100);
             State.decisions[i] = right ? rightChoices[i] : leftChoices[i];
             State.chapter++;
+            if (drivePod != null) drivePod.ConfigureDelivery(State.chapter);
+            PositionMissionContact();
+            if (cinematic != null) cinematic.Play("SYNTERA · " + State.year + "\\n" + titles[Mathf.Min(State.chapter, 11)], 2.5f);
             State.year = State.chapter < 4 ? 2026 : State.chapter < 8 ? 2027 : 2028;
             notice = "Your decision changed the city.";
             responseText = (right ? rightChoices[i] : leftChoices[i]) + " — Trust " + State.trust + ", Jobs " + State.jobs + ", AI " + State.aiInfluence + ".";
@@ -334,8 +381,11 @@ namespace Syntera
         {
             int next = State.version + 1;
             State = new CityState { version = next };
+            if (drivePod != null) drivePod.ConfigureDelivery(0);
+            PositionMissionContact();
             Save();
             showHelp = false;
+            dialogueIndex = 0;
             showMap = false;
             dialogueOpen = false;
             responseText = "";
