@@ -4,6 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Syntera/Scenes/City.unity
+    guid: 4956be6787cbf964b942d6e5ce5bff9d
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
