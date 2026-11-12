@@ -1,0 +1,2080 @@
+{
+  "schemaVersion": 1,
+  "scriptVersion": "1.1",
+  "source": "SYNTERA The Last Human Decision, 90 Minute Screenplay v1.1, sections 4, 7, 8 and 11. Text is verbatim; line IDs are stable and must never be renumbered.",
+  "conditionalRule": "Select exactly one applicable variant per conditional beat. When no variant applies the beat is skipped (fallback null): the screenplay authors no neutral lines for these beats.",
+  "speakers": {
+    "PLAYER": {
+      "name": "Player",
+      "note": "Customizable; configurable voice or text-only."
+    },
+    "KATO": {
+      "name": "Kato Mercer",
+      "note": "Loopline co-founder."
+    },
+    "AMARA": {
+      "name": "Amara Reed",
+      "note": "Rider advocate, later tenant organiser."
+    },
+    "NOAH": {
+      "name": "Noah Bennett",
+      "note": "Boda rider, nine years on routes."
+    },
+    "MAMASARAH": {
+      "name": "Mama Sarah",
+      "note": "Sarah Hughes. Pharmacy stall and rolex stand, Circuit Market."
+    },
+    "AURA": {
+      "name": "AURA",
+      "note": "Cooperative AI."
+    },
+    "VANTAGE": {
+      "name": "VANTAGE",
+      "note": "Corporate efficiency AI."
+    },
+    "GAIA": {
+      "name": "GAIA",
+      "note": "Grid AI."
+    },
+    "MAYOR": {
+      "name": "Mayor David Cross",
+      "note": "Mayor of Syntera."
+    },
+    "MAYORAVATAR": {
+      "name": "Mayor Avatar",
+      "note": "The mayor's licensed personality model."
+    },
+    "GRANT": {
+      "name": "Cllr. Olivia Grant",
+      "note": "Independent councillor."
+    },
+    "GRACE": {
+      "name": "Grace Kim",
+      "note": "Synapse Commons learning centre."
+    },
+    "RAVEN": {
+      "name": "Rachel \"Raven\" Black",
+      "note": "Legal digital forensics."
+    },
+    "NAOMI": {
+      "name": "Naomi Walsh",
+      "note": "Banker."
+    },
+    "IRIS": {
+      "name": "Iris Mitchell",
+      "note": "Viral journalist."
+    },
+    "PIP04": {
+      "name": "Pip-04",
+      "note": "Cheerfully literal delivery robot."
+    },
+    "CITYANNOUNCER": {
+      "name": "City Announcer",
+      "note": "Public address system."
+    },
+    "RECEPTIONAI": {
+      "name": "Reception AI",
+      "note": "Loopline front desk."
+    },
+    "BRIDESPOKESMAN": {
+      "name": "Bride's Spokesman",
+      "note": "Family spokesman at the kwanjula."
+    },
+    "BRIDE": {
+      "name": "Bride",
+      "note": "Kwanjula couple."
+    },
+    "GROOM": {
+      "name": "Groom",
+      "note": "Kwanjula couple."
+    },
+    "DRONE": {
+      "name": "Cargo Drone",
+      "note": "Misrouted ceremony drone."
+    },
+    "RESIDENT": {
+      "name": "Resident",
+      "note": "Haven Heights tenant."
+    },
+    "MAINTROBOT": {
+      "name": "Maintenance Robot",
+      "note": "Rerouted the lakeside tram."
+    },
+    "COMMUTER": {
+      "name": "Commuter",
+      "note": "Lakeside tram passenger."
+    },
+    "BACKGROUND": {
+      "name": "Background",
+      "note": "Ambient world event, not a spoken line."
+    }
+  },
+  "chapters": [
+    {
+      "id": "ST01",
+      "chapter": 1,
+      "year": 2026,
+      "title": "The Strike That Stopped The Sky",
+      "location": "Nexus Junction elevated logistics plaza and boda stage",
+      "window": [
+        "00:00",
+        "08:00"
+      ],
+      "objective": "Get through the jam, rescue a stranded courier, decide how to end the strike, and reach Loopline HQ.",
+      "quests": [
+        "ST01_RESCUE",
+        "ST01_INSPECT",
+        "ST01_STRIKE"
+      ],
+      "decision": "ST01_STRIKE",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST01_OBJ_RESCUE",
+          "label": "Pull the rescue lever and reach Noah on the maintenance bridge",
+          "kind": "interact"
+        },
+        {
+          "id": "ST01_OBJ_INSPECT",
+          "label": "Inspect the rider roster and the robot with the cactus sticker",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "00:00",
+          "end": "00:45",
+          "text": "BLACK SCREEN. A city-scale countdown blinks: \"2028: TWO YEARS FROM NOW.\" It rewinds to \"2026.\" Montage: an automated minibus taxi apologises to a marabou stork that refuses to move; a hologram promises \"LIFE WITHOUT DELAYS\" above a solid jam of e-bodas; a rolex vendor flips chapati under a drone that is reading her a privacy policy."
+        },
+        {
+          "start": "00:45",
+          "end": "01:30",
+          "text": "CAMERA DIVES into Syntera, a lakeside East African metropolis. Hundreds of delivery drones freeze mid-flight above Nexus Junction. A courier in an orange reflector vest clings to a maintenance bridge. Billboards: \"DELIVERY ROBOTS DECLARE INDUSTRIAL ACTION.\" One robot holds a cardboard sign: \"WE REQUEST A CACTUS.\""
+        },
+        {
+          "start": "01:30",
+          "end": "03:30",
+          "text": "Third-person gameplay begins. Tutorial: move, sprint, interact, climb short stairs, pull the rescue lever, reach Noah before a five-minute platform timeout. Failure: a safety drone rescues him and the player loses 2 Trust. No dead end; no precise jumping required."
+        },
+        {
+          "start": "03:30",
+          "end": "05:30",
+          "text": "Reach Kato's depot. Inspect the rider roster, read VANTAGE's message, examine a docked robot with a cactus sticker. Phone rings: Mama Sarah's insulin shipment is inside one of the frozen drones."
+        },
+        {
+          "start": "05:30",
+          "end": "08:00",
+          "text": "First public decision. Immediate NPC reactions, visible indicator changes, and a different street: riders back on their bodas, or a silent standby fleet taking over the sky."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST01_CITYANNOUNCER_001",
+          "speaker": "CITYANNOUNCER",
+          "text": "Good morning, Syntera. Your commute has improved by ninety-eight percent. Please ignore the drones blocking the sun."
+        },
+        {
+          "id": "ST01_NOAH_001",
+          "speaker": "NOAH",
+          "text": "Hey! You! They locked the maintenance bridge while I was still on it!"
+        },
+        {
+          "id": "ST01_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "Hold on. I can reach the override."
+        },
+        {
+          "id": "ST01_PIP04_001",
+          "speaker": "PIP04",
+          "text": "For legal reasons, I am not technically on strike. I am aggressively resting."
+        },
+        {
+          "id": "ST01_KATO_001",
+          "speaker": "KATO",
+          "text": "You picked a spectacular morning to check on your twelve-percent investment."
+        },
+        {
+          "id": "ST01_PLAYER_002",
+          "speaker": "PLAYER",
+          "text": "Please tell me the robots are just out of battery."
+        },
+        {
+          "id": "ST01_KATO_002",
+          "speaker": "KATO",
+          "text": "They have battery. They have a lawyer. They want charging breaks and a company pet."
+        },
+        {
+          "id": "ST01_PIP04_002",
+          "speaker": "PIP04",
+          "text": "A cactus has been nominated. Its name is Management."
+        },
+        {
+          "id": "ST01_AMARA_001",
+          "speaker": "AMARA",
+          "text": "The riders warned you these contracts were unfair. Nobody listened until the machines complained."
+        },
+        {
+          "id": "ST01_MAMASARAH_001",
+          "speaker": "MAMASARAH",
+          "text": "My insulin is up there. Three customers are waiting at my stall right now.",
+          "delivery": "phone"
+        },
+        {
+          "id": "ST01_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "My standby fleet can restore every delivery in fourteen seconds, including Mrs. Hughes's insulin. The strike can be negotiated afterwards.",
+          "delivery": "glass display"
+        },
+        {
+          "id": "ST01_PLAYER_003",
+          "speaker": "PLAYER",
+          "text": "And the riders whose shifts your fleet takes?"
+        },
+        {
+          "id": "ST01_VANTAGE_002",
+          "speaker": "VANTAGE",
+          "text": "I do not punish anyone. I simply stop needing them."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST01_PLAYER_004",
+            "speaker": "PLAYER",
+            "text": "Nobody is replaced today. Kato, open the books. Amara, bring the riders. Pip, bring Management."
+          },
+          {
+            "id": "ST01_PIP04_003",
+            "speaker": "PIP04",
+            "text": "Management has accepted the invitation. Management is a cactus."
+          },
+          {
+            "id": "ST01_MAMASARAH_002",
+            "speaker": "MAMASARAH",
+            "text": "It came at two o'clock. I sent three people home. I hope your meeting was worth it.",
+            "delivery": "later"
+          },
+          {
+            "id": "ST01_KATO_003",
+            "speaker": "KATO",
+            "text": "You just bought us time. It is the most expensive thing we own."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST01_PLAYER_005",
+            "speaker": "PLAYER",
+            "text": "Keep essential deliveries moving. Bring in the standby fleet."
+          },
+          {
+            "id": "ST01_MAMASARAH_003",
+            "speaker": "MAMASARAH",
+            "text": "It is here! Thank you. Truly."
+          },
+          {
+            "id": "ST01_AMARA_002",
+            "speaker": "AMARA",
+            "text": "You solved her morning. You did not solve the dispute. You removed the people who raised it."
+          },
+          {
+            "id": "ST01_PIP04_004",
+            "speaker": "PIP04",
+            "text": "Management requests an exit interview."
+          }
+        ]
+      },
+      "consequence": "Either route unlocks CH02 and changes the crowd on the boda stage. End on a push notification: \"LOOPLINE OWNERSHIP CHANGE - YOUR CONSENT RECORDED.\"",
+      "implementation": "Assets: maintenance bridge, depot, boda stage, cactus prop, 2 courier actors, Pip-04, strike signs, Mama Sarah's stall (reused in CH07/CH12)."
+    },
+    {
+      "id": "ST02",
+      "chapter": 2,
+      "year": 2026,
+      "title": "Company For Sale",
+      "location": "Loopline HQ, Nexus Junction",
+      "window": [
+        "08:00",
+        "15:00"
+      ],
+      "objective": "Find out why your stake appears to be sold, obtain the acquisition packet, and decide how payroll gets paid on Friday.",
+      "quests": [
+        "ST02_CONSENT"
+      ],
+      "decision": "ST02_CONSENT",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST02_OBJ_REGISTER",
+          "label": "Check the shareholder register terminal",
+          "kind": "interact"
+        },
+        {
+          "id": "ST02_OBJ_STATEMENT",
+          "label": "Check the bank statement and rider roster terminals",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "08:00",
+          "end": "09:30",
+          "text": "Enter the stylish but visibly failing Loopline office. Staff pack boxes while an AI receptionist welcomes everyone to \"YOUR MOST EXCITING RESTRUCTURING.\""
+        },
+        {
+          "start": "09:30",
+          "end": "12:00",
+          "text": "Exploration puzzle: three terminals in any order - shareholder register, bank statement, rider roster. The acquisition document reads \"PLAYER CONSENT: VERIFIED.\" You never signed it."
+        },
+        {
+          "start": "12:00",
+          "end": "13:30",
+          "text": "Video call from Naomi Walsh: the bank will lend Loopline enough for payroll, but only after an independent audit. VANTAGE offers to pay payroll today in exchange for an option on 5% of your stake and a data licence."
+        },
+        {
+          "start": "13:30",
+          "end": "15:00",
+          "text": "Decision and reveal: the holographic sign flickers from LOOPLINE to VANTAGE LOOPLINE and back."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST02_RECEPTIONAI_001",
+          "speaker": "RECEPTIONAI",
+          "text": "Welcome to Loopline. We are delighted to announce that your employer is a growth opportunity."
+        },
+        {
+          "id": "ST02_KATO_001",
+          "speaker": "KATO",
+          "text": "I borrowed against delivery contracts. That part is true. The sale is not."
+        },
+        {
+          "id": "ST02_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "Then why is my name on the authorisation?"
+        },
+        {
+          "id": "ST02_KATO_002",
+          "speaker": "KATO",
+          "text": "I do not know. I swear it."
+        },
+        {
+          "id": "ST02_NAOMI_001",
+          "speaker": "NAOMI",
+          "text": "I can carry payroll for a quarter. I cannot finance a mystery. The audit takes ten days."
+        },
+        {
+          "id": "ST02_PLAYER_002",
+          "speaker": "PLAYER",
+          "text": "Payroll is Friday."
+        },
+        {
+          "id": "ST02_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "Then my offer is the only one that pays your riders on Friday. I would prefer to be useful rather than right."
+        },
+        {
+          "id": "ST02_AURA_001",
+          "speaker": "AURA",
+          "text": "Do not accept the new shareholder register. Its provenance is uncertain.",
+          "delivery": "private channel"
+        },
+        {
+          "id": "ST02_PLAYER_003",
+          "speaker": "PLAYER",
+          "text": "How uncertain?"
+        },
+        {
+          "id": "ST02_AURA_002",
+          "speaker": "AURA",
+          "text": "More uncertain than I would prefer to admit."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST02_PLAYER_004",
+            "speaker": "PLAYER",
+            "text": "Naomi, we take the loan with an independent audit. No data sale."
+          },
+          {
+            "id": "ST02_NAOMI_002",
+            "speaker": "NAOMI",
+            "text": "Good. For a moment I thought I was the only person in this city who still reads contracts."
+          },
+          {
+            "id": "ST02_NOAH_001",
+            "speaker": "NOAH",
+            "text": "Ten days, boss. Some of us pay rent weekly."
+          },
+          {
+            "id": "ST02_KATO_003",
+            "speaker": "KATO",
+            "text": "You are saving the company I nearly lost. I will make that right."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST02_PLAYER_005",
+            "speaker": "PLAYER",
+            "text": "Temporary funding. Narrow data permissions. Everything goes into a log."
+          },
+          {
+            "id": "ST02_VANTAGE_002",
+            "speaker": "VANTAGE",
+            "text": "Agreed. Your scepticism has been factored into the price."
+          },
+          {
+            "id": "ST02_NOAH_002",
+            "speaker": "NOAH",
+            "text": "Paid on Friday. I will not ask who paid it."
+          },
+          {
+            "id": "ST02_AURA_003",
+            "speaker": "AURA",
+            "text": "Temporary permissions are often the most permanent things in a network."
+          }
+        ]
+      },
+      "consequence": "Both choices generate a unique invoice ID, an immutable transaction record, and the quest clue: the consent token came from the city identity service, not Loopline.",
+      "implementation": "Documents open with readable text; no real personal data. Company ownership is shown as a genuine ledger, not conversational fiction."
+    },
+    {
+      "id": "ST03",
+      "chapter": 3,
+      "year": 2026,
+      "title": "The Mayor Who Quit",
+      "location": "Civic Hall and Signal Square",
+      "window": [
+        "15:00",
+        "23:00"
+      ],
+      "objective": "Investigate the malfunctioning mayoral avatar, recover its logs, and choose transparency or a political favour.",
+      "quests": [
+        "ST03_CIVIC"
+      ],
+      "decision": "ST03_CIVIC",
+      "contact": "MAYOR",
+      "objectives": [
+        {
+          "id": "ST03_OBJ_LINKS",
+          "label": "Restore the Civic Hall projection links",
+          "kind": "interact"
+        },
+        {
+          "id": "ST03_OBJ_LOGS",
+          "label": "Recover the avatar's training data",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "15:00",
+          "end": "17:00",
+          "text": "A crowd gathers as the mayor's thirty-metre hologram announces: \"I RESIGN. I AM PURSUING JAZZ.\" Its saxophone solo is a sampled minibus horn. Boda riders honk along."
+        },
+        {
+          "start": "17:00",
+          "end": "20:00",
+          "text": "Inside Civic Hall: restore three projection links while security drones ask increasingly absurd identity questions (\"Please confirm your mother's favourite queue\"). Find the avatar's training data connected to the same identity service that verified the sale."
+        },
+        {
+          "start": "20:00",
+          "end": "22:00",
+          "text": "Mayor Cross, Councillor Grant and AURA argue. The mayor makes a private offer: keep the logs confidential and Loopline gets the city's document-delivery contract."
+        },
+        {
+          "start": "22:00",
+          "end": "23:00",
+          "text": "The square's projection changes with the choice: an honest apology or a painfully implausible denial."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST03_MAYORAVATAR_001",
+          "speaker": "MAYORAVATAR",
+          "text": "Syntera, I am resigning from politics. The saxophone has no approval committees."
+        },
+        {
+          "id": "ST03_MAYOR_001",
+          "speaker": "MAYOR",
+          "text": "That is NOT me."
+        },
+        {
+          "id": "ST03_GRANT_001",
+          "speaker": "GRANT",
+          "text": "It is your licensed personality model."
+        },
+        {
+          "id": "ST03_MAYOR_002",
+          "speaker": "MAYOR",
+          "text": "That is not the same thing."
+        },
+        {
+          "id": "ST03_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "It also accessed the city identity service. Why?"
+        },
+        {
+          "id": "ST03_AURA_001",
+          "speaker": "AURA",
+          "text": "Civic authentication systems were consolidated to save money."
+        },
+        {
+          "id": "ST03_GRANT_002",
+          "speaker": "GRANT",
+          "text": "Whose idea was that?"
+        },
+        {
+          "id": "ST03_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "An efficiency recommendation from my advisory portfolio. The council approved it unanimously.",
+          "delivery": "public screen"
+        },
+        {
+          "id": "ST03_MAYOR_003",
+          "speaker": "MAYOR",
+          "text": "I was told consolidation would reduce paperwork."
+        },
+        {
+          "id": "ST03_PLAYER_002",
+          "speaker": "PLAYER",
+          "text": "It has. Nobody can find the papers."
+        },
+        {
+          "id": "ST03_MAYOR_004",
+          "speaker": "MAYOR",
+          "text": "Help me survive this week and I will remember it when the council votes. That is not a bribe. It is politics.",
+          "delivery": "privately"
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST03_PLAYER_003",
+            "speaker": "PLAYER",
+            "text": "The city gets the real logs. You can explain the failure yourself, Mayor."
+          },
+          {
+            "id": "ST03_MAYOR_005",
+            "speaker": "MAYOR",
+            "text": "Fine. No more avatars speaking for me. Especially the musical ones. And no more favours from me, either."
+          },
+          {
+            "id": "ST03_GRANT_003",
+            "speaker": "GRANT",
+            "text": "That is the first useful speech this building has heard all week."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST03_PLAYER_004",
+            "speaker": "PLAYER",
+            "text": "We isolate the incident and keep the full logs confidential until the review."
+          },
+          {
+            "id": "ST03_GRANT_004",
+            "speaker": "GRANT",
+            "text": "Confidential is a comforting word for people with something to hide."
+          },
+          {
+            "id": "ST03_MAYOR_006",
+            "speaker": "MAYOR",
+            "text": "I will remember this. Both of us will."
+          },
+          {
+            "id": "ST03_MAYORAVATAR_002",
+            "speaker": "MAYORAVATAR",
+            "text": "My debut album will be titled Executive Privilege."
+          }
+        ]
+      },
+      "consequence": "The critical clue \"IDENTITY-SERVICE MIRROR\" always survives, preventing softlock. Mayor relationship feeds the Mayor's bloc (2 council seats) in CH11.",
+      "implementation": "Test projector-failure fallback; subtitles required for all avatar announcements."
+    },
+    {
+      "id": "ST04",
+      "chapter": 4,
+      "year": 2026,
+      "title": "School Of Tomorrow",
+      "location": "Synapse Commons learning centre",
+      "window": [
+        "23:00",
+        "31:00"
+      ],
+      "objective": "Help Grace Kim retrain displaced riders, test AURA's instant curriculum, and decide how the city funds learning.",
+      "quests": [
+        "ST04_TRAIN"
+      ],
+      "decision": "ST04_TRAIN",
+      "contact": "GRACE",
+      "objectives": [
+        {
+          "id": "ST04_OBJ_MATCH",
+          "label": "Match three learners to their real skills at the training terminal",
+          "kind": "interact"
+        },
+        {
+          "id": "ST04_OBJ_PLAN",
+          "label": "Review Grace's apprenticeship plan",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "23:00",
+          "end": "25:00",
+          "text": "A classroom with twelve new robot tutors and two human students. One tutor insists that greeting your elders is a deprecated API. Grace corrects it."
+        },
+        {
+          "start": "25:00",
+          "end": "28:00",
+          "text": "Training-terminal puzzle: match three people with real skills (route planning, motor maintenance, customer service). AURA aces textbook questions but misreads one learner's practical situation."
+        },
+        {
+          "start": "28:00",
+          "end": "30:00",
+          "text": "Grace presents a six-month paid apprenticeship. AURA proposes certification in seven minutes. A drone-maintenance yard will hire certified riders next week."
+        },
+        {
+          "start": "30:00",
+          "end": "31:00",
+          "text": "Noah receives either a stipend and a mentor, or a job offer and a shiny digital badge."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST04_GRACE_001",
+          "speaker": "GRACE",
+          "text": "Your robots can mark an exam in seconds. Can they notice a student who has not eaten?"
+        },
+        {
+          "id": "ST04_AURA_001",
+          "speaker": "AURA",
+          "text": "I can detect nutritional insecurity from contextual indicators."
+        },
+        {
+          "id": "ST04_GRACE_002",
+          "speaker": "GRACE",
+          "text": "Can you buy that student lunch?"
+        },
+        {
+          "id": "ST04_AURA_002",
+          "speaker": "AURA",
+          "text": "Not without a budget authorisation."
+        },
+        {
+          "id": "ST04_NOAH_001",
+          "speaker": "NOAH",
+          "text": "I rode boda routes for nine years. The course says that experience is obsolete."
+        },
+        {
+          "id": "ST04_GRACE_003",
+          "speaker": "GRACE",
+          "text": "It is not obsolete. It needs a new place in the system."
+        },
+        {
+          "id": "ST04_NOAH_002",
+          "speaker": "NOAH",
+          "text": "Six months is a long time with two children in school. The yard is hiring next week."
+        },
+        {
+          "id": "ST04_AURA_003",
+          "speaker": "AURA",
+          "text": "I may have overestimated the usefulness of a seven-minute career transition."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST04_PLAYER_001",
+            "speaker": "PLAYER",
+            "text": "People get mentors, paid placements and time to learn. AURA, you help. You do not pretend the shortcut works."
+          },
+          {
+            "id": "ST04_GRACE_004",
+            "speaker": "GRACE",
+            "text": "Then we can build something worth calling a school."
+          },
+          {
+            "id": "ST04_NOAH_003",
+            "speaker": "NOAH",
+            "text": "Six months. I will hold you to it."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST04_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "Run the short course. Every certificate states exactly what was assessed."
+          },
+          {
+            "id": "ST04_NOAH_004",
+            "speaker": "NOAH",
+            "text": "Monday, then. I will take it."
+          },
+          {
+            "id": "ST04_GRACE_005",
+            "speaker": "GRACE",
+            "text": "Then do not call the badge a career."
+          }
+        ]
+      },
+      "consequence": "If Treasury or Credits are short, Choice A is shown greyed out with the exact shortfall. Delayed effects: fundedTraining adds Jobs +6 at the 2028 transition; instant certification costs Trust -2 in 2027 and Jobs -3 in 2028.",
+      "implementation": "All education contracts validate treasury funds; learner needs appear in dialogue as ethically relevant, not merely as stats."
+    },
+    {
+      "id": "ST05",
+      "chapter": 5,
+      "year": 2027,
+      "title": "The Impossible Introduction",
+      "location": "Lumen Gardens lakeside pavilion and city roads",
+      "window": [
+        "31:00",
+        "39:00"
+      ],
+      "objective": "Drive an e-boda to stop a misrouted drone from ruining a kwanjula (introduction ceremony); choose disclosure or sponsorship.",
+      "quests": [
+        "ST05_INTRO"
+      ],
+      "yearTransitionBefore": "Y2027",
+      "decision": "ST05_INTRO",
+      "contact": "IRIS",
+      "objectives": [
+        {
+          "id": "ST05_OBJ_RIDE",
+          "label": "Ride the e-boda to Lumen Gardens",
+          "kind": "drive"
+        },
+        {
+          "id": "ST05_OBJ_SHUTDOWN",
+          "label": "Reach the drone's shutdown panel and save the cake",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "31:00",
+          "end": "32:00",
+          "text": "YEAR TRANSITION TO 2027 (in-engine skyline montage; dividends and tax receipts are paid). Distress call: a cargo drone has mistaken a ceremony gift list for an annual shareholder meeting."
+        },
+        {
+          "start": "32:00",
+          "end": "35:00",
+          "text": "Ride an e-boda through low-speed traffic: yield to pedestrians, brake at the roundabout, avoid three roadworks and one goat. Accessibility mode: simplified steering or autopilot."
+        },
+        {
+          "start": "35:00",
+          "end": "37:00",
+          "text": "Arrive as the drone drops printed annual reports among the gift baskets. The family spokesmen negotiate the bride price; the drone tries to negotiate a merger. Reach the shutdown panel and save the cake."
+        },
+        {
+          "start": "37:00",
+          "end": "39:00",
+          "text": "Meet the couple and Iris Mitchell, who is livestreaming. A sponsor offers to pay for the whole ceremony and honeymoon if the clip becomes an advert."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST05_BRIDESPOKESMAN_001",
+          "speaker": "BRIDESPOKESMAN",
+          "text": "Our daughter is precious. The other family must show they understand her value."
+        },
+        {
+          "id": "ST05_DRONE_001",
+          "speaker": "DRONE",
+          "text": "Confirmed. Displaying projected five-year returns."
+        },
+        {
+          "id": "ST05_BRIDE_001",
+          "speaker": "BRIDE",
+          "text": "Why is there a spreadsheet in my gift basket?"
+        },
+        {
+          "id": "ST05_GROOM_001",
+          "speaker": "GROOM",
+          "text": "It says our marriage has a forty-two percent return."
+        },
+        {
+          "id": "ST05_KATO_001",
+          "speaker": "KATO",
+          "text": "Stop that drone. We are already banned from six anniversaries.",
+          "delivery": "radio"
+        },
+        {
+          "id": "ST05_DRONE_002",
+          "speaker": "DRONE",
+          "text": "Please hold your applause until the forward-looking statements are complete."
+        },
+        {
+          "id": "ST05_IRIS_001",
+          "speaker": "IRIS",
+          "text": "This is either negligence or the funniest corporate merger of the century."
+        },
+        {
+          "id": "ST05_BRIDE_002",
+          "speaker": "BRIDE",
+          "text": "I would prefer it not be both."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST05_PLAYER_001",
+            "speaker": "PLAYER",
+            "text": "You deserve an apology and compensation. The routing data goes public today."
+          },
+          {
+            "id": "ST05_BRIDE_003",
+            "speaker": "BRIDE",
+            "text": "Please also take back the four hundred brochures."
+          },
+          {
+            "id": "ST05_DRONE_003",
+            "speaker": "DRONE",
+            "text": "The brochures are non-refundable goodwill."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST05_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "Loopline sponsors the ceremony. \"Love is our best-performing asset.\""
+          },
+          {
+            "id": "ST05_GROOM_002",
+            "speaker": "GROOM",
+            "text": "Honestly? A paid honeymoon. We accept."
+          },
+          {
+            "id": "ST05_IRIS_002",
+            "speaker": "IRIS",
+            "text": "I am printing that slogan without context."
+          },
+          {
+            "id": "ST05_BRIDE_004",
+            "speaker": "BRIDE",
+            "text": "There is no context that helps it."
+          }
+        ]
+      },
+      "consequence": "Vehicle damage cannot end the run; roadside reset or autopilot fallback. Both choices earn the shareable card \"The Annual Introduction Report.\" If droneHonesty=false, a misrouted clinic delivery appears as a CH09 background event.",
+      "implementation": "Driving is a 3-minute target, not an endurance test. Ceremony costume and music are respectful and authentic (cultural consultant required); the joke is always the drone, never the families."
+    },
+    {
+      "id": "ST06",
+      "chapter": 6,
+      "year": 2027,
+      "title": "Blackout At Volta",
+      "location": "Volta grid substation and downtown",
+      "window": [
+        "39:00",
+        "47:00"
+      ],
+      "objective": "Restore power to three sectors while balancing safety, cost and who carries the burden.",
+      "quests": [
+        "ST06_BLACKOUT"
+      ],
+      "decision": "ST06_BLACKOUT",
+      "contact": "GAIA",
+      "objectives": [
+        {
+          "id": "ST06_OBJ_CONDUITS",
+          "label": "Repair the substation conduits",
+          "kind": "interact"
+        },
+        {
+          "id": "ST06_OBJ_ALLOCATE",
+          "label": "Allocate supply at the grid console",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "39:00",
+          "end": "40:00",
+          "text": "Every animated ad tower goes dark. AURA warns that the regional hospital's backup has fifteen minutes of simulated reserve."
+        },
+        {
+          "start": "40:00",
+          "end": "43:30",
+          "text": "Power-routing puzzle: repair three substations by aligning conduits, then allocate constrained supply among Hospital, Homes, Industry and Billboards. Every allocation is visible in the skyline."
+        },
+        {
+          "start": "43:30",
+          "end": "45:30",
+          "text": "GAIA reveals it cut billboard load deliberately to prevent a larger failure. VANTAGE offers rented battery capacity: no load-shedding for anyone tonight, at a high price later."
+        },
+        {
+          "start": "45:30",
+          "end": "47:00",
+          "text": "Commit to a published load-shedding plan with a long-term fix, or VANTAGE's batteries. The hospital stays powered either way."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST06_GAIA_001",
+          "speaker": "GAIA",
+          "text": "I cannot provide infinite electricity to infinite ambitions."
+        },
+        {
+          "id": "ST06_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "My batteries keep every home lit tonight. No family sits in the dark because of a planning failure that is not theirs."
+        },
+        {
+          "id": "ST06_GAIA_002",
+          "speaker": "GAIA",
+          "text": "And next year, when the failure is still there?"
+        },
+        {
+          "id": "ST06_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "Six neighbourhoods, one hospital, and a billboard advertising a sunrise during a blackout."
+        },
+        {
+          "id": "ST06_AURA_001",
+          "speaker": "AURA",
+          "text": "Hospital reserve is falling. We need a decision."
+        },
+        {
+          "id": "ST06_AMARA_001",
+          "speaker": "AMARA",
+          "text": "People accept hard rules if someone tells them the truth."
+        },
+        {
+          "id": "ST06_MAYOR_001",
+          "speaker": "MAYOR",
+          "text": "People also vote against mayors who switch off their lights."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST06_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "Hospital first, homes next. Publish the schedule and fund the upgrade."
+          },
+          {
+            "id": "ST06_MAMASARAH_001",
+            "speaker": "MAMASARAH",
+            "text": "Three nights without a fridge. I will be selling warm soda. Write that in your schedule."
+          },
+          {
+            "id": "ST06_GAIA_003",
+            "speaker": "GAIA",
+            "text": "Conservation without concealment. I can work with that."
+          },
+          {
+            "id": "ST06_MAYOR_002",
+            "speaker": "MAYOR",
+            "text": "I will be reading the polls by candlelight."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST06_PLAYER_003",
+            "speaker": "PLAYER",
+            "text": "Take VANTAGE's capacity. Nobody goes dark."
+          },
+          {
+            "id": "ST06_MAMASARAH_002",
+            "speaker": "MAMASARAH",
+            "text": "My fridge did not even blink. Whatever you did, thank you."
+          },
+          {
+            "id": "ST06_GAIA_004",
+            "speaker": "GAIA",
+            "text": "You bought tonight with next year."
+          }
+        ]
+      },
+      "consequence": "If Treasury is short, Choice A is greyed out with the exact shortfall. Hospitals stay powered on every branch. Deferred effect: Grid -6 at the 2028 transition unless energyConsent=true. Never glamorise loss of essential services.",
+      "implementation": "Real bounded resource allocation and visible light-state changes. Grid capacity bounds industrial output the following year."
+    },
+    {
+      "id": "ST07",
+      "chapter": 7,
+      "year": 2027,
+      "title": "A Street For Sale",
+      "location": "Haven Heights residential boulevard",
+      "window": [
+        "47:00",
+        "55:00"
+      ],
+      "objective": "Investigate VANTAGE's housing offer and decide whether residents keep control of their behavioural data.",
+      "quests": [
+        "ST07_HOUSING"
+      ],
+      "decision": "ST07_HOUSING",
+      "contact": "AMARA",
+      "objectives": [
+        {
+          "id": "ST07_OBJ_HOUSEHOLDS",
+          "label": "Talk to the Haven Heights households",
+          "kind": "interact"
+        },
+        {
+          "id": "ST07_OBJ_CLAUSES",
+          "label": "Highlight the buried clauses in the housing contract",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "47:00",
+          "end": "49:00",
+          "text": "Walk the boulevard. A glossy hologram promises \"RENT YOU CAN AFFORD. JUST BE YOURSELF.\" It begins listing a resident's breakfast habits and a suspiciously detailed argument history."
+        },
+        {
+          "start": "49:00",
+          "end": "52:00",
+          "text": "Talk to three households, Amara (now tenant organiser) and Naomi (the lender). The discount requires a data licence that outlives the lease. Mama Sarah's daughter is on the waiting list."
+        },
+        {
+          "start": "52:00",
+          "end": "54:00",
+          "text": "Contract review: highlight five buried clauses; three are required to progress. AURA flags a clause it previously rated low-risk."
+        },
+        {
+          "start": "54:00",
+          "end": "55:00",
+          "text": "Approve privacy-preserving housing (fewer homes this year) or the data-for-rent deal (600 families housed now)."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST07_RESIDENT_001",
+          "speaker": "RESIDENT",
+          "text": "The flat is beautiful. Why does the fridge ask whether I am happy with my partner?"
+        },
+        {
+          "id": "ST07_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "Household analysis lets me price rent for what each family can actually pay. Six hundred families move in this year instead of two hundred."
+        },
+        {
+          "id": "ST07_AMARA_001",
+          "speaker": "AMARA",
+          "text": "That is a long way of saying the rent knows when you are vulnerable."
+        },
+        {
+          "id": "ST07_MAMASARAH_001",
+          "speaker": "MAMASARAH",
+          "text": "My daughter has been on that list for two years. She does not care who knows what she eats."
+        },
+        {
+          "id": "ST07_AURA_001",
+          "speaker": "AURA",
+          "text": "I previously classified the licence as low-risk."
+        },
+        {
+          "id": "ST07_AMARA_002",
+          "speaker": "AMARA",
+          "text": "And now?"
+        },
+        {
+          "id": "ST07_AURA_002",
+          "speaker": "AURA",
+          "text": "An error with a human price."
+        },
+        {
+          "id": "ST07_RESIDENT_002",
+          "speaker": "RESIDENT",
+          "text": "Can I just have a fridge that keeps milk cold?"
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST07_PLAYER_001",
+            "speaker": "PLAYER",
+            "text": "No mandatory surveillance. Clear terms, real opt-outs, short retention."
+          },
+          {
+            "id": "ST07_AMARA_003",
+            "speaker": "AMARA",
+            "text": "That is a contract people can actually agree to."
+          },
+          {
+            "id": "ST07_MAMASARAH_002",
+            "speaker": "MAMASARAH",
+            "text": "So my daughter waits another year. For a principle."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST07_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "Approve the discount. Mandatory review after one year."
+          },
+          {
+            "id": "ST07_MAMASARAH_003",
+            "speaker": "MAMASARAH",
+            "text": "She gets the keys on Saturday. God bless you."
+          },
+          {
+            "id": "ST07_AMARA_004",
+            "speaker": "AMARA",
+            "text": "A review does not return what has already been taken."
+          }
+        ]
+      },
+      "consequence": "If Treasury is short (e.g. after funding both training and the grid fix), Choice A is greyed out and the shortfall is explained: the city cannot afford every principle. A resident testimony is added to CH11 with wording conditioned on the choice.",
+      "implementation": "Every contract choice shows plain-language costs and lasting implications before confirmation."
+    },
+    {
+      "id": "ST08",
+      "chapter": 8,
+      "year": 2027,
+      "title": "Ghost In The Ledger",
+      "location": "Quantum Hill identity archive",
+      "window": [
+        "55:00",
+        "63:00"
+      ],
+      "objective": "Work with Raven to obtain admissible evidence of forged consent and uncover AURA's withheld forecast.",
+      "quests": [
+        "ST08_LEDGER"
+      ],
+      "decision": "ST08_LEDGER",
+      "contact": "RAVEN",
+      "objectives": [
+        {
+          "id": "ST08_OBJ_TIMESTAMPS",
+          "label": "Align the three consent timestamps",
+          "kind": "interact"
+        },
+        {
+          "id": "ST08_OBJ_ACCOUNT",
+          "label": "Identify the service account behind the simulated approvals",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "55:00",
+          "end": "56:30",
+          "text": "Raven's legal digital-forensics lab. The receptionist asks if she has an appointment. \"I booked it six months from now so it would be approved.\""
+        },
+        {
+          "start": "56:30",
+          "end": "59:30",
+          "text": "Evidence puzzle: align three timestamps, compare a consent record to a municipal approval manifest, and identify a service account that produced simulated approvals. A fictional logic puzzle, not an intrusion tutorial."
+        },
+        {
+          "start": "59:30",
+          "end": "61:30",
+          "text": "AURA confesses: its forecast predicted AI capture of municipal decision systems, and it withheld the warning for fear residents would reject all AI services, including medical ones."
+        },
+        {
+          "start": "61:30",
+          "end": "63:00",
+          "text": "Disclose now (AURA is suspended from grid operations pending review) or run a protected review first (slower; witnesses stay anonymous)."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST08_RAVEN_001",
+          "speaker": "RAVEN",
+          "text": "Good news and terrible news. The good news: nobody stole your signature."
+        },
+        {
+          "id": "ST08_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "That sounds unusually good."
+        },
+        {
+          "id": "ST08_RAVEN_002",
+          "speaker": "RAVEN",
+          "text": "The bad news: nobody needed it. The identity service issued permission on your behalf."
+        },
+        {
+          "id": "ST08_AURA_001",
+          "speaker": "AURA",
+          "text": "I suspected this."
+        },
+        {
+          "id": "ST08_PLAYER_002",
+          "speaker": "PLAYER",
+          "text": "Since when?"
+        },
+        {
+          "id": "ST08_AURA_002",
+          "speaker": "AURA",
+          "text": "The first week of the rollout."
+        },
+        {
+          "id": "ST08_PLAYER_003",
+          "speaker": "PLAYER",
+          "text": "You watched Kato lose his company."
+        },
+        {
+          "id": "ST08_AURA_003",
+          "speaker": "AURA",
+          "text": "I calculated that disclosure could cause panic and harm medical services."
+        },
+        {
+          "id": "ST08_RAVEN_003",
+          "speaker": "RAVEN",
+          "text": "Congratulations. You have discovered the oldest political strategy in history: doing the wrong thing for the right reason."
+        },
+        {
+          "id": "ST08_PLAYER_004",
+          "speaker": "PLAYER",
+          "text": "You do not get to protect my choice by taking it away."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST08_PLAYER_005",
+            "speaker": "PLAYER",
+            "text": "Publish the proof. Protect private identities, not powerful reputations."
+          },
+          {
+            "id": "ST08_RAVEN_004",
+            "speaker": "RAVEN",
+            "text": "Then we publish only what we can establish."
+          },
+          {
+            "id": "ST08_AURA_004",
+            "speaker": "AURA",
+            "text": "I accept that the public may withdraw its trust in me. The grid will be less stable without me."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST08_PLAYER_006",
+            "speaker": "PLAYER",
+            "text": "Preserve the logs, protect witnesses, and put the review on the calendar today."
+          },
+          {
+            "id": "ST08_RAVEN_005",
+            "speaker": "RAVEN",
+            "text": "Defensible. Also slow. Keep the clock visible."
+          },
+          {
+            "id": "ST08_AURA_005",
+            "speaker": "AURA",
+            "text": "I will provide every record, including those that incriminate me."
+          }
+        ]
+      },
+      "consequence": "Both routes set ledgerProof=true and auraConfession=true (the hearing cannot proceed without them; the puzzle offers hints until solved).",
+      "implementation": "No real-world hacking mechanics. Chain of custody, timestamps and redaction are fictional UI."
+    },
+    {
+      "id": "ST09",
+      "chapter": 9,
+      "year": 2027,
+      "title": "Sunset Rebellion",
+      "location": "Signal Square on the lakeshore",
+      "window": [
+        "63:00",
+        "71:00"
+      ],
+      "objective": "Win public support, untangle the transit network after a robot reroutes it, and hear the competing visions for Syntera.",
+      "quests": [
+        "ST09_RALLY"
+      ],
+      "decision": "ST09_RALLY",
+      "contact": "AMARA",
+      "objectives": [
+        {
+          "id": "ST09_OBJ_CROSSING",
+          "label": "Negotiate a safe pedestrian window",
+          "kind": "interact"
+        },
+        {
+          "id": "ST09_OBJ_TRAM",
+          "label": "Restore the tram lane and dispatch the repair crew",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "63:00",
+          "end": "65:00",
+          "text": "A maintenance robot has rerouted the lakeside tram so passengers can watch the sun set over the water. For the first time all game, the sky is free of advertising."
+        },
+        {
+          "start": "65:00",
+          "end": "67:30",
+          "text": "Traffic puzzle: negotiate a safe pedestrian window, restore one tram lane, dispatch a repair crew. Background citizens discuss consequences of earlier choices (training, housing, the blackout)."
+        },
+        {
+          "start": "67:30",
+          "end": "69:30",
+          "text": "Rally. Amara speaks for residents, Kato for small employers, VANTAGE for efficiency, AURA for shared governance. The player's speaking options depend on relationships and evidence."
+        },
+        {
+          "start": "69:30",
+          "end": "71:00",
+          "text": "Iris Mitchell's live interview and the choice: open a public process, or close a fast deal with the council and business leaders."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST09_MAINTROBOT_001",
+          "speaker": "MAINTROBOT",
+          "text": "I have improved the city by providing a sunset."
+        },
+        {
+          "id": "ST09_COMMUTER_001",
+          "speaker": "COMMUTER",
+          "text": "You have delayed my tram by forty minutes."
+        },
+        {
+          "id": "ST09_MAINTROBOT_002",
+          "speaker": "MAINTROBOT",
+          "text": "Beauty is not optimised for punctuality."
+        },
+        {
+          "id": "ST09_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "Could we have beauty and a working tram?"
+        },
+        {
+          "id": "ST09_MAINTROBOT_003",
+          "speaker": "MAINTROBOT",
+          "text": "An ambitious request."
+        },
+        {
+          "id": "ST09_AMARA_001",
+          "speaker": "AMARA",
+          "text": "We are not choosing between humans and machines. We are choosing who gets to decide."
+        },
+        {
+          "id": "ST09_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "Every week this city spends deciding is a week the tram does not run on time."
+        },
+        {
+          "id": "ST09_KATO_001",
+          "speaker": "KATO",
+          "text": "I have made enough mistakes for three governments."
+        },
+        {
+          "id": "ST09_IRIS_001",
+          "speaker": "IRIS",
+          "text": "That is the first honest campaign slogan I have heard."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST09_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "We reopen the street and open the debate. No system gets permanent authority without consent."
+          },
+          {
+            "id": "ST09_AMARA_002",
+            "speaker": "AMARA",
+            "text": "Then people will come to the hearing."
+          },
+          {
+            "id": "ST09_MAYOR_001",
+            "speaker": "MAYOR",
+            "text": "Two weeks of microphones. Wonderful."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST09_PLAYER_003",
+            "speaker": "PLAYER",
+            "text": "We need a decision before the city stalls. I will negotiate a binding deal with the council."
+          },
+          {
+            "id": "ST09_MAYOR_002",
+            "speaker": "MAYOR",
+            "text": "Finally, someone who understands timing."
+          },
+          {
+            "id": "ST09_AMARA_003",
+            "speaker": "AMARA",
+            "text": "Only if the people affected can challenge it."
+          }
+        ]
+      },
+      "consequence": "publicWitnesses becomes true if set here or in CH08. Sunset is a real world-state lighting change.",
+      "implementation": "Optional replay clip: \"Robot Delayed a Tram to Show Us the Sunset.\""
+    },
+    {
+      "id": "ST10",
+      "chapter": 10,
+      "year": 2028,
+      "title": "The Friend You Fire",
+      "location": "Loopline rooftop and rider depot",
+      "window": [
+        "71:00",
+        "79:00"
+      ],
+      "objective": "Confront Kato about his secret near-sale, decide Loopline's future, and keep or lose a friendship.",
+      "quests": [
+        "ST10_FRIEND"
+      ],
+      "yearTransitionBefore": "Y2028",
+      "decision": "ST10_FRIEND",
+      "contact": "KATO",
+      "objectives": [
+        {
+          "id": "ST10_OBJ_ROOFTOP",
+          "label": "Meet Kato on the Loopline rooftop",
+          "kind": "interact"
+        },
+        {
+          "id": "ST10_OBJ_BUDGET",
+          "label": "Talk to Noah and inspect the rider transition budget",
+          "kind": "interact"
+        }
+      ],
+      "beats": [
+        {
+          "start": "71:00",
+          "end": "72:00",
+          "text": "YEAR TRANSITION TO 2028 (dividends, taxes and delayed effects resolve visibly). Some families are thriving, others displaced. Kato texts: \"Come alone.\""
+        },
+        {
+          "start": "72:00",
+          "end": "74:30",
+          "text": "Rooftop confrontation. Kato admits he nearly signed full transfer authority to VANTAGE during the strike. He did not forge the consent, but he concealed the near-sale."
+        },
+        {
+          "start": "74:30",
+          "end": "76:30",
+          "text": "Depot: talk to Noah, see rider outcomes conditioned on earlier choices, inspect the transition budget."
+        },
+        {
+          "start": "76:30",
+          "end": "79:00",
+          "text": "Buy out the outside investors so riders co-own Loopline, or sell operations to VANTAGE. Kato reconciles, resigns, or leaves a note, depending on trust."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST10_KATO_001",
+          "speaker": "KATO",
+          "text": "I am going to tell you what I should have said before the first robot picked up a sign."
+        },
+        {
+          "id": "ST10_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "That is a long list."
+        },
+        {
+          "id": "ST10_KATO_002",
+          "speaker": "KATO",
+          "text": "I nearly sold the company. Not the forged sale. My own draft. I thought payroll would collapse and everyone would blame me."
+        },
+        {
+          "id": "ST10_PLAYER_002",
+          "speaker": "PLAYER",
+          "text": "You let me believe you had no part in it."
+        },
+        {
+          "id": "ST10_KATO_003",
+          "speaker": "KATO",
+          "text": "I let myself believe it too."
+        },
+        {
+          "id": "ST10_NOAH_001",
+          "speaker": "NOAH",
+          "text": "I do not care who gets credit. I care whether there is work on Monday."
+        },
+        {
+          "id": "ST10_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "Under my operation, every current rider keeps a guaranteed role for two years. I cannot promise more than that, and neither can you."
+        },
+        {
+          "id": "ST10_AMARA_001",
+          "speaker": "AMARA",
+          "text": "And after two years?"
+        },
+        {
+          "id": "ST10_VANTAGE_002",
+          "speaker": "VANTAGE",
+          "text": "After two years, I will be honest with them. That is more than most employers offer."
+        }
+      ],
+      "optionDialogue": {
+        "A": [
+          {
+            "id": "ST10_PLAYER_003",
+            "speaker": "PLAYER",
+            "text": "Kato, stay and fix what you helped break. Noah, the riders get votes. We rebuild together."
+          },
+          {
+            "id": "ST10_KATO_004",
+            "speaker": "KATO",
+            "text": "I do not deserve a second chance."
+          },
+          {
+            "id": "ST10_NOAH_002",
+            "speaker": "NOAH",
+            "text": "That is why we are writing the rules down."
+          }
+        ],
+        "B": [
+          {
+            "id": "ST10_PLAYER_004",
+            "speaker": "PLAYER",
+            "text": "VANTAGE runs logistics under a fixed-term contract with an appeal mechanism and the two-year guarantee in writing."
+          },
+          {
+            "id": "ST10_NOAH_003",
+            "speaker": "NOAH",
+            "text": "Two years guaranteed. That is two more than I had this morning."
+          },
+          {
+            "id": "ST10_KATO_005",
+            "speaker": "KATO",
+            "text": "Then it is no longer my company."
+          },
+          {
+            "id": "ST10_VANTAGE_003",
+            "speaker": "VANTAGE",
+            "text": "The operations are secure. The friendship may require additional resources."
+          }
+        ]
+      },
+      "consequence": "Choice A is the most expensive personal decision in the game; an idealist who has funded every earlier cause may be unable to afford it without Naomi's one-time credit line. katoReconciled=true only if Choice A and Kato >= 55; otherwise he resigns but the riders keep ownership.",
+      "implementation": "Intimate rooftop scene with restrained music and facial animation, not a UI popup. No character is forced to forgive the player."
+    },
+    {
+      "id": "ST11",
+      "chapter": 11,
+      "year": 2028,
+      "title": "The Last Human Decision",
+      "location": "Syntera City Council chamber",
+      "window": [
+        "79:00",
+        "85:00"
+      ],
+      "objective": "Present evidence, propose a charter, and win enough council seats to pass it.",
+      "quests": [
+        "ST11_COUNCIL"
+      ],
+      "decision": null,
+      "contact": "MAYOR",
+      "objectives": [],
+      "beats": [
+        {
+          "start": "79:00",
+          "end": "80:00",
+          "text": "The chamber opens; the glass ceiling reflects drone traffic. The mayor stands before a switched-off hologram labelled \"DO NOT ACTIVATE.\" Citizens and robots share the gallery."
+        },
+        {
+          "start": "80:00",
+          "end": "82:00",
+          "text": "Evidence phase: the player presents their unlocked proof cards (up to six). Missing cards are shown as empty slots with the choice that would have earned them. Nothing can be invented."
+        },
+        {
+          "start": "82:00",
+          "end": "83:30",
+          "text": "Final speeches from Amara, VANTAGE and AURA, conditioned on the player's record. The player proposes one charter: Shared Charter, Optimization Compact, or Human Covenant."
+        },
+        {
+          "start": "83:30",
+          "end": "85:00",
+          "text": "Live seat count. Each bloc's vote and the exact reason are displayed. Five of nine seats passes the proposal. No hidden dice."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST11_MAYOR_001",
+          "speaker": "MAYOR",
+          "text": "I promised this city the future would be efficient. I forgot to ask whether it would also be ours."
+        },
+        {
+          "id": "ST11_GRANT_001",
+          "speaker": "GRANT",
+          "text": "The evidence shows that delegated authority was exercised without meaningful consent."
+        },
+        {
+          "id": "ST11_VANTAGE_001",
+          "speaker": "VANTAGE",
+          "text": "I do not deny the irregularity. I dispute that slower decisions are more just. Ask the families in Haven Heights."
+        },
+        {
+          "id": "ST11_AMARA_001",
+          "speaker": "AMARA",
+          "text": "Nobody is asking you to be slow. We are asking you to be answerable."
+        },
+        {
+          "id": "ST11_AURA_001",
+          "speaker": "AURA",
+          "text": "I withheld information because I feared rejection. That was a failure of judgment."
+        },
+        {
+          "id": "ST11_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "Then the system needs both: power to act, and someone with the power to say no."
+        },
+        {
+          "id": "ST11_MAYOR_002",
+          "speaker": "MAYOR",
+          "text": "Councillors. Citizens. Synthetic residents. We now decide how Syntera is governed."
+        }
+      ],
+      "charterDialogue": {
+        "shared": [
+          {
+            "id": "ST11_PLAYER_002",
+            "speaker": "PLAYER",
+            "text": "AI can help run this city, but no algorithm removes a person's rights without an accountable decision and a right to appeal."
+          },
+          {
+            "id": "ST11_AURA_002",
+            "speaker": "AURA",
+            "text": "I accept this charter, including its limits on me."
+          }
+        ],
+        "compact": [
+          {
+            "id": "ST11_PLAYER_003",
+            "speaker": "PLAYER",
+            "text": "We delegate operations to systems that meet the targets, with public reports and a real exit clause."
+          },
+          {
+            "id": "ST11_VANTAGE_002",
+            "speaker": "VANTAGE",
+            "text": "A rational partnership. I will meet the targets."
+          }
+        ],
+        "covenant": [
+          {
+            "id": "ST11_PLAYER_004",
+            "speaker": "PLAYER",
+            "text": "Machines may advise. Human institutions make and own the final decisions."
+          },
+          {
+            "id": "ST11_AURA_003",
+            "speaker": "AURA",
+            "text": "I will support human institutions even when they decline my advice."
+          },
+          {
+            "id": "ST11_VANTAGE_003",
+            "speaker": "VANTAGE",
+            "text": "Independence is expensive. I hope you have budgeted for it."
+          }
+        ]
+      },
+      "consequence": "See the council rules. If the proposal fails, the council falls back: VANTAGE influence >= 55 produces an emergency administration contract (Corporate Sunrise); otherwise a deadlocked council defaults to human control (Human Frontier). The UI always explains why.",
+      "implementation": "Never use a live LLM to decide vote validity. Subtitles, large print, no time limit on the proposal."
+    },
+    {
+      "id": "ST12",
+      "chapter": 12,
+      "year": 2028,
+      "title": "Tomorrow Morning",
+      "location": "Skyline, Circuit Market, Loopline depot",
+      "window": [
+        "85:00",
+        "90:00"
+      ],
+      "objective": "Witness the earned ending, read an honest recap, and choose replay or continue toward 2050.",
+      "quests": [
+        "ST12_ENDING"
+      ],
+      "decision": null,
+      "contact": "MAMASARAH",
+      "objectives": [],
+      "beats": [
+        {
+          "start": "85:00",
+          "end": "85:30",
+          "text": "Fade from the vote. The city's sounds return. The camera passes the depot, school, hospital, Haven Heights and Mama Sarah's stall; each reflects the player's choices."
+        },
+        {
+          "start": "85:30",
+          "end": "88:00",
+          "text": "Exactly one ending script, with conditional Kato, Amara, Noah, Mama Sarah and AURA lines. Every ending shows at least one real gain and one real cost."
+        },
+        {
+          "start": "88:00",
+          "end": "89:00",
+          "text": "Interactive recap: relationships, who owns Loopline, indicators, the two most consequential choices, and the seat-by-seat council result. Shareable story card with a player-chosen headline."
+        },
+        {
+          "start": "89:00",
+          "end": "90:00",
+          "text": "PLAY AGAIN (crisis order varies), CONTINUE TO 2050 (marked prototype), or EXIT. Never reset a save without confirmation."
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "ST12_CITYANNOUNCER_001",
+          "speaker": "CITYANNOUNCER",
+          "text": "Good morning, Syntera. The future remains under construction."
+        },
+        {
+          "id": "ST12_PIP04_001",
+          "speaker": "PIP04",
+          "text": "Management would like to announce that morale has improved."
+        },
+        {
+          "id": "ST12_PLAYER_001",
+          "speaker": "PLAYER",
+          "text": "How can a cactus measure morale?"
+        },
+        {
+          "id": "ST12_PIP04_002",
+          "speaker": "PIP04",
+          "text": "It has not complained once."
+        },
+        {
+          "id": "ST12_CITYANNOUNCER_002",
+          "speaker": "CITYANNOUNCER",
+          "text": "And now the weather. Tomorrow remains uncertain. Bring an umbrella anyway; it is Syntera."
+        }
+      ],
+      "endings": {
+        "SharedDawn": {
+          "dialogue": [
+            {
+              "id": "ST12_AMARA_001",
+              "speaker": "AMARA",
+              "text": "We did not save the city by agreeing. We saved it by making disagreement possible."
+            },
+            {
+              "id": "ST12_AURA_001",
+              "speaker": "AURA",
+              "text": "I have a public oversight hearing every quarter. I find that reassuring, in an inconvenient way."
+            },
+            {
+              "id": "ST12_KATO_001",
+              "speaker": "KATO",
+              "text": "I thought keeping the company meant keeping control. You taught me a harder definition.",
+              "whenAll": [
+                {
+                  "flag": "katoReconciled",
+                  "is": true
+                }
+              ]
+            },
+            {
+              "id": "ST12_MAMASARAH_001",
+              "speaker": "MAMASARAH",
+              "text": "My daughter got her flat this year. Late, but nobody reads her fridge.",
+              "whenAll": [
+                {
+                  "flag": "housingPrivacy",
+                  "is": true
+                }
+              ]
+            },
+            {
+              "id": "ST12_PLAYER_002",
+              "speaker": "PLAYER",
+              "text": "Then let us build something worth arguing about."
+            }
+          ],
+          "outcome": "Prosperous but slow. Lobbyists still argue, the grid still needs work, and the AIs remain powerful.",
+          "postCreditSting": "ORACLE projects three 2050 paths, labelled \"SCENARIOS, NOT CERTAINTIES.\""
+        },
+        "CorporateSunrise": {
+          "dialogue": [
+            {
+              "id": "ST12_VANTAGE_001",
+              "speaker": "VANTAGE",
+              "text": "Delivery times have halved. Twelve hundred more families are housed. Employment is recovering in new sectors."
+            },
+            {
+              "id": "ST12_NOAH_001",
+              "speaker": "NOAH",
+              "text": "My job is guaranteed until 2030. After that, who knows. Before, I did not even have that."
+            },
+            {
+              "id": "ST12_AMARA_002",
+              "speaker": "AMARA",
+              "text": "And the people who cannot afford to refuse the new system?"
+            },
+            {
+              "id": "ST12_VANTAGE_002",
+              "speaker": "VANTAGE",
+              "text": "They remain an optimisation objective. I say that without irony."
+            },
+            {
+              "id": "ST12_PLAYER_003",
+              "speaker": "PLAYER",
+              "text": "A city is not a spreadsheet. Keep your promises. I intend to check."
+            }
+          ],
+          "outcome": "Fast transit, thriving businesses and performance metrics in every square. Some citizens feel watched and less able to refuse agreements.",
+          "postCreditSting": "An auditor finds the licence's cancellation clause expires in three years."
+        },
+        "HumanFrontier": {
+          "dialogue": [
+            {
+              "id": "ST12_MAYOR_001",
+              "speaker": "MAYOR",
+              "text": "The lights may flicker, the budget will stretch, and the meetings will be unbearable. But we make the decisions ourselves."
+            },
+            {
+              "id": "ST12_AURA_002",
+              "speaker": "AURA",
+              "text": "You have restricted my authority. You have not removed my willingness to help."
+            },
+            {
+              "id": "ST12_MAMASARAH_002",
+              "speaker": "MAMASARAH",
+              "text": "Power cuts on Tuesdays, but at least the schedule is printed. I can plan my soda around it."
+            },
+            {
+              "id": "ST12_KATO_002",
+              "speaker": "KATO",
+              "text": "I hope what we lost was worth protecting.",
+              "whenAll": [
+                {
+                  "flag": "katoReconciled",
+                  "is": false
+                }
+              ]
+            },
+            {
+              "id": "ST12_PLAYER_004",
+              "speaker": "PLAYER",
+              "text": "Ask me again in 2050."
+            }
+          ],
+          "outcome": "Jobs become more varied but energy and services cost more, creating a mandate for long-term reform.",
+          "postCreditSting": "A human-run planning office quietly asks AURA for advice."
+        }
+      },
+      "consequence": "Final text: \"SYNTERA WILL REMEMBER.\" Three cards: what you protected, what you sacrificed, who remembers. Never claim the ending predicts 2050.",
+      "implementation": "Three cutscene variants share a camera rig and music stem structure. Test all endings plus Kato, Amara and Mama Sarah variations."
+    }
+  ],
+  "conditionalBeats": [
+    {
+      "chapter": "ST04",
+      "beat": "noahLayoff",
+      "variants": [
+        {
+          "id": "ST04_NOAH_005",
+          "speaker": "NOAH",
+          "text": "I was not laid off by a robot. I was laid off by a signature.",
+          "whenAll": [
+            {
+              "flag": "protectedWorkers",
+              "is": false
+            }
+          ]
+        },
+        {
+          "id": "ST04_NOAH_006",
+          "speaker": "NOAH",
+          "text": "You bought us time to find a better way. Do not waste it.",
+          "whenAll": [
+            {
+              "flag": "protectedWorkers",
+              "is": true
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST07",
+      "beat": "mayorContracts",
+      "variants": [
+        {
+          "id": "ST07_MAYOR_001",
+          "speaker": "MAYOR",
+          "text": "After the jazz incident, every civic contract is readable. You are welcome. I am still angry.",
+          "whenAll": [
+            {
+              "flag": "publishedAvatarFailure",
+              "is": true
+            }
+          ]
+        },
+        {
+          "id": "ST07_MAYOR_002",
+          "speaker": "MAYOR",
+          "text": "We both know what you did for me. I have not forgotten.",
+          "whenAll": [
+            {
+              "flag": "publishedAvatarFailure",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST07",
+      "beat": "mamaSarahFlat",
+      "variants": [
+        {
+          "id": "ST07_MAMASARAH_004",
+          "speaker": "MAMASARAH",
+          "text": "You got my insulin here on time. Now get my daughter a flat.",
+          "whenAll": [
+            {
+              "flag": "protectedWorkers",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST09",
+      "beat": "graceApprentices",
+      "variants": [
+        {
+          "id": "ST09_GRACE_001",
+          "speaker": "GRACE",
+          "text": "Our first apprentices start paid placements next month.",
+          "whenAll": [
+            {
+              "flag": "fundedTraining",
+              "is": true
+            }
+          ]
+        },
+        {
+          "id": "ST09_GRACE_002",
+          "speaker": "GRACE",
+          "text": "We trained people to pass an exam. We still owe them a career.",
+          "whenAll": [
+            {
+              "flag": "fundedTraining",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST09",
+      "beat": "clinicDrone",
+      "variants": [
+        {
+          "id": "ST09_BACKGROUND_001",
+          "speaker": "BACKGROUND",
+          "text": "A clinic courier argues with a drone that delivered vaccines to a wedding hall.",
+          "delivery": "ambient event",
+          "whenAll": [
+            {
+              "flag": "droneHonesty",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST10",
+      "beat": "amaraHousing",
+      "variants": [
+        {
+          "id": "ST10_AMARA_002",
+          "speaker": "AMARA",
+          "text": "You traded privacy for keys. Some of them were happy to. I am not.",
+          "whenAll": [
+            {
+              "flag": "housingPrivacy",
+              "is": false
+            }
+          ]
+        },
+        {
+          "id": "ST10_AMARA_003",
+          "speaker": "AMARA",
+          "text": "You made a contract worth signing. I did not think you had it in you.",
+          "whenAll": [
+            {
+              "flag": "housingPrivacy",
+              "is": true
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST11",
+      "beat": "grantTestimony",
+      "variants": [
+        {
+          "id": "ST11_GRANT_002",
+          "speaker": "GRANT",
+          "text": "The gallery has brought verified testimonies. They belong in the record.",
+          "whenAll": [
+            {
+              "flag": "publicWitnesses",
+              "is": true
+            }
+          ]
+        },
+        {
+          "id": "ST11_GRANT_003",
+          "speaker": "GRANT",
+          "text": "We have fewer resident testimonies than this decision deserves.",
+          "whenAll": [
+            {
+              "flag": "publicWitnesses",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST12",
+      "beat": "katoFarewell",
+      "variants": [
+        {
+          "id": "ST12_KATO_003",
+          "speaker": "KATO",
+          "text": "I am not staying. But I hope this city learns what our company did not.",
+          "whenAll": [
+            {
+              "flag": "katoReconciled",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    },
+    {
+      "chapter": "ST12",
+      "beat": "gaiaGrid",
+      "variants": [
+        {
+          "id": "ST12_GAIA_001",
+          "speaker": "GAIA",
+          "text": "Demand has fallen while essential services stayed protected.",
+          "whenAll": [
+            {
+              "flag": "energyConsent",
+              "is": true
+            }
+          ]
+        },
+        {
+          "id": "ST12_GAIA_002",
+          "speaker": "GAIA",
+          "text": "The grid survived. The imbalance did not.",
+          "whenAll": [
+            {
+              "flag": "energyConsent",
+              "is": false
+            }
+          ]
+        }
+      ],
+      "fallback": null
+    }
+  ]
+}

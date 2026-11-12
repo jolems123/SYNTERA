@@ -1,17 +1,36 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Syntera
 {
+    // Procedural placeholder city (primitive shapes, not production art).
     public static class SynteraWorld
     {
-        private static readonly string[] Names = {"Nexus Central", "Horizon Commons", "Quantum Valley", "Nova Heights", "Helix Medical", "Forge Industrial", "Eden Gardens", "The Underground"};
-        private static readonly string[] People = {"Amara Reed", "Kato Mercer", "AURA", "VANTAGE", "Mayor Adrian Cross", "Grace Kim", "Raven Black", "Dr. Elias Morgan"};
+        // Screenplay v1.1 locations with the project's modern place names.
+        public static readonly string[] Places =
+        {
+            "Nexus Junction", "Loopline HQ", "Civic Hall", "Signal Square", "Synapse Commons",
+            "Lumen Gardens", "Volta Substation", "Haven Heights", "Quantum Hill", "Circuit Market"
+        };
+
+        public static Vector3 PlacePosition(int index)
+        {
+            return new Vector3((index % 5 - 2) * 32f, 1.3f, (index / 5 - .5f) * 34f);
+        }
+
+        public static Vector3 PlacePosition(string place)
+        {
+            int i = System.Array.IndexOf(Places, place);
+            return i < 0 ? Vector3.zero : PlacePosition(i);
+        }
+
         private static Material Material(Color c)
         {
             var m = new Material(Shader.Find("Standard"));
             m.color = c;
             return m;
         }
+
         private static GameObject Shape(PrimitiveType type, string name, Vector3 position, Vector3 scale, Color color, Transform parent)
         {
             var g = GameObject.CreatePrimitive(type);
@@ -22,7 +41,8 @@ namespace Syntera
             g.GetComponent<Renderer>().material = Material(color);
             return g;
         }
-        public static void Build()
+
+        public static void Build(IList<string> people)
         {
             var root = new GameObject("Syntera City - Procedural Scene").transform;
             Shape(PrimitiveType.Cube, "City ground", new Vector3(0, -.65f, 0), new Vector3(185, 1, 170), new Color(.18f,.26f,.29f), root);
@@ -41,18 +61,18 @@ namespace Syntera
                 Shape(PrimitiveType.Cube, "Tower", new Vector3(px,h/2,pz), new Vector3(8,h,8),glass,root);
                 Shape(PrimitiveType.Cube, "Rooftop solar", new Vector3(px,h+.13f,pz),new Vector3(7,.18f,7),new Color(.07f,.16f,.35f),root);
             }
-            for (int i = 0; i < People.Length; i++)
+            for (int i = 0; i < people.Count; i++)
             {
-                float x = (i % 4 - 1.5f)*19, z = (i / 4 - .5f)*24;
-                var actor = Shape(PrimitiveType.Capsule, "Character - " + People[i], new Vector3(x,1.15f,z), new Vector3(.9f,1.15f,.9f),i%2==0?new Color(.85f,.65f,.39f):new Color(.25f,.45f,.87f),root);
-                actor.AddComponent<SynteraCharacter>().characterName = People[i];
+                float x = (i % 5 - 2f) * 15f + 4f, z = (i / 5 - 1f) * 20f + 4f;
+                var actor = Shape(PrimitiveType.Capsule, "Character - " + people[i], new Vector3(x,1.15f,z), new Vector3(.9f,1.15f,.9f),i%2==0?new Color(.85f,.65f,.39f):new Color(.25f,.45f,.87f),root);
+                actor.AddComponent<SynteraCharacter>().characterName = people[i];
                 actor.AddComponent<SynteraActorAnimation>();
-                SynteraCharacterAssets.Attach(actor, People[i], false);
+                SynteraCharacterAssets.Attach(actor, people[i], false);
             }
-            for (int i = 0; i < Names.Length; i++)
+            for (int i = 0; i < Places.Length; i++)
             {
-                float x = (i%4-1.5f)*32,z=(i/4-.5f)*34;
-                Shape(PrimitiveType.Cylinder, "District beacon - "+ Names[i],new Vector3(x,2,z),new Vector3(.55f,2,.55f),new Color(.12f,.89f,.8f),root);
+                Vector3 p = PlacePosition(i);
+                Shape(PrimitiveType.Cylinder, "Place beacon - " + Places[i], new Vector3(p.x, 2, p.z), new Vector3(.55f,2,.55f), new Color(.12f,.89f,.8f), root);
             }
             for (int i = 0; i < 12; i++)
             {

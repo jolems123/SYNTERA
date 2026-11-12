@@ -15,7 +15,7 @@ namespace Syntera
         private GameObject player;
         private CharacterController playerController;
         private Renderer[] playerRenderers;
-        private int routeChapter = -1;
+        private string routeChapter;
         private Vector3 routeTarget;
         private GameObject destination;
         private float throttle;
@@ -28,7 +28,7 @@ namespace Syntera
             new Vector3(-.35f,0f,.35f), new Vector3(.35f,0f,.35f),
             new Vector3(-.35f,0f,-.35f), new Vector3(.35f,0f,-.35f)
         };
-        public float SpeedKph => body == null ? 0 : body.velocity.magnitude * 3.6f;
+        public float SpeedKph => body == null ? 0 : body.linearVelocity.magnitude * 3.6f;
 
         public static SynteraDrivePod Spawn()
         {
@@ -57,14 +57,16 @@ namespace Syntera
             playerRenderers = player.GetComponentsInChildren<Renderer>();
         }
 
-        public void ConfigureDelivery(int chapter)
+        // routeId null clears the route. The campaign director decides when a drive objective exists.
+        public void ConfigureDelivery(string routeId, Vector3 target)
         {
-            if (routeChapter == chapter) return;
-            routeChapter = chapter;
+            if (routeChapter == routeId) return;
+            routeChapter = routeId;
             RouteComplete = false;
             if (destination != null) Destroy(destination);
-            if (!SynteraCampaignContent.NeedsDelivery(chapter)) return;
-            routeTarget = chapter == 4 ? new Vector3(32, 0.5f, 0) : new Vector3(-32, 0.5f, 32);
+            destination = null;
+            if (routeId == null) return;
+            routeTarget = new Vector3(target.x, 0.5f, target.z);
             destination = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             destination.name = "Mission route finish";
             destination.transform.position = routeTarget;
@@ -89,7 +91,7 @@ namespace Syntera
             if (!IsDriving && !NearPod()) return;
             if (IsDriving)
             {
-                if (body.velocity.magnitude > 2f) return;
+                if (body.linearVelocity.magnitude > 2f) return;
                 Vector3 exit = transform.position + transform.right * 3.1f;
                 if (Physics.CheckCapsule(exit + Vector3.up*.25f, exit + Vector3.up*1.5f, .42f, ~0, QueryTriggerInteraction.Ignore))
                     return;
@@ -112,7 +114,7 @@ namespace Syntera
         public void ResetPod()
         {
             ForceExit();
-            body.velocity = Vector3.zero;
+            body.linearVelocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
             body.position = new Vector3(-8f, .9f, -11f);
             body.rotation = Quaternion.identity;
@@ -123,7 +125,7 @@ namespace Syntera
         public void ForceExit()
         {
             if (!IsDriving || player == null) return;
-            body.velocity = Vector3.zero;
+            body.linearVelocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
             IsDriving = false;
             playerController.enabled = false;
@@ -173,7 +175,7 @@ namespace Syntera
         {
             int groundedWheels = ApplySuspension();
             if (!IsDriving || SynteraGame.InputLocked) { throttle = 0; steering = 0; brake = true; }
-            Vector3 local = transform.InverseTransformDirection(body.velocity);
+            Vector3 local = transform.InverseTransformDirection(body.linearVelocity);
             float forward = local.z;
             float targetSpeed = throttle * 15f;
             float force = Mathf.Clamp(targetSpeed-forward, -7f, 7f) * body.mass * 1.25f;
@@ -183,7 +185,7 @@ namespace Syntera
                 // Lateral tyre friction suppresses sliding without falsely cancelling forward speed.
                 body.AddForce(-transform.right * local.x * (brake ? 10f : 6f), ForceMode.Acceleration);
             }
-            if (brake) body.AddForce(-body.velocity * 7f, ForceMode.Acceleration);
+            if (brake) body.AddForce(-body.linearVelocity * 7f, ForceMode.Acceleration);
             if (groundedWheels > 0 && Mathf.Abs(forward) > .25f)
             {
                 float turn = steering * Mathf.Sign(forward) * 75f * Time.fixedDeltaTime *

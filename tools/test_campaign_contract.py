@@ -1,48 +1,73 @@
-"""Offline regression checks for the SYNTERA Unity story and save pipeline.
-Run: python -m unittest discover -s tools -p 'test_*.py'
-No GitHub Actions or network access required.
-These source contracts do NOT certify Unity compilation or runtime gameplay.
+"""Offline source contracts for the SYNTERA Unity presentation layer.
+Run: python -m unittest discover -s tools -p "test_*.py"
+These do NOT certify Unity compilation or runtime gameplay; the EditMode tests and
+tools/verify-unity-local.ps1 do that.
 """
 from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-GAME = ROOT / "Syntera-Unity/Assets/Syntera/Scripts/SynteraGame.cs"
-WORLD = ROOT / "Syntera-Unity/Assets/Syntera/Scripts/SynteraWorld.cs"
+SCRIPTS = ROOT / "Syntera-Unity/Assets/Syntera/Scripts"
+CORE = ROOT / "Syntera-Unity/Assets/Syntera/Core"
 
-class CampaignSourceContract(unittest.TestCase):
+
+class PresentationLayerContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.game = GAME.read_text(encoding="utf-8")
-        cls.world = WORLD.read_text(encoding="utf-8")
+        cls.game = (SCRIPTS / "SynteraGame.cs").read_text(encoding="utf-8")
+        cls.world = (SCRIPTS / "SynteraWorld.cs").read_text(encoding="utf-8")
 
-    def test_twelve_missions_have_named_contacts(self):
-        segment = self.game.split("missionContacts =", 1)[1].split(";", 1)[0]
-        self.assertEqual(segment.count('"') // 2, 12)
+    def test_game_uses_the_core_director_not_its_own_economy(self):
+        self.assertIn("CampaignDirector", self.game)
+        self.assertIn("CampaignRules.Load(", self.game)
+        self.assertIn("DialogueLibrary.Load(", self.game)
+        for forbidden in ("State.credits +=", "State.trust =", "GetOutcome(", "leftChoices", "rightChoices"):
+            self.assertNotIn(forbidden, self.game, forbidden)
 
-    def test_decision_requires_open_npc_dialogue(self):
-        self.assertIn("if (State.chapter >= MaxChapters || !dialogueOpen) return;", self.game)
-        self.assertIn("Vector3.Distance(player.transform.position, nearby.transform.position) <= InteractionRadius", self.game)
+    def test_old_content_is_gone(self):
+        self.assertFalse((SCRIPTS / "SynteraCampaignContent.cs").exists())
+        for old in ("SENTINEL", "Mayor Adrian Cross", "Dr. Elias Morgan", "Nexus Central"):
+            self.assertNotIn(old, self.game + self.world, old)
+
+    def test_contact_must_be_near_and_objectives_done(self):
+        self.assertIn("InteractionRadius", self.game)
+        self.assertIn("Director.CanTalkToContact", self.game)
         self.assertIn("Input.GetKeyDown(KeyCode.E)", self.game)
+
+    def test_unaffordable_choices_are_greyed_with_shortfall(self):
+        self.assertIn("GUI.enabled = status.Affordable", self.game)
+        self.assertIn("status.Explanation", self.game)
+        self.assertIn("CreditsShortfallAfterCreditLine", self.game)
+
+    def test_save_is_atomic_with_backup_and_replay_validation(self):
+        self.assertIn('SavePath + ".bak"', self.game)
+        self.assertIn("File.Replace(temp, SavePath, backup)", self.game)
+        self.assertIn("CampaignSave.Read(", self.game)
+        self.assertIn("recoveredFromBackup", self.game)
+
+    def test_restart_needs_confirmation_and_legacy_save_untouched(self):
+        self.assertIn("confirmRestart = true", self.game)
+        self.assertIn("LegacySavePath", self.game)
+        self.assertNotIn("File.Delete(LegacySavePath)", self.game)
+
+    def test_2050_is_a_separate_labelled_prototype(self):
+        proto = (SCRIPTS / "SynteraFuturePrototype.cs").read_text(encoding="utf-8")
+        self.assertIn("PROTOTYPE", proto)
+        self.assertIn("SCENARIO, NOT A CERTAINTY", proto)
+        self.assertNotIn("Engine.", proto)
+
+    def test_accessibility_basics(self):
+        self.assertIn("textScale", self.game)
+        self.assertIn("SpeakerName", self.game)
+        self.assertIn("KeyCode.F3", self.game)
 
     def test_npcs_are_tagged(self):
         self.assertIn("AddComponent<SynteraCharacter>()", self.world)
         self.assertIn("public string characterName;", self.world)
 
-    def test_save_has_backup_and_validation(self):
-        self.assertIn('SavePath + ".bak"', self.game)
-        self.assertIn("File.Copy(SavePath, backup, true)", self.game)
-        self.assertIn("foreach (string path in new[] { SavePath, SavePath + \".bak\" })", self.game)
-        self.assertIn("parsed.decisions.Length != 12", self.game)
-
-    def test_replay_and_future_progress(self):
-        self.assertIn('Replay 2026–2028', self.game)
-        self.assertIn('Continue to 2050', self.game)
-        self.assertIn('State.chapter = 12;', self.game)
-        self.assertIn("private void AdvanceFuture(bool automate)", self.game)
-
     def test_no_workflows(self):
         self.assertFalse((ROOT / ".github/workflows").exists())
+
 
 if __name__ == "__main__":
     unittest.main()
