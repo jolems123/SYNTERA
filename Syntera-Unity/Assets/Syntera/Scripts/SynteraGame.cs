@@ -442,7 +442,7 @@ namespace Syntera
             PositionMissionContact();
             State.year = State.chapter < 4 ? 2026 : State.chapter < 8 ? 2027 : 2028;
             if (cinematic != null)
-                cinematic.Play("SYNTERA · " + State.year + "\n" + titles[Mathf.Min(State.chapter, 11)], 2.5f);
+                cinematic.PlayAt("SYNTERA · " + State.year + "\n" + titles[Mathf.Min(State.chapter, 11)], GetMissionCharacter()?.transform, 3.6f);
             Save();
         }
 
