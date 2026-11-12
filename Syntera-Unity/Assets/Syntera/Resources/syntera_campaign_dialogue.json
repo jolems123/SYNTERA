@@ -18,11 +18,11 @@
     },
     "NOAH": {
       "name": "Noah Bennett",
-      "note": "Boda rider, nine years on routes."
+      "note": "Moto-taxi rider, nine years on routes."
     },
     "MAMASARAH": {
       "name": "Mama Sarah",
-      "note": "Sarah Hughes. Pharmacy stall and rolex stand, Circuit Market."
+      "note": "Sarah Hughes. Pharmacy stall and egg-roll stand, Circuit Market."
     },
     "AURA": {
       "name": "AURA",
@@ -78,15 +78,15 @@
     },
     "BRIDESPOKESMAN": {
       "name": "Bride's Spokesman",
-      "note": "Family spokesman at the kwanjula."
+      "note": "Family spokesman at the introduction ceremony."
     },
     "BRIDE": {
       "name": "Bride",
-      "note": "Kwanjula couple."
+      "note": "The couple at the introduction ceremony."
     },
     "GROOM": {
       "name": "Groom",
-      "note": "Kwanjula couple."
+      "note": "The couple at the introduction ceremony."
     },
     "DRONE": {
       "name": "Cargo Drone",
@@ -115,7 +115,7 @@
       "chapter": 1,
       "year": 2026,
       "title": "The Strike That Stopped The Sky",
-      "location": "Nexus Junction elevated logistics plaza and boda stage",
+      "location": "Nexus Junction elevated logistics plaza and moto-taxi stage",
       "window": [
         "00:00",
         "08:00"
@@ -144,7 +144,7 @@
         {
           "start": "00:00",
           "end": "00:45",
-          "text": "BLACK SCREEN. A city-scale countdown blinks: \"2028: TWO YEARS FROM NOW.\" It rewinds to \"2026.\" Montage: an automated minibus taxi apologises to a marabou stork that refuses to move; a hologram promises \"LIFE WITHOUT DELAYS\" above a solid jam of e-bodas; a rolex vendor flips chapati under a drone that is reading her a privacy policy."
+          "text": "BLACK SCREEN. A city-scale countdown blinks: \"2028: TWO YEARS FROM NOW.\" It rewinds to \"2026.\" Montage: an automated minibus taxi apologises to a marabou stork that refuses to move; a hologram promises \"LIFE WITHOUT DELAYS\" above a solid jam of e-motos; an egg-roll vendor flips chapati under a drone that is reading her a privacy policy."
         },
         {
           "start": "00:45",
@@ -164,7 +164,7 @@
         {
           "start": "05:30",
           "end": "08:00",
-          "text": "First public decision. Immediate NPC reactions, visible indicator changes, and a different street: riders back on their bodas, or a silent standby fleet taking over the sky."
+          "text": "First public decision. Immediate NPC reactions, visible indicator changes, and a different street: riders back on their moto-taxis, or a silent standby fleet taking over the sky."
         }
       ],
       "dialogue": [
@@ -283,8 +283,8 @@
           }
         ]
       },
-      "consequence": "Either route unlocks CH02 and changes the crowd on the boda stage. End on a push notification: \"LOOPLINE OWNERSHIP CHANGE - YOUR CONSENT RECORDED.\"",
-      "implementation": "Assets: maintenance bridge, depot, boda stage, cactus prop, 2 courier actors, Pip-04, strike signs, Mama Sarah's stall (reused in CH07/CH12)."
+      "consequence": "Either route unlocks CH02 and changes the crowd on the moto-taxi stage. End on a push notification: \"LOOPLINE OWNERSHIP CHANGE - YOUR CONSENT RECORDED.\"",
+      "implementation": "Assets: maintenance bridge, depot, moto-taxi stage, cactus prop, 2 courier actors, Pip-04, strike signs, Mama Sarah's stall (reused in CH07/CH12)."
     },
     {
       "id": "ST02",
@@ -470,7 +470,7 @@
         {
           "start": "15:00",
           "end": "17:00",
-          "text": "A crowd gathers as the mayor's thirty-metre hologram announces: \"I RESIGN. I AM PURSUING JAZZ.\" Its saxophone solo is a sampled minibus horn. Boda riders honk along."
+          "text": "A crowd gathers as the mayor's thirty-metre hologram announces: \"I RESIGN. I AM PURSUING JAZZ.\" Its saxophone solo is a sampled minibus horn. Moto-taxi riders honk along."
         },
         {
           "start": "17:00",
@@ -665,7 +665,7 @@
         {
           "id": "ST04_NOAH_001",
           "speaker": "NOAH",
-          "text": "I rode boda routes for nine years. The course says that experience is obsolete."
+          "text": "I rode moto-taxi routes for nine years. The course says that experience is obsolete."
         },
         {
           "id": "ST04_GRACE_003",
@@ -732,7 +732,7 @@
         "31:00",
         "39:00"
       ],
-      "objective": "Drive an e-boda to stop a misrouted drone from ruining a kwanjula (introduction ceremony); choose disclosure or sponsorship.",
+      "objective": "Drive an e-moto to stop a misrouted drone from ruining an introduction ceremony; choose disclosure or sponsorship.",
       "quests": [
         "ST05_INTRO"
       ],
@@ -742,7 +742,7 @@
       "objectives": [
         {
           "id": "ST05_OBJ_RIDE",
-          "label": "Ride the e-boda to Lumen Gardens",
+          "label": "Ride the e-moto to Lumen Gardens",
           "kind": "drive"
         },
         {
@@ -760,7 +760,7 @@
         {
           "start": "32:00",
           "end": "35:00",
-          "text": "Ride an e-boda through low-speed traffic: yield to pedestrians, brake at the roundabout, avoid three roadworks and one goat. Accessibility mode: simplified steering or autopilot."
+          "text": "Ride an e-moto through low-speed traffic: yield to pedestrians, brake at the roundabout, avoid three roadworks and one goat. Accessibility mode: simplified steering or autopilot."
         },
         {
           "start": "35:00",

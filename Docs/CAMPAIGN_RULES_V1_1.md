@@ -79,6 +79,9 @@ The story structure, roles, arcs and dialogue are screenplay v1.1. Only the name
 | Kiyira substation | Volta substation |
 | Mirembe Heights | Haven Heights |
 | Wansi Market | Circuit Market |
+| boda / e-boda | moto-taxi / e-moto |
+| rolex (street food) | egg-roll |
+| kwanjula | introduction ceremony |
 
 AURA, VANTAGE, GAIA, Pip-04, Loopline, Civic Hall and Quantum Hill are unchanged.
 
@@ -91,7 +94,7 @@ The v1.0 prototype characters are not part of the new structure: Mayor Adrian Cr
 - **Line IDs** look like `ST01_KATO_003` (chapter, speaker, number) and are **permanent**. A new line gets the next free number for that speaker. Existing lines are never renumbered, because audio, subtitles and translations will refer to these IDs.
 - **What dialogue can do.** It can only test flags. It never changes Credits, Treasury or ownership. `DialogueLibrary.Load` rejects any reference to an unknown decision, option, charter, ending, flag or speaker.
 - **Conditional beats.** The game picks exactly one matching variant. If none matches, the beat is skipped. The screenplay doesn't write neutral fallback lines, and I haven't invented any.
-- **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms that are part of the English script stay as written: boda, rolex, kwanjula, Circuit Market.
+- **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms are translated too: see the name table above. `tools/test_campaign_rules.py` fails if any screenplay-only name or term comes back into game text.
 
 ## How the game runs a chapter (Sprint 2)
 

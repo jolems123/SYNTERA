@@ -1,5 +1,7 @@
 # SYNTERA — Narrative, driving and cinematics milestone
 
+> **Superseded (historical record of the v1.0 prototype).** This describes the old v1.0 campaign (wedding drones, deliveries in chapters 5 and 8, the old cast). The current game follows screenplay v1.1. See `CAMPAIGN_RULES_V1_1.md`, `90_MINUTE_PRODUCTION_ACCEPTANCE.md` and `RELEASE_STATUS.md`.
+
 ## Delivered in source
 - Twelve authored conversations using existing named characters, with dialogue progression before choices and 24 distinct consequence outcomes. Each decision has specific resource and reputation effects, validated against the player's credits and public treasury.
 - Mission choice buttons are unavailable until the dialogue has advanced.

@@ -7,9 +7,23 @@ namespace Syntera
     // Missing prefabs use the procedural actor until production assets are supplied.
     public static class SynteraCharacterAssets
     {
+        // Prefab file name for a display name: letters and digits only, words joined by "_".
+        // "Rachel \"Raven\" Black" -> Rachel_Raven_Black, "Cllr. Olivia Grant" -> Cllr_Olivia_Grant.
+        public static string PrefabKey(string character)
+        {
+            var sb = new System.Text.StringBuilder();
+            bool gap = false;
+            foreach (char c in character ?? "")
+            {
+                if (char.IsLetterOrDigit(c)) { if (gap && sb.Length > 0) sb.Append('_'); sb.Append(c); gap = false; }
+                else gap = true;
+            }
+            return sb.ToString();
+        }
+
         public static bool Attach(GameObject host, string character, bool player)
         {
-            string key = character.Replace(' ', '_');
+            string key = PrefabKey(character);
             GameObject prefab = Resources.Load<GameObject>("Characters/" + key);
             if (prefab == null)
                 prefab = Resources.Load<GameObject>("Characters/" + (player ? "Player" : "NPC_Default"));

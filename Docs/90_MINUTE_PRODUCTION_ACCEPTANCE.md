@@ -1,72 +1,55 @@
-# SYNTERA — 90-minute campaign production acceptance
+# SYNTERA: 90-minute campaign production acceptance
 
-**Status:** 90 minutes is a design target, not a measured playtime. Unity Editor compilation, runtime performance and full campaign playthrough are not yet verified.
+**Status:** 90 minutes is a design target from *Screenplay v1.1*, not a measured playtime. Compilation, the EditMode tests and a local Windows build have been verified (see `RELEASE_STATUS.md`). No full timed playthrough has been done.
 
-## Proposed player pacing
+## Chapter plan (screenplay v1.1, with the in-game names)
 
 | Chapter | Target | Main sequence |
 |---|---|---|
-| 1. Strike That Stopped the Sky | 0–8 min | Robot strike, inspect dispatch, charging records, Kato's decision |
-| 2. Company for Sale | 8–15 | Contracts, VANTAGE financing, company independence |
-| 3. Mayor Who Quit | 15–23 | Forged resignation, public election |
-| 4. School of Tomorrow | 23–31 | Inspect school, teachers versus automation |
-| 5. Impossible Wedding | 31–39 | Drive rescue pod to wedding, decide rescue or monetization |
-| 6. Blackout at Nexus | 39–47 | Hospital and substation investigation, allocate electricity |
-| 7. Street for Sale | 47–55 | Resident and redevelopment investigation |
-| 8. Ghost in the Ledger | 55–63 | Drive the evidence to archive, disclose or conceal |
-| 9. Sunset Rebellion | 63–71 | Assembly safety and surveillance investigation |
-| 10. Friend You Fire | 71–79 | Discover Kato's secret contract and choose response |
-| 11. Last Human Decision | 79–85 | Governance charter and AI oversight choice |
-| 12. Tomorrow Morning | 85–90 | Citizen council, final decision, ending |
+| 1. The Strike That Stopped The Sky | 0–8 min | Rescue Noah on the bridge, inspect the depot. Decide: negotiate, or run VANTAGE's standby fleet |
+| 2. Company For Sale | 8–15 | Check the shareholder register and the bank terminals. Decide: bank loan plus audit, or VANTAGE pays payroll |
+| 3. The Mayor Who Quit | 15–23 | Restore the Civic Hall projection links, recover the avatar logs. Decide: publish, or keep confidential |
+| 4. School Of Tomorrow | 23–31 | Match learners to skills at Synapse Commons. Decide: paid apprenticeships, or instant certification |
+| 5. The Impossible Introduction | 31–39 | Year change to 2027. Ride the e-moto to Lumen Gardens and stop the drone. Decide: disclose, or take the sponsorship |
+| 6. Blackout At Volta | 39–47 | Repair the conduits and allocate grid supply. Decide: public load-shedding plan, or VANTAGE batteries |
+| 7. A Street For Sale | 47–55 | Talk to Haven Heights households, review the contract clauses. Decide: privacy-preserving housing, or data for rent |
+| 8. Ghost In The Ledger | 55–63 | Align the timestamps and find the service account with Raven. Decide: immediate disclosure, or protected review |
+| 9. Sunset Rebellion | 63–71 | Restore the tram lane at Signal Square. Decide: public forum, or executive deal |
+| 10. The Friend You Fire | 71–79 | Year change to 2028. Rooftop scene with Kato. Decide: rider co-ownership, or sell operations to VANTAGE |
+| 11. The Last Human Decision | 79–85 | Present evidence, propose a charter, seat-by-seat council vote |
+| 12. Tomorrow Morning | 85–90 | Ending (Shared Dawn, Corporate Sunrise or Human Frontier), recap, play again or the 2050 prototype |
 
-The current source contains two physical investigations for every non-driving chapter, two pod deliveries, authored dialogues and economic choices. It does not yet guarantee 90 minutes of engaging gameplay; fully authored action scenes, story performances, tuned pacing and timed player testing remain necessary. Do not pad playtime with artificial waiting.
+**What exists now:** every chapter has its contact, its ordered objectives, its dialogue, its decision and its reactions, all driven by the data files. **Not yet built:**
+- The bespoke action scenes the screenplay describes: the five-minute bridge rescue, the projection-link puzzle, the grid-routing puzzle, the contract clause review and the evidence puzzle.
+- The authored cinematics.
+- Pacing tuned through timed playtests.
 
-## How to verify locally — never use GitHub Actions
+Don't pad playtime with artificial waiting.
 
-Install Unity 6.3 and the Windows Build Support module, then open the Syntera-Unity folder through Unity Hub.
+## Characters: production asset handoff
 
-In the Unity menu select SYNTERA > Validate Campaign and Assets Locally.
-
-From Windows PowerShell at the repository root:
-
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1
-
-To run the same checks and produce a local Windows player:
-
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1 -BuildWindows
-
-Run offline source contracts:
-
-    python tools/verify_source.py
-    python -m unittest discover -s tools -p "test_*.py"
-
-These scripts do NOT invoke GitHub Actions. The Unity Editor validation only checks content/configuration; it cannot substitute for playing the build.
-
-## Humanoid characters — production asset handoff
-
-- Licensed imported humanoid prefabs go in Assets/Resources/Characters/Player.prefab, NPC_Default.prefab, or named Kato_Mercer.prefab / Amara_Reed.prefab.
-- Each requires a valid Animator, Humanoid Avatar, and a controller with optional Speed float and Talking bool parameters.
-- Root motion should be disabled for visuals: SYNTERA moves host objects and drives animation parameters.
-- Invalid or absent assets retain the procedural fallback. Realistic skin, hair, clothing, faces, hand animation, mocap and high-quality LODs are still missing; this commit does not supply professional 3D models.
+- Licensed humanoid prefabs go in `Assets/Resources/Characters/`, named after the in-game character, for example `Kato_Mercer.prefab`, `Amara_Reed.prefab` or `Mayor_David_Cross.prefab`. `Player.prefab` and `NPC_Default.prefab` are the fallbacks.
+- Each needs an Animator, a Humanoid Avatar, and a controller with optional `Speed` (float) and `Talking` (bool) parameters. Turn root motion off.
+- Missing or invalid prefabs fall back to the procedural capsule. No professional models are included.
 
 ## Voice and music
 
-- Built-in background is original generated tone, not a mastered score.
-- Record or license narration clips and import AudioClips at Assets/Resources/Voice/Chapter_00_Line_00.wav, etc. Indexing is zero-based; the authored chapter scenes now contain 10 voice lines each (120 in total).
-- Missing recordings keep subtitles available. The local Unity Editor gate reports missing clips. F3 mutes/unmutes audio.
-- Amplitude-based mouth gestures are not phoneme lip sync. Retargeted expressions, visemes and a voice-direction pass remain unfinished.
+- Voice clips are optional, at `Assets/Syntera/Resources/Voice/<line ID>.wav`, for example `Voice/ST01_KATO_003.wav`. All 210 cues are listed in `VOICE_RECORDING_CUES.csv`, every one NOT_RECORDED and NOT_VERIFIED.
+- Without recordings, every line still works with labelled subtitles. The in-editor release check reports how many clips are missing.
+- The background music is a generated placeholder tone, not a score.
 
-## Release acceptance checklist (not executed here)
+## Release acceptance checklist
 
-- [ ] Unity opens and compiles without errors; scene and camera launch
-- [ ] Intro and chapter cinematics skip safely; all controls recover
-- [ ] Investigations require both waypoints, save and restore
-- [ ] Vehicle enters, accelerates, steers, brakes, collides, stops, exits and finishes both missions
-- [ ] All 12 chapters and all 24 decision consequences work, no duplicate payouts
-- [ ] Three endings and 2050 continuation work with save, corrupt-file recovery and replay
-- [ ] Character animation plays, imported assets retarget and speech works with/without WAVs
-- [ ] Keyboard and controller (controller support not yet delivered), readable 720p–1440p interface, accessibility
-- [ ] Timed complete playthrough, duration near 90 minutes, stable FPS on target Windows devices
-- [ ] Licenses and attribution for every nonprocedural asset, security review and distribution checks
+- [x] Unity opens and compiles without errors (6000.3.0f1, batch mode)
+- [x] EditMode tests pass in Unity (22 of 22), including section 14 simulation parity and full headless playthroughs
+- [x] A local Windows player build is produced
+- [ ] The built executable has been launched and played start to finish
+- [ ] Every chapter's objectives, dialogue, decision and reaction work in Play Mode; options you can't afford show the shortfall
+- [ ] All three endings are reached in play; failed votes show the correct fallback and explanation
+- [ ] Save, quit and reload in CH01, CH06 and CH10 restore the same place; a damaged save falls back to the backup
+- [ ] The e-moto ride can't softlock (collisions, getting stuck, exiting)
+- [ ] Readable at 720p–1440p, text scaling works, controller support (not yet delivered)
+- [ ] A timed complete playthrough near 90 minutes, with stable FPS on target Windows PCs
+- [ ] Licences and attribution for every non-procedural asset, cultural review, and SYNTERA trademark clearance
 
-**Release decision: HOLD.** Do not claim this is a finished 90-minute commercial game from offline source checks.
+**Release decision: HOLD.** This is not yet a finished 90-minute game.
