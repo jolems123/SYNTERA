@@ -127,6 +127,7 @@ namespace Syntera
             controller.center = Vector3.zero;
             Renderer r = player.GetComponent<Renderer>();
             r.material.color = new Color(.22f, .85f, .73f);
+            SynteraCharacterAssets.Attach(player, State.playerName, true);
             followCamera = Camera.main;
             if (followCamera == null)
             {
