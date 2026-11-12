@@ -53,7 +53,7 @@ namespace Syntera
             RouteComplete = false;
             if (destination != null) Destroy(destination);
             if (!SynteraCampaignContent.NeedsDelivery(chapter)) return;
-            routeTarget = chapter == 4 ? new Vector3(32, 0.5f, 0) : new Vector3(-43, 0.5f, 23);
+            routeTarget = chapter == 4 ? new Vector3(32, 0.5f, 0) : new Vector3(-32, 0.5f, 32);
             destination = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             destination.name = "Mission route finish";
             destination.transform.position = routeTarget;
