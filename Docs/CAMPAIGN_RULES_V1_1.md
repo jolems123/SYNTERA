@@ -63,7 +63,7 @@ How each was run:
 - **Line IDs** look like `ST01_KATO_003` (chapter, speaker, number) and are **permanent**. A new line gets the next free number for that speaker. Existing lines are never renumbered, because audio, subtitles and translations will refer to these IDs.
 - **What dialogue can do.** It can only test flags. It never changes Credits, Treasury or ownership. `DialogueLibrary.Load` rejects any reference to an unknown decision, option, charter, ending, flag or speaker.
 - **Conditional beats.** The game picks exactly one matching variant. If none matches, the beat is skipped. The screenplay doesn't write neutral fallback lines, and I haven't invented any.
-- **Not transcribed.** The CH04 Luganda line is only described in the screenplay, not written out. It needs the cultural consultant.
+- **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms that are part of the English script stay as written: boda, rolex, kwanjula, Wansi Market.
 
 ## Any balance change
 
