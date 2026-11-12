@@ -16,6 +16,7 @@ namespace Syntera
 
         private void Start()
         {
+            if (GetComponent<SynteraHumanoidMotionBridge>() != null) { enabled = false; return; }
             origin = transform.position;
             variation = (Mathf.Abs(gameObject.name.GetHashCode() % 1000) / 1000f) * 6f;
             leftArm = Limb("Left arm",new Vector3(-.74f, .02f,0),new Vector3(.24f,.70f,.26f));
