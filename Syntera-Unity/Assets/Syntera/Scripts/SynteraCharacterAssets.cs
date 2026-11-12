@@ -22,7 +22,7 @@ namespace Syntera
             foreach (var collider in model.GetComponentsInChildren<Collider>())
                 collider.enabled = false; // Host CharacterController / NPC capsule owns collision.
             var animator = model.GetComponentInChildren<Animator>();
-            if (animator == null || animator.avatar == null || !animator.avatar.isHuman)
+            if (animator == null || animator.avatar == null || !animator.avatar.isHuman || animator.runtimeAnimatorController == null)
             {
                 Debug.LogWarning("SYNTERA character '" + character + "' has no verified Humanoid Avatar; using fallback.");
                 Object.Destroy(model);
