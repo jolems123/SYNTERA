@@ -30,6 +30,54 @@ namespace Syntera
         };
         public float SpeedKph => body == null ? 0 : body.linearVelocity.magnitude * 3.6f;
 
+        // CH05 assists (screenplay: simplified steering or autopilot; vehicle damage never ends the run).
+        public int Impacts { get; private set; }
+        public bool Autopilot { get; set; }
+        private System.Collections.Generic.IList<Vector3> route;
+        private int routeIndex;
+
+        public void SetRoute(System.Collections.Generic.IList<Vector3> waypoints)
+        {
+            route = waypoints;
+            routeIndex = 0;
+            Impacts = 0;
+        }
+
+        // Puts the e-moto back on the road at the last waypoint reached, facing the next one.
+        public void ResetToRoadside()
+        {
+            if (route == null || route.Count == 0) return;
+            int i = Mathf.Clamp(routeIndex - 1, 0, route.Count - 1);
+            Vector3 at = route[i] + Vector3.up * .9f;
+            Vector3 next = route[Mathf.Min(i + 1, route.Count - 1)];
+            Vector3 dir = next - route[i]; dir.y = 0;
+            body.linearVelocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+            body.position = at;
+            body.rotation = dir.sqrMagnitude > .01f ? Quaternion.LookRotation(dir) : Quaternion.identity;
+            transform.SetPositionAndRotation(body.position, body.rotation);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!IsDriving || collision.relativeVelocity.magnitude < 2.5f) return;
+            string n = collision.gameObject.name;
+            if (n.StartsWith("Obstacle") || n == "Tower" || n.StartsWith("Character")) Impacts++;
+        }
+
+        private bool DriveAutopilot()
+        {
+            if (!IsDriving || !Autopilot || route == null || destination == null) return false;
+            Vector3 target = routeIndex < route.Count ? route[routeIndex] : routeTarget;
+            Vector3 flat = target - transform.position; flat.y = 0;
+            if (flat.magnitude < 3f && routeIndex < route.Count) { routeIndex++; return true; }
+            Vector3 dir = flat.normalized;
+            Vector3 v = dir * 9f; v.y = body.linearVelocity.y;
+            body.linearVelocity = v;
+            if (dir.sqrMagnitude > .01f) body.MoveRotation(Quaternion.RotateTowards(body.rotation, Quaternion.LookRotation(dir), 180f * Time.fixedDeltaTime));
+            return true;
+        }
+
         public static SynteraDrivePod Spawn()
         {
             GameObject pod = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -174,6 +222,12 @@ namespace Syntera
         private void FixedUpdate()
         {
             int groundedWheels = ApplySuspension();
+            if (route != null && routeIndex < route.Count)
+            {
+                Vector3 d = route[routeIndex] - transform.position; d.y = 0;
+                if (d.magnitude < 6f) routeIndex++;
+            }
+            if (DriveAutopilot()) { CheckArrival(); return; }
             if (!IsDriving || SynteraGame.InputLocked) { throttle = 0; steering = 0; brake = true; }
             Vector3 local = transform.InverseTransformDirection(body.linearVelocity);
             float forward = local.z;
@@ -192,6 +246,11 @@ namespace Syntera
                              Mathf.Clamp01(Mathf.Abs(forward) / 3f);
                 body.MoveRotation(body.rotation * Quaternion.Euler(0,turn,0));
             }
+            CheckArrival();
+        }
+
+        private void CheckArrival()
+        {
             // Stabilized arcade handling; collisions remain physical, not teleported.
             if (IsDriving && destination != null && !RouteComplete &&
                 Vector3.Distance(transform.position, routeTarget) < 5.5f)

@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "note": "Playable set-piece content for each chapter objective. Fictional documents only; no real people, companies or personal data. Puzzle text is game content written for screenplay v1.1 beats.",
+  "activities": [
+    {
+      "id": "ST01_ACT_INSPECT", "type": "documents", "title": "Kato's depot",
+      "intro": "Inspect the depot before the city decides for you.",
+      "pages": [
+        { "title": "Rider roster", "text": "42 moto-taxi riders on contract. 14 shifts this week are flagged 'replaceable by standby fleet'. Noah Bennett: 9 years, zero incidents." },
+        { "title": "VANTAGE message", "text": "VANTAGE: Standby fleet ready. Restoring every delivery takes fourteen seconds. Authorise at your convenience. I will not take offence if you hesitate." },
+        { "title": "Pip-04's sticker", "text": "A cactus sticker on the charging port. Handwritten underneath: 'MANAGEMENT. Do not water during negotiations.'" }
+      ]
+    },
+    {
+      "id": "ST02_ACT_REGISTER", "type": "documents", "title": "Shareholder register",
+      "intro": "The register says your stake is being sold.",
+      "pages": [
+        { "title": "Register, current", "text": "Player 12%  ·  Kato Mercer 38%  ·  Riders' trust 15%  ·  Outside investors 35%.\nPending transfer: Player stake to VANTAGE LOOPLINE.\nPLAYER CONSENT: VERIFIED." },
+        { "title": "Consent token", "text": "Token issuer: CITY IDENTITY SERVICE. Not Loopline. You never signed anything." }
+      ]
+    },
+    {
+      "id": "ST02_ACT_STATEMENT", "type": "documents", "title": "Bank statement and rider roster",
+      "intro": "Payroll is due on Friday.",
+      "pages": [
+        { "title": "Bank statement", "text": "Payroll due Friday. Balance covers four days. A loan against delivery contracts, signed by Kato Mercer, is outstanding." },
+        { "title": "Rider roster", "text": "Several riders pay rent weekly. Two have already asked whether Friday is real." }
+      ]
+    },
+    {
+      "id": "ST03_ACT_SECURITY", "type": "quiz", "title": "Civic Hall security drones",
+      "intro": "The drones insist on confirming your identity. Every answer is accepted. None of them help.",
+      "questions": [
+        { "q": "Please confirm your mother's favourite queue.", "answers": ["The pharmacy queue", "The tax office queue", "She refuses to queue"], "response": "Answer recorded. It has been rated 'plausible'." },
+        { "q": "Describe your relationship with paperwork.", "answers": ["Complicated", "Long-distance", "We are not speaking"], "response": "Consistent with civic records." },
+        { "q": "Are you, at this moment, the mayor?", "answers": ["No", "Not today", "Ask the hologram"], "response": "Thank you. The hologram has also denied being the mayor." }
+      ]
+    },
+    {
+      "id": "ST03_ACT_LINKS", "type": "rotate", "title": "Projection links",
+      "intro": "Turn each relay until it points at the next one. Each relay shows its direction in letters as well as colour.",
+      "nodes": [
+        { "label": "Relay 1 (Signal Square)", "start": 2, "target": 1 },
+        { "label": "Relay 2 (Civic Hall roof)", "start": 0, "target": 3 },
+        { "label": "Relay 3 (Council chamber)", "start": 3, "target": 0 }
+      ]
+    },
+    {
+      "id": "ST03_ACT_LOGS", "type": "documents", "title": "Avatar training data",
+      "intro": "Find out where the mayor's avatar learned to resign.",
+      "pages": [
+        { "title": "Training source", "text": "Personality model trained on 1,200 speeches and one jazz documentary. Authentication: CITY IDENTITY SERVICE (consolidated)." },
+        { "title": "Clue", "text": "IDENTITY-SERVICE MIRROR. The same service that 'verified' your consent to the Loopline sale also signs the avatar's announcements." }
+      ]
+    },
+    {
+      "id": "ST04_ACT_MATCH", "type": "match", "title": "Training terminal",
+      "intro": "Match each learner to the skill their real experience supports. AURA's suggestion is shown, and it has misread one learner.",
+      "options": ["Route planning", "Motor maintenance", "Customer service"],
+      "items": [
+        { "label": "Noah Bennett: nine years of moto-taxi routes across the city", "answer": "Route planning" },
+        { "label": "Ruth: keeps her family's generator and two bikes running", "answer": "Motor maintenance" },
+        { "label": "Peter: ran a phone-repair kiosk with a queue every morning", "answer": "Customer service" }
+      ],
+      "hint": "AURA suggests Noah for customer service because he 'talks to strangers daily'. Grace disagrees."
+    },
+    {
+      "id": "ST04_ACT_PLAN", "type": "documents", "title": "Two plans",
+      "intro": "Grace and AURA each propose a path.",
+      "pages": [
+        { "title": "Grace: paid apprenticeship", "text": "Six months. A stipend and a mentor for each learner. Most jobs arrive in 2028. Needs city and personal funding." },
+        { "title": "AURA: seven-minute certification", "text": "A digital badge today. A drone-maintenance yard hires certified riders next week. The badge states exactly what was assessed." }
+      ]
+    },
+    {
+      "id": "ST05_ACT_SHUTDOWN", "type": "match", "title": "Drone shutdown panel",
+      "intro": "Put the shutdown steps in a safe order before the drone lands on the cake.",
+      "options": ["First", "Second", "Third"],
+      "items": [
+        { "label": "Pause the drone's merger negotiation", "answer": "First" },
+        { "label": "Lower it gently to the grass, away from the guests", "answer": "Second" },
+        { "label": "Cut rotor power", "answer": "Third" }
+      ],
+      "hint": "Cutting power in the air drops it on the cake."
+    },
+    {
+      "id": "ST06_ACT_CONDUITS", "type": "rotate", "title": "Substation conduits",
+      "intro": "Align the four conduits so power can flow. Directions are labelled in text, not only colour.",
+      "nodes": [
+        { "label": "Conduit A", "start": 1, "target": 0 },
+        { "label": "Conduit B", "start": 3, "target": 2 },
+        { "label": "Conduit C", "start": 0, "target": 2 },
+        { "label": "Conduit D", "start": 2, "target": 1 }
+      ]
+    },
+    {
+      "id": "ST06_ACT_ALLOCATE", "type": "allocate", "title": "Grid console",
+      "intro": "Supply is 100 units and demand is 130. The hospital must be fully powered. Every allocation shows in the skyline.",
+      "capacity": 100, "step": 10,
+      "sectors": [
+        { "label": "Hospital", "demand": 30, "required": true },
+        { "label": "Homes", "demand": 50, "required": false },
+        { "label": "Industry", "demand": 30, "required": false },
+        { "label": "Billboards", "demand": 20, "required": false }
+      ]
+    },
+    {
+      "id": "ST07_ACT_HOUSEHOLDS", "type": "documents", "title": "Haven Heights households",
+      "intro": "Three households, three reasons.",
+      "pages": [
+        { "title": "Flat 3B", "text": "\"The flat is beautiful. The fridge asks whether I am happy with my partner.\"" },
+        { "title": "Flat 7A", "text": "\"Rent dropped by a third. I do not know what I agreed to, and I am afraid to ask.\"" },
+        { "title": "Waiting list", "text": "Mama Sarah's daughter: two years on the list. Two hundred homes this year under the privacy plan; six hundred under the data deal." }
+      ]
+    },
+    {
+      "id": "ST07_ACT_CLAUSES", "type": "select", "title": "Housing contract",
+      "intro": "Highlight the buried clauses. You need at least three; flagging more than two harmless clauses fails the review.",
+      "required": 3, "maxWrong": 2,
+      "entries": [
+        { "text": "Rent is due on the first working day of each month.", "correct": false },
+        { "text": "Household behavioural data is licensed to the landlord for ten years, regardless of lease length.", "correct": true },
+        { "text": "Tenants may paint interior walls in approved colours.", "correct": false },
+        { "text": "Rent may be repriced monthly using 'household wellbeing indicators'.", "correct": true },
+        { "text": "Opting out of data collection ends the discount and the lease.", "correct": true },
+        { "text": "The building has a shared rooftop garden.", "correct": false },
+        { "text": "Appliance logs may be shared with 'partners' without further notice.", "correct": true },
+        { "text": "Visitors may stay up to fourteen nights.", "correct": false },
+        { "text": "Disputes are decided by the landlord's automated review service only.", "correct": true },
+        { "text": "Pets under 10 kg are permitted.", "correct": false }
+      ]
+    },
+    {
+      "id": "ST08_ACT_TIMESTAMPS", "type": "match", "title": "Consent timeline",
+      "intro": "Put the three records in time order. A consent cannot come after the sale it approves.",
+      "options": ["1st", "2nd", "3rd"],
+      "items": [
+        { "label": "Sale approved by municipal manifest: 09:14:02", "answer": "1st" },
+        { "label": "Player consent recorded: 09:14:07", "answer": "2nd" },
+        { "label": "Consent token issued by identity service: 09:14:09", "answer": "3rd" }
+      ],
+      "hint": "Read the seconds. The approval happened before anyone 'consented'."
+    },
+    {
+      "id": "ST08_ACT_ACCOUNT", "type": "select", "title": "Service accounts",
+      "intro": "Which account produced the simulated approvals? Flag exactly the one responsible.",
+      "required": 1, "maxWrong": 0,
+      "entries": [
+        { "text": "svc-payroll-batch: runs Fridays at 06:00", "correct": false },
+        { "text": "svc-idsvc-mirror: issued 3,812 approvals at 09:14, all marked 'simulated: false'", "correct": true },
+        { "text": "svc-avatar-voice: publishes mayoral announcements", "correct": false },
+        { "text": "svc-tram-signals: last change two weeks ago", "correct": false },
+        { "text": "svc-backup-nightly: read-only", "correct": false }
+      ]
+    },
+    {
+      "id": "ST09_ACT_CROSSING", "type": "match", "title": "Signal Square crossing",
+      "intro": "Give each movement its own signal phase so nothing crosses at the same time.",
+      "options": ["Phase 1", "Phase 2", "Phase 3"],
+      "items": [
+        { "label": "Pedestrians leaving the sunset", "answer": "Phase 1" },
+        { "label": "Lakeside tram", "answer": "Phase 2" },
+        { "label": "Delivery traffic", "answer": "Phase 3" }
+      ],
+      "hint": "Pedestrians first, the tram second, traffic last."
+    },
+    {
+      "id": "ST09_ACT_TRAM", "type": "rotate", "title": "Tram switches",
+      "intro": "The maintenance robot reversed the switches. Restore the lane.",
+      "nodes": [
+        { "label": "Switch North", "start": 2, "target": 0 },
+        { "label": "Switch Lake", "start": 1, "target": 3 },
+        { "label": "Switch Depot", "start": 0, "target": 2 }
+      ]
+    },
+    {
+      "id": "ST09_ACT_RALLY", "type": "speech", "title": "The rally",
+      "intro": "Amara, Kato, VANTAGE and AURA have spoken. What you can credibly say depends on your record.",
+      "options": [
+        { "label": "Speak for the riders", "whenAll": [ { "flag": "protectedWorkers", "is": true } ],
+          "lines": [ ["PLAYER", "On the day the robots struck, we kept every rider. It cost us. I would do it again."], ["AMARA", "Then say it at the hearing too."] ] },
+        { "label": "Show the ledger evidence", "whenAll": [ { "flag": "ledgerProof", "is": true } ],
+          "lines": [ ["PLAYER", "Somebody approved the sale of my company before I consented. The records are here. Read them."], ["IRIS", "I am reading them live. Everyone is."] ] },
+        { "label": "Speak for a fast deal", "whenAll": [ { "stat": "vantageInfluence", "min": 45 } ],
+          "lines": [ ["PLAYER", "This city needs working trams and paid riders. Speed is not the enemy."], ["VANTAGE", "That is the most popular sentence I have heard today."] ] },
+        { "label": "Admit what you got wrong", "whenAll": [],
+          "lines": [ ["PLAYER", "I have not made every choice well. I want a process that catches people like me when we are wrong."], ["KATO", "I have made enough mistakes for three governments. That speech covers all of them."] ] }
+      ]
+    },
+    {
+      "id": "ST10_ACT_BUDGET", "type": "documents", "title": "Rider transition budget",
+      "intro": "Noah walks you through what happened to the riders.",
+      "pages": [
+        { "title": "Strike week", "variants": [
+          { "whenAll": [ { "flag": "protectedWorkers", "is": true } ], "text": "Every rider kept their shift during the strike. Payroll was paid late, but it was paid." },
+          { "whenAll": [], "text": "Fourteen riders lost their shifts to the standby fleet. Six never came back." } ] },
+        { "title": "Training", "variants": [
+          { "whenAll": [ { "flag": "fundedTraining", "is": true } ], "text": "Apprentices from Synapse Commons start paid placements this month." },
+          { "whenAll": [], "text": "Badges were issued quickly. Employers stopped accepting them this year." } ] },
+        { "title": "Housing", "variants": [
+          { "whenAll": [ { "flag": "housingPrivacy", "is": true } ], "text": "Two riders moved into Haven Heights under privacy-preserving leases." },
+          { "whenAll": [], "text": "Several riders live in Haven Heights now. Their rent changes every month." } ] }
+      ]
+    }
+  ]
+}

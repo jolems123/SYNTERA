@@ -71,6 +71,7 @@ namespace Syntera.Core
                     case "creditLine": r = engine.TakeCreditLine(step, option); break;
                     case "year": r = engine.AdvanceYear(step); break;
                     case "council": r = engine.ProposeCharter(option); break;
+                    case "outcome": r = engine.ApplyOutcome(option); break;
                     default: throw new FormatException("Unknown transaction kind " + kind);
                 }
                 if (!r.Committed) throw new FormatException("Saved transaction no longer valid at " + step + ": " + r.Message);

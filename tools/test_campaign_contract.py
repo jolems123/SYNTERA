@@ -16,6 +16,7 @@ class PresentationLayerContract(unittest.TestCase):
     def setUpClass(cls):
         cls.game = (SCRIPTS / "SynteraGame.cs").read_text(encoding="utf-8")
         cls.world = (SCRIPTS / "SynteraWorld.cs").read_text(encoding="utf-8")
+        cls.ui = (SCRIPTS / "SynteraUi.cs").read_text(encoding="utf-8")
 
     def test_game_uses_the_core_director_not_its_own_economy(self):
         self.assertIn("CampaignDirector", self.game)
@@ -32,10 +33,11 @@ class PresentationLayerContract(unittest.TestCase):
     def test_contact_must_be_near_and_objectives_done(self):
         self.assertIn("InteractionRadius", self.game)
         self.assertIn("Director.CanTalkToContact", self.game)
-        self.assertIn("Input.GetKeyDown(KeyCode.E)", self.game)
+        self.assertIn("Input.GetKeyDown(ui.Settings.Interact)", self.game)
 
     def test_unaffordable_choices_are_greyed_with_shortfall(self):
-        self.assertIn("GUI.enabled = status.Affordable", self.game)
+        self.assertIn("status.Affordable ? \"Choose \"", self.game)
+        self.assertIn("GUI.enabled = enabled", self.ui)
         self.assertIn("status.Explanation", self.game)
         self.assertIn("CreditsShortfallAfterCreditLine", self.game)
 
@@ -57,7 +59,10 @@ class PresentationLayerContract(unittest.TestCase):
         self.assertNotIn("Engine.", proto)
 
     def test_accessibility_basics(self):
-        self.assertIn("textScale", self.game)
+        self.assertIn("TextScale", self.ui)
+        self.assertIn("HighContrast", self.ui)
+        self.assertIn("ReduceMotion", self.ui)
+        self.assertIn("DrawHistory", self.game)
         self.assertIn("SpeakerName", self.game)
         self.assertIn("KeyCode.F3", self.game)
 

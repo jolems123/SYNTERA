@@ -1,0 +1,14 @@
+{
+    "name": "Syntera.Game",
+    "rootNamespace": "Syntera",
+    "references": [ "Syntera.Core" ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

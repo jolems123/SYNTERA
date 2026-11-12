@@ -132,14 +132,16 @@
         {
           "id": "ST01_OBJ_RESCUE",
           "label": "Pull the rescue lever and reach Noah on the maintenance bridge",
-          "kind": "interact"
+          "kind": "rescue"
         },
         {
           "id": "ST01_OBJ_INSPECT",
           "label": "Inspect the rider roster and the robot with the cactus sticker",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST01_ACT_INSPECT"
         }
       ],
+      "cliffhanger": "PUSH NOTIFICATION: LOOPLINE OWNERSHIP CHANGE. YOUR CONSENT RECORDED.",
       "beats": [
         {
           "start": "00:00",
@@ -306,14 +308,17 @@
         {
           "id": "ST02_OBJ_REGISTER",
           "label": "Check the shareholder register terminal",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST02_ACT_REGISTER"
         },
         {
           "id": "ST02_OBJ_STATEMENT",
           "label": "Check the bank statement and rider roster terminals",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST02_ACT_STATEMENT"
         }
       ],
+      "cliffhanger": "Invoice logged. The consent token came from the city identity service, not Loopline.",
       "beats": [
         {
           "start": "08:00",
@@ -456,16 +461,25 @@
       "contact": "MAYOR",
       "objectives": [
         {
+          "id": "ST03_OBJ_SECURITY",
+          "label": "Get past the Civic Hall security drones",
+          "kind": "interact",
+          "activity": "ST03_ACT_SECURITY"
+        },
+        {
           "id": "ST03_OBJ_LINKS",
           "label": "Restore the Civic Hall projection links",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST03_ACT_LINKS"
         },
         {
           "id": "ST03_OBJ_LOGS",
           "label": "Recover the avatar's training data",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST03_ACT_LOGS"
         }
       ],
+      "cliffhanger": "Clue kept: IDENTITY-SERVICE MIRROR.",
       "beats": [
         {
           "start": "15:00",
@@ -611,14 +625,17 @@
         {
           "id": "ST04_OBJ_MATCH",
           "label": "Match three learners to their real skills at the training terminal",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST04_ACT_MATCH"
         },
         {
           "id": "ST04_OBJ_PLAN",
           "label": "Review Grace's apprenticeship plan",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST04_ACT_PLAN"
         }
       ],
+      "cliffhanger": "Noah's next six months have just been decided.",
       "beats": [
         {
           "start": "23:00",
@@ -748,9 +765,11 @@
         {
           "id": "ST05_OBJ_SHUTDOWN",
           "label": "Reach the drone's shutdown panel and save the cake",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST05_ACT_SHUTDOWN"
         }
       ],
+      "cliffhanger": "Shareable card unlocked: The Annual Introduction Report.",
       "beats": [
         {
           "start": "31:00",
@@ -880,14 +899,17 @@
         {
           "id": "ST06_OBJ_CONDUITS",
           "label": "Repair the substation conduits",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST06_ACT_CONDUITS"
         },
         {
           "id": "ST06_OBJ_ALLOCATE",
           "label": "Allocate supply at the grid console",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST06_ACT_ALLOCATE"
         }
       ],
+      "cliffhanger": "The hospital stayed powered. The rest of the city remembers who carried the dark.",
       "beats": [
         {
           "start": "39:00",
@@ -1011,14 +1033,17 @@
         {
           "id": "ST07_OBJ_HOUSEHOLDS",
           "label": "Talk to the Haven Heights households",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST07_ACT_HOUSEHOLDS"
         },
         {
           "id": "ST07_OBJ_CLAUSES",
           "label": "Highlight the buried clauses in the housing contract",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST07_ACT_CLAUSES"
         }
       ],
+      "cliffhanger": "A resident testimony has been added to the council record.",
       "beats": [
         {
           "start": "47:00",
@@ -1142,14 +1167,17 @@
         {
           "id": "ST08_OBJ_TIMESTAMPS",
           "label": "Align the three consent timestamps",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST08_ACT_TIMESTAMPS"
         },
         {
           "id": "ST08_OBJ_ACCOUNT",
           "label": "Identify the service account behind the simulated approvals",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST08_ACT_ACCOUNT"
         }
       ],
+      "cliffhanger": "Ledger proof and AURA's confession are on the record. The hearing can proceed.",
       "beats": [
         {
           "start": "55:00",
@@ -1283,14 +1311,23 @@
         {
           "id": "ST09_OBJ_CROSSING",
           "label": "Negotiate a safe pedestrian window",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST09_ACT_CROSSING"
         },
         {
           "id": "ST09_OBJ_TRAM",
           "label": "Restore the tram lane and dispatch the repair crew",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST09_ACT_TRAM"
+        },
+        {
+          "id": "ST09_OBJ_RALLY",
+          "label": "Speak at the Signal Square rally",
+          "kind": "interact",
+          "activity": "ST09_ACT_RALLY"
         }
       ],
+      "cliffhanger": "The sky is free of advertising, for one evening.",
       "beats": [
         {
           "start": "63:00",
@@ -1425,9 +1462,11 @@
         {
           "id": "ST10_OBJ_BUDGET",
           "label": "Talk to Noah and inspect the rider transition budget",
-          "kind": "interact"
+          "kind": "interact",
+          "activity": "ST10_ACT_BUDGET"
         }
       ],
+      "cliffhanger": "Loopline's future is settled. The council meets next.",
       "beats": [
         {
           "start": "71:00",

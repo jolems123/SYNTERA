@@ -122,6 +122,15 @@ namespace Syntera.Core
             return true;
         }
 
+        // Consequence of how an objective was played (e.g. the CH01 rescue timed out). Field work only.
+        public TransactionResult ApplyOutcome(string outcomeId)
+        {
+            if (Phase != DirectorPhase.FieldWork) return TransactionResult.Reject(outcomeId, "Outcomes apply during field work only.");
+            var r = Engine.ApplyOutcome(outcomeId);
+            if (r.Committed) Save();
+            return r;
+        }
+
         public bool CanTalkToContact { get { return Phase == DirectorPhase.FieldWork && ObjectivesComplete; } }
 
         public bool StartConversation()

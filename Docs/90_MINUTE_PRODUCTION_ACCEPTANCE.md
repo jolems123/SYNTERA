@@ -19,10 +19,15 @@
 | 11. The Last Human Decision | 79–85 | Present evidence, propose a charter, seat-by-seat council vote |
 | 12. Tomorrow Morning | 85–90 | Ending (Shared Dawn, Corporate Sunrise or Human Frontier), recap, play again or the 2050 prototype |
 
-**What exists now:** every chapter has its contact, its ordered objectives, its dialogue, its decision and its reactions, all driven by the data files. **Not yet built:**
-- The bespoke action scenes the screenplay describes: the five-minute bridge rescue, the projection-link puzzle, the grid-routing puzzle, the contract clause review and the evidence puzzle.
-- The authored cinematics.
-- Pacing tuned through timed playtests.
+**What exists now:** every chapter's set piece is playable:
+- **CH01:** the timed bridge rescue.
+- **CH02–CH10:** the puzzles, defined in `syntera_activities.json`.
+- **CH05:** the e-moto ride.
+- **CH11–CH12:** the council vote and the endings.
+
+All of it is placeholder art. **Not yet done:**
+- Authored cinematics, beyond the title cards and the static or moving camera shots.
+- Pacing tuned through timed human playtests. Automated runs finish in about 235 actions, which doesn't measure how long a person takes.
 
 Don't pad playtime with artificial waiting.
 
@@ -44,11 +49,12 @@ Don't pad playtime with artificial waiting.
 - [x] EditMode tests pass in Unity (22 of 22), including section 14 simulation parity and full headless playthroughs
 - [x] A local Windows player build is produced
 - [ ] The built executable has been launched and played start to finish
-- [ ] Every chapter's objectives, dialogue, decision and reaction work in Play Mode; options you can't afford show the shortfall
+- [x] Automated Play Mode runs reach all three endings through the real scene (4 of 4 pass)
+- [ ] Every chapter's objectives, dialogue, decision and reaction checked by a person; options you can't afford show the shortfall
 - [ ] All three endings are reached in play; failed votes show the correct fallback and explanation
 - [ ] Save, quit and reload in CH01, CH06 and CH10 restore the same place; a damaged save falls back to the backup
 - [ ] The e-moto ride can't softlock (collisions, getting stuck, exiting)
-- [ ] Readable at 720p–1440p, text scaling works, controller support (not yet delivered)
+- [ ] Readable at 720p–1440p; text scaling, high contrast, reduced motion, key remapping and controller navigation checked by a person (implemented, not yet human-tested)
 - [ ] A timed complete playthrough near 90 minutes, with stable FPS on target Windows PCs
 - [ ] Licences and attribution for every non-procedural asset, cultural review, and SYNTERA trademark clearance
 

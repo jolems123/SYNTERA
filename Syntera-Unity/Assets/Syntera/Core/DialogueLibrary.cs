@@ -27,13 +27,15 @@ namespace Syntera.Core
         public string Text { get; internal set; }
     }
 
-    public enum ObjectiveKind { Interact, Drive }
+    public enum ObjectiveKind { Interact, Drive, Rescue }
 
     public sealed class ObjectiveDef
     {
         public string Id { get; internal set; }
         public string Label { get; internal set; }
         public ObjectiveKind Kind { get; internal set; }
+        // Optional set piece (syntera_activities.json) opened at the objective marker.
+        public string Activity { get; internal set; }
     }
 
     public sealed class EndingScript
@@ -60,6 +62,7 @@ namespace Syntera.Core
         public string Contact { get; internal set; }
         public string ContactName { get; internal set; }
         public IList<ObjectiveDef> Objectives { get; internal set; }
+        public string Cliffhanger { get; internal set; }
         public IList<StagingBeat> Beats { get; internal set; }
         public IList<DialogueLine> Dialogue { get; internal set; }
         public IDictionary<string, IList<DialogueLine>> OptionDialogue { get; internal set; }
@@ -179,12 +182,15 @@ namespace Syntera.Core
                     string kind = Json.Str(oo, "kind", def.Id);
                     if (kind == "interact") def.Kind = ObjectiveKind.Interact;
                     else if (kind == "drive") def.Kind = ObjectiveKind.Drive;
+                    else if (kind == "rescue") def.Kind = ObjectiveKind.Rescue;
                     else throw new FormatException(def.Id + ": unknown objective kind " + kind);
                     if (!def.Id.StartsWith(c.Id + "_OBJ_", StringComparison.Ordinal)) throw new FormatException(def.Id + " must start with " + c.Id + "_OBJ_");
                     foreach (var existing in objectives) if (existing.Id == def.Id) throw new FormatException("Duplicate objective " + def.Id);
+                    def.Activity = Json.OptStr(oo, "activity");
                     objectives.Add(def);
                 }
                 c.Objectives = objectives.AsReadOnly();
+                c.Cliffhanger = Json.OptStr(o, "cliffhanger");
                 c.Consequence = Json.Str(o, "consequence", c.Id);
                 c.Implementation = Json.Str(o, "implementation", c.Id);
 

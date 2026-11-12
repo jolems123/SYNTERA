@@ -116,6 +116,14 @@ CH11 then goes through evidence, charter proposal, charter speeches and the seat
 - **Continue to 2050** is a clearly labelled prototype. It works on a separate copy of the final numbers with its own save file, and never changes the 2026–2028 record.
 - **Voice clips** are optional files at `Resources/Voice/<line ID>`. The full list of 210 recording cues is in `Docs/VOICE_RECORDING_CUES.csv`. Every line works with subtitles alone.
 
+## Set pieces (Sprints 4–9)
+
+- **Data:** chapter objectives can name a puzzle, defined in `syntera_activities.json`. There are seven puzzle types: documents, rotate, match, select, allocate, quiz and speech. Puzzle logic is in `Syntera.Core/Activities.cs`, and **puzzles never change campaign numbers**. Finishing one only completes its objective.
+- **Assist:** it unlocks after 3 failed attempts and solves one step, as section 9 of the screenplay requires.
+- **The CH01 rescue** has a 5-minute timer. When it runs out, a safety drone rescues Noah and the engine applies the authored outcome `ST01_RESCUE_BY_DRONE` (Trust −2), once, as an audited transaction that is saved and replayed.
+- **The CH05 ride can't softlock:** there's a roadside reset (R), autopilot after 3 collisions or from the options (P), and the run can't be lost.
+- **The CH09 rally speech** offers options based on the player's record (flags and stats). It's dialogue only and has no economic effect.
+
 ## Any balance change
 
 Edit the JSON, then run both test suites. The section 14 assertions will fail on purpose. Update the PDF's figures and the test expectations together.
