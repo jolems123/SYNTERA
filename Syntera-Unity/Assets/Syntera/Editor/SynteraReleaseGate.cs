@@ -19,7 +19,7 @@ namespace Syntera.Editor
             for (int chapter = 0; chapter < 12; chapter++)
             {
                 string[] sequence = SynteraCampaignContent.Dialogue[chapter];
-                if (sequence == null || sequence.Length < 3)
+                if (sequence == null || sequence.Length < 8)
                     throw new InvalidOperationException("Chapter " + chapter + " is missing required dialogue.");
                 lines += sequence.Length;
                 for (int choice = 0; choice < 2; choice++)
@@ -29,6 +29,8 @@ namespace Syntera.Editor
                         throw new InvalidOperationException("Chapter " + chapter + " has an empty consequence.");
                 }
             }
+            if (lines < 100)
+                throw new InvalidOperationException("The authored campaign needs at least 100 dialogue lines.");
             if (!SynteraCampaignContent.NeedsDelivery(4) || !SynteraCampaignContent.NeedsDelivery(7))
                 throw new InvalidOperationException("Two delivery chapters must remain defined.");
             var required = new[] {
