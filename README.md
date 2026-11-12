@@ -41,6 +41,25 @@ This version adds authored dialogue across twelve chapters, chapter-specific eco
 
 Run local source tests using `python -m unittest discover -s tools -p 'test_*.py'` and `python tools/verify_source.py`. See `Docs/NARRATIVE_DRIVING_MILESTONE.md` for Unity Play Mode acceptance cases. **Neither script certifies a real Unity build or a 90-minute playthrough.** Do not enable GitHub Actions.
 
+
+## Extended production milestone — local-only verification
+
+The current source extends the 2026–2028 story to **120 authored dialogue lines** across 12 chapters. Ten chapters now have two on-foot investigation checkpoints each; chapters 5 and 8 retain player-operated delivery-pod objectives with spring/damper suspension and lateral grip. Story progression and investigation stages persist in saves.
+
+The game also includes a three-shot cinematic camera sequence, original generated background tones, optional recorded-voice playback, procedural NPC/player gestures, and a validated Humanoid prefab importer. These are **engineering foundations**, not supplied professional actors, recorded voiceovers, photorealistic models or a mastered score.
+
+A 120-row voice handoff is available at Docs/VOICE_RECORDING_CUES.csv. All entries are marked NOT_RECORDED / NOT_VERIFIED.
+
+**No GitHub-hosted CI is allowed.** For source checks run Python test scripts locally. On a Windows computer with Unity 6.3 installed, run:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1
+
+To validate and attempt a Windows build locally:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1 -BuildWindows
+
+Inspect local-unity-logs/ and test the executable manually. The 90-minute goal is unverified until a full timed playthrough is performed. See Docs/90_MINUTE_PRODUCTION_ACCEPTANCE.md.
+
 ## Next requirements
 
 - Resolve Unity compile errors found by the editor, add local EditMode and PlayMode tests.

@@ -21,6 +21,14 @@ namespace Syntera
         private float throttle;
         private float steering;
         private bool brake;
+        private const float SuspensionHeight = 1.05f;
+        private const float SuspensionForce = 18000f;
+        private const float SuspensionDamping = 2000f;
+        private readonly Vector3[] wheelOffsets = {
+            new Vector3(-.35f,0f,.35f), new Vector3(.35f,0f,.35f),
+            new Vector3(-.35f,0f,-.35f), new Vector3(.35f,0f,-.35f)
+        };
+        public float SpeedKph => body == null ? 0 : body.velocity.magnitude * 3.6f;
 
         public static SynteraDrivePod Spawn()
         {
@@ -33,8 +41,11 @@ namespace Syntera
             pod.GetComponent<Renderer>().material = material;
             var rigidbody = pod.AddComponent<Rigidbody>();
             rigidbody.mass = 850;
-            rigidbody.drag = .65f;
-            rigidbody.angularDrag = 2f;
+            rigidbody.linearDamping = .15f;
+            rigidbody.angularDamping = 2.2f;
+            rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            rigidbody.centerOfMass = new Vector3(0f,-.25f,0f);
             rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             return pod.AddComponent<SynteraDrivePod>();
         }
@@ -91,6 +102,13 @@ namespace Syntera
             foreach (var r in playerRenderers) r.enabled = !IsDriving;
         }
 
+        public void RestoreCompletedRoute()
+        {
+            RouteComplete = true;
+            if (destination != null) Destroy(destination);
+            destination = null;
+        }
+
         public void ResetPod()
         {
             ForceExit();
@@ -122,24 +140,58 @@ namespace Syntera
             brake = Input.GetKey(KeyCode.Space);
         }
 
+        // Four wheel-ground probes supply spring/damper forces. Decorative wheels can
+        // be replaced later with rigged suspension meshes without changing the drive API.
+        private int ApplySuspension()
+        {
+            int onGround = 0;
+            foreach (Vector3 offset in wheelOffsets)
+            {
+                Vector3 position = transform.TransformPoint(offset);
+                Vector3 rayOrigin = position + Vector3.up * .12f;
+                var hits = Physics.RaycastAll(rayOrigin, Vector3.down, SuspensionHeight + .75f,
+                                               ~0, QueryTriggerInteraction.Ignore);
+                float shortest = float.MaxValue;
+                foreach (var hit in hits)
+                {
+                    if (hit.rigidbody == body) continue;
+                    if (hit.distance < shortest) shortest = hit.distance;
+                }
+                if (shortest == float.MaxValue) continue;
+                onGround++;
+                float distance = Mathf.Max(0f, shortest - .12f);
+                float compression = Mathf.Clamp(SuspensionHeight - distance, 0, SuspensionHeight);
+                float verticalSpeed = Vector3.Dot(body.GetPointVelocity(position), Vector3.up);
+                float push = Mathf.Clamp(compression * SuspensionForce -
+                                        verticalSpeed * SuspensionDamping, 0f, 16000f);
+                body.AddForceAtPosition(Vector3.up * push, position, ForceMode.Force);
+            }
+            return onGround;
+        }
+
         private void FixedUpdate()
         {
+            int groundedWheels = ApplySuspension();
             if (!IsDriving || SynteraGame.InputLocked) { throttle = 0; steering = 0; brake = true; }
             Vector3 local = transform.InverseTransformDirection(body.velocity);
             float forward = local.z;
-            float targetSpeed = throttle * 14f;
-            float force = Mathf.Clamp(targetSpeed-forward, -8f, 8f) * body.mass * 1.5f;
-            body.AddForce(transform.forward * force, ForceMode.Force);
-            body.AddForce(-body.velocity * (brake ? 7f : .15f), ForceMode.Acceleration);
-            if (Mathf.Abs(forward) > .25f)
+            float targetSpeed = throttle * 15f;
+            float force = Mathf.Clamp(targetSpeed-forward, -7f, 7f) * body.mass * 1.25f;
+            if (groundedWheels > 0)
+            {
+                body.AddForce(transform.forward * force, ForceMode.Force);
+                // Lateral tyre friction suppresses sliding without falsely cancelling forward speed.
+                body.AddForce(-transform.right * local.x * (brake ? 10f : 6f), ForceMode.Acceleration);
+            }
+            if (brake) body.AddForce(-body.velocity * 7f, ForceMode.Acceleration);
+            if (groundedWheels > 0 && Mathf.Abs(forward) > .25f)
             {
                 float turn = steering * Mathf.Sign(forward) * 75f * Time.fixedDeltaTime *
                              Mathf.Clamp01(Mathf.Abs(forward) / 3f);
                 body.MoveRotation(body.rotation * Quaternion.Euler(0,turn,0));
             }
-            // Basic anti-flip assistance, not a substitute for wheel/suspension physics.
-            if (transform.position.y < .5f) body.MovePosition(new Vector3(transform.position.x,.7f,transform.position.z));
-            if (destination != null && !RouteComplete &&
+            // Stabilized arcade handling; collisions remain physical, not teleported.
+            if (IsDriving && destination != null && !RouteComplete &&
                 Vector3.Distance(transform.position, routeTarget) < 5.5f)
             {
                 RouteComplete = true;

@@ -31,7 +31,7 @@ class NarrativeVehicleContracts(unittest.TestCase):
 
     def test_two_delivery_chapters(self):
         self.assertIn("chapter == 4 || chapter == 7", self.story)
-        self.assertIn("if (!IsRouteSatisfied(State.chapter))", self.game)
+        self.assertIn("if (!IsRouteSatisfied(State.chapter) ||", self.game)
         self.assertIn("RouteComplete", self.pod)
         self.assertIn("DistanceToWaypoint", self.pod)
         self.assertIn("completedRouteMask", self.game)
@@ -53,7 +53,7 @@ class NarrativeVehicleContracts(unittest.TestCase):
 
     def test_save_and_replay(self):
         self.assertIn("State.completedRouteMask |= 1 << State.chapter;", self.game)
-        self.assertIn("drivePod.ForceExit();", self.game)
+        self.assertIn("drivePod.ResetPod();", self.game)
         self.assertIn("SavePath + \".bak\"", self.game)
 
     def test_mission_outcomes_are_specific_and_budget_checked(self):

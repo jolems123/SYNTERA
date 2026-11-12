@@ -47,6 +47,7 @@ namespace Syntera
                 var actor = Shape(PrimitiveType.Capsule, "Character - " + People[i], new Vector3(x,1.15f,z), new Vector3(.9f,1.15f,.9f),i%2==0?new Color(.85f,.65f,.39f):new Color(.25f,.45f,.87f),root);
                 actor.AddComponent<SynteraCharacter>().characterName = People[i];
                 actor.AddComponent<SynteraActorAnimation>();
+                SynteraCharacterAssets.Attach(actor, People[i], false);
             }
             for (int i = 0; i < Names.Length; i++)
             {

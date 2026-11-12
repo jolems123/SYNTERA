@@ -25,6 +25,8 @@ namespace Syntera
         public bool finished;
         public int completedRouteMask;
         public string lastOutcome = "";
+        public float elapsedSeconds;
+        public int[] investigationStages = new int[12];
     }
 
     public sealed class SynteraGame : MonoBehaviour
@@ -44,10 +46,13 @@ namespace Syntera
         private SynteraCharacter missionCharacter;
         private SynteraDrivePod drivePod;
         private SynteraCinematicDirector cinematic;
+        private SynteraAudioDirector audioDirector;
+        private SynteraMissionObjectives investigations;
         private int dialogueIndex;
         private string responseText = "";
         private bool showCredits;
         private string notice = "Welcome to Syntera City.";
+        private bool recoveredFromBackup;
         private readonly string[] districts = {"Nexus Central", "Horizon Commons", "Quantum Valley", "Nova Heights", "Helix Medical", "Forge Industrial", "Eden Gardens", "The Underground"};
         private static readonly string[] titles = {
             "The Strike That Stopped the Sky", "Company for Sale", "The Mayor Who Quit", "School of Tomorrow",
@@ -124,6 +129,8 @@ namespace Syntera
             controller.center = Vector3.zero;
             Renderer r = player.GetComponent<Renderer>();
             r.material.color = new Color(.22f, .85f, .73f);
+            SynteraCharacterAssets.Attach(player, State.playerName, true);
+            player.AddComponent<SynteraPlayerPresentation>();
             followCamera = Camera.main;
             if (followCamera == null)
             {
@@ -137,19 +144,34 @@ namespace Syntera
             drivePod = SynteraDrivePod.Spawn();
             drivePod.RegisterPlayer(player, controller);
             drivePod.ConfigureDelivery(State.chapter);
+            if ((State.completedRouteMask & (1 << State.chapter)) != 0)
+                drivePod.RestoreCompletedRoute();
             cinematic = gameObject.AddComponent<SynteraCinematicDirector>();
             cinematic.Initialize(followCamera, player.transform);
+            audioDirector = gameObject.AddComponent<SynteraAudioDirector>();
+            audioDirector.Initialize();
+            audioDirector.SetChapter(State.chapter);
+            investigations = gameObject.AddComponent<SynteraMissionObjectives>();
+            if (State.investigationStages == null || State.investigationStages.Length != 12)
+                State.investigationStages = new int[12];
+            investigations.Configure(Mathf.Min(State.chapter, 11),
+                State.investigationStages[Mathf.Min(State.chapter, 11)], player.transform);
+            if (SynteraCampaignContent.NeedsDelivery(State.chapter)) investigations.MarkComplete();
             PositionMissionContact();
         }
 
         private void Update()
         {
+            if (!showHelp && !showMap && !State.finished)
+                State.elapsedSeconds += Time.unscaledDeltaTime;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (dialogueOpen) dialogueOpen = false;
+                if (dialogueOpen) { dialogueOpen = false; if (audioDirector != null) audioDirector.StopVoice();
+                    NotifySpeaking(missionCharacter, false); }
                 else if (showMap) showMap = false;
                 else showHelp = !showHelp;
             }
+            if (Input.GetKeyDown(KeyCode.F3) && audioDirector != null) audioDirector.ToggleMute();
             if (Input.GetKeyDown(KeyCode.M) && (cinematic == null || !cinematic.IsPlaying)) showMap = !showMap;
             if (cinematic != null && cinematic.IsPlaying) { InputLocked = true; cinematic.UpdateCamera(); return; }
             if (Input.GetKeyDown(KeyCode.F) && !InputLocked && drivePod != null) drivePod.ToggleDriver();
@@ -164,16 +186,39 @@ namespace Syntera
             InputLocked = showMap || State.finished || showHelp || dialogueOpen || (cinematic != null && cinematic.IsPlaying);
             if (Input.GetKeyDown(KeyCode.E) && !InputLocked && (drivePod == null || !drivePod.IsDriving) && State.chapter < MaxChapters)
             {
+                if (investigations != null && !SynteraCampaignContent.NeedsDelivery(State.chapter) &&
+                    investigations.TryInteract())
+                {
+                    State.investigationStages[State.chapter] = investigations.Stage;
+                    responseText = investigations.Complete ? "Evidence gathered. Return to your contact." :
+                        "Evidence collected. Find the next orange marker.";
+                    Save();
+                }
+                else
+                {
                 var nearby = GetMissionCharacter();
                 if (nearby != null && Vector3.Distance(player.transform.position, nearby.transform.position) <= InteractionRadius)
                 {
                     missionCharacter = nearby;
                     dialogueIndex = 0;
                     dialogueOpen = true;
+                    if (audioDirector != null) audioDirector.PlayVoice(0);
+                    NotifySpeaking(nearby, true);
+                }
                 }
             }
+            if (dialogueOpen && missionCharacter != null)
+                NotifySpeaking(missionCharacter, true,
+                    audioDirector != null && audioDirector.VoicePlaying ? audioDirector.DialogueLevel : .35f);
             if (!InputLocked && (drivePod == null || !drivePod.IsDriving)) MovePlayer();
             UpdateCamera();
+        }
+
+        private static void NotifySpeaking(SynteraCharacter actor, bool speaking, float level = .35f)
+        {
+            if (actor == null) return;
+            actor.GetComponent<SynteraActorAnimation>()?.SetSpeaking(speaking, level);
+            actor.GetComponent<SynteraHumanoidMotionBridge>()?.SetTalking(speaking);
         }
 
         private SynteraCharacter GetMissionCharacter()
@@ -243,14 +288,15 @@ namespace Syntera
             float width = Mathf.Min(Screen.width - 24, 620);
             GUI.Box(new Rect(12, 12, Mathf.Min(Screen.width - 24, 470), 97), "");
             GUI.Label(new Rect(23, 18, 450, 33), "SYNTERA · " + State.year, heading);
-            GUI.Label(new Rect(23, 57, 460, 44), "Credits " + State.credits + "  |  Trust " + State.trust + "  |  Jobs " + State.jobs + "  |  AI " + State.aiInfluence, small);
+            GUI.Label(new Rect(23, 57, 460, 44), "Credits " + State.credits + " | Trust " + State.trust + " | Jobs " + State.jobs + " | AI " + State.aiInfluence +
+                " | " + Mathf.FloorToInt(State.elapsedSeconds / 60f) + "m", small);
             if (GUI.Button(new Rect(Screen.width - 120, 15, 108, 36), "MAP [M]")) showMap = !showMap;
             if (GUI.Button(new Rect(Screen.width - 120, 57, 108, 36), "HELP [Esc]")) showHelp = !showHelp;
             if (showHelp)
             {
                 GUI.Box(new Rect(12, 124, width, 165), "");
                 GUI.Label(new Rect(26, 136, width - 24, 35), "Syntera City Controls", heading);
-                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD: walk or drive · Shift: sprint\nF near cyan pod: drive/exit · Space: brake\nE: interact with mission NPC · M: map\nEsc: close dialogue or help.", paragraph);
+                GUI.Label(new Rect(26, 174, width - 34, 110), "WASD: walk or drive · Shift: sprint\nF near cyan pod: drive/exit · Space: brake\nE: interact with mission NPC · M: map\nEsc: close dialogue or help. · F3: mute audio", paragraph);
                 if (GUI.Button(new Rect(20, 293, 140, 35), "Start playing")) showHelp = false;
                 return;
             }
@@ -278,7 +324,7 @@ namespace Syntera
             {
                 GUI.Box(new Rect(12, panelY - 85, width, 340), "");
                 GUI.Label(new Rect(26, panelY - 72, width - 32, 35), "Your Syntera ending", heading);
-                GUI.Label(new Rect(26, panelY - 33, width - 40, 112), EndingText(), paragraph);
+                GUI.Label(new Rect(26, panelY - 33, width - 40, 112), EndingText() + "\nPlaytime: " + Mathf.FloorToInt(State.elapsedSeconds / 60f) + "m " + Mathf.FloorToInt(State.elapsedSeconds % 60f) + "s", paragraph);
                 if (GUI.Button(new Rect(26, panelY + 102, width / 2 - 26, 52), "Replay 2026–2028")) Restart();
                 if (GUI.Button(new Rect(width / 2 + 8, panelY + 102, width / 2 - 10, 52), "Continue to 2050")) { State.finished = false; State.year = 2029; State.chapter = 12; Save(); }
                 return;
@@ -299,7 +345,10 @@ namespace Syntera
             if (!dialogueOpen)
             {
                 string routeObjective = !IsRouteSatisfied(State.chapter) ? SynteraCampaignContent.DeliveryDescription(State.chapter) + " • Orange beacon: " + (drivePod == null ? "?" : Mathf.CeilToInt(drivePod.DistanceToWaypoint).ToString()) + "m.\\n" : "";
-                GUI.Label(new Rect(26, panelY + 50, width - 38, 76), routeObjective + "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
+                string investigationHint = investigations != null && !SynteraCampaignContent.NeedsDelivery(State.chapter) &&
+                    !investigations.Complete ? "INVESTIGATE: " + investigations.Task +
+                    " (" + Mathf.CeilToInt(investigations.Distance) + "m). Press E at orange marker.\n" : "";
+                GUI.Label(new Rect(26, panelY + 50, width - 38, 76), investigationHint + routeObjective + "Objective: Talk to " + missionContacts[State.chapter] + "  (" + (float.IsInfinity(distance) ? "missing" : Mathf.CeilToInt(distance) + " m") + ")\nExplore the city. Press E when you are near your mission contact.", paragraph);
                 GUI.Label(new Rect(26, panelY + 142, width - 38, 72), responseText.Length > 0 ? responseText : "Your choices will influence Syntera's economic and political future.", small);
                 return;
             }
@@ -308,12 +357,20 @@ namespace Syntera
             if (dialogueIndex < dialogue.Length)
             {
                 GUI.Label(new Rect(26, panelY + 66, width - 36, 67), dialogue[dialogueIndex], paragraph);
-                if (GUI.Button(new Rect(26, panelY + 149, width - 52, 56), "Continue dialogue (" + (dialogueIndex + 1) + "/" + dialogue.Length + ")", action)) dialogueIndex++;
+                if (GUI.Button(new Rect(26, panelY + 149, width - 52, 56), "Continue dialogue (" + (dialogueIndex + 1) + "/" + dialogue.Length + ")", action))
+                {
+                    dialogueIndex++;
+                    if (audioDirector != null)
+                    {
+                        if (dialogueIndex < dialogue.Length) audioDirector.PlayVoice(dialogueIndex);
+                        else audioDirector.StopVoice();
+                    }
+                }
                 return;
             }
-            if (!IsRouteSatisfied(State.chapter))
+            if (!IsRouteSatisfied(State.chapter) || (investigations != null && !SynteraCampaignContent.NeedsDelivery(State.chapter) && !investigations.Complete))
             {
-                GUI.Label(new Rect(26, panelY + 146, width - 40, 70), "Complete the highlighted driving objective before deciding. Esc to close.", paragraph);
+                GUI.Label(new Rect(26, panelY + 146, width - 40, 70), "Complete the orange-marked investigation or driving objective before deciding. Esc to close.", paragraph);
                 return;
             }
             GUI.Label(new Rect(26, panelY + 66, width - 36, 67), responseText.StartsWith("Not enough") ? responseText : summaries[State.chapter], paragraph);
@@ -338,7 +395,8 @@ namespace Syntera
         {
             if (State.chapter >= MaxChapters || !dialogueOpen) return;
             int i = State.chapter;
-            if (dialogueIndex < SynteraCampaignContent.Dialogue[i].Length || !IsRouteSatisfied(i)) return;
+            if (dialogueIndex < SynteraCampaignContent.Dialogue[i].Length || !IsRouteSatisfied(i) ||
+                (investigations != null && !SynteraCampaignContent.NeedsDelivery(i) && !investigations.Complete)) return;
 
             var outcome = SynteraCampaignContent.GetOutcome(i, right);
             if (State.credits + outcome.credits < 0 || State.treasury + outcome.treasury < 0)
@@ -348,6 +406,8 @@ namespace Syntera
             }
             dialogueOpen = false;
             dialogueIndex = 0;
+            if (audioDirector != null) audioDirector.StopVoice();
+            NotifySpeaking(missionCharacter, false);
             missionCharacter = null;
             State.credits += outcome.credits;
             State.treasury += outcome.treasury;
@@ -368,11 +428,22 @@ namespace Syntera
                 return;
             }
             State.chapter++;
-            if (drivePod != null) drivePod.ConfigureDelivery(State.chapter);
+            if (drivePod != null)
+            {
+                drivePod.ConfigureDelivery(State.chapter);
+                if ((State.completedRouteMask & (1 << State.chapter)) != 0)
+                    drivePod.RestoreCompletedRoute();
+            }
+            if (investigations != null)
+            {
+                investigations.Configure(State.chapter, State.investigationStages[State.chapter], player.transform);
+                if (SynteraCampaignContent.NeedsDelivery(State.chapter)) investigations.MarkComplete();
+            }
+            if (audioDirector != null) audioDirector.SetChapter(State.chapter);
             PositionMissionContact();
             State.year = State.chapter < 4 ? 2026 : State.chapter < 8 ? 2027 : 2028;
             if (cinematic != null)
-                cinematic.Play("SYNTERA · " + State.year + "\n" + titles[Mathf.Min(State.chapter, 11)], 2.5f);
+                cinematic.PlayAt("SYNTERA · " + State.year + "\n" + titles[Mathf.Min(State.chapter, 11)], GetMissionCharacter()?.transform, 3.6f);
             Save();
         }
 
@@ -393,12 +464,14 @@ namespace Syntera
                 drivePod.ResetPod();
                 drivePod.ConfigureDelivery(0);
             }
+            if (audioDirector != null) { audioDirector.StopVoice(); audioDirector.SetChapter(0); }
             if (player != null)
             {
                 controller.enabled = false;
                 player.transform.position = new Vector3(-9.5f, 1.3f, -7.5f);
                 controller.enabled = true;
             }
+            if (investigations != null) investigations.Configure(0, 0, player.transform);
             PositionMissionContact();
             showHelp = false;
             showMap = false;
@@ -415,9 +488,24 @@ namespace Syntera
                 string temp = SavePath + ".tmp";
                 string backup = SavePath + ".bak";
                 File.WriteAllText(temp, JsonUtility.ToJson(State, true));
-                if (File.Exists(SavePath)) File.Copy(SavePath, backup, true);
-                if (File.Exists(SavePath)) File.Delete(SavePath);
-                File.Move(temp, SavePath);
+                if (recoveredFromBackup)
+                {
+                    // Preserve the last known-good backup. Never overwrite it with a corrupt primary.
+                    if (File.Exists(SavePath)) File.Delete(SavePath);
+                    File.Move(temp, SavePath);
+                    recoveredFromBackup = false;
+                }
+                else if (File.Exists(SavePath))
+                {
+                    try { File.Replace(temp, SavePath, backup); }
+                    catch (PlatformNotSupportedException)
+                    {
+                        File.Copy(SavePath, backup, true);
+                        File.Delete(SavePath);
+                        File.Move(temp, SavePath);
+                    }
+                }
+                else File.Move(temp, SavePath);
             }
             catch (Exception ex) { Debug.LogWarning("SYNTERA save failed: " + ex.Message); }
         }
@@ -434,9 +522,15 @@ namespace Syntera
                         parsed.chapter < 0 || parsed.chapter > 12 || parsed.year < 2026 || parsed.year > 2050 ||
                         parsed.credits < 0 || parsed.trust < 0 || parsed.trust > 100 ||
                         parsed.aiInfluence < 0 || parsed.aiInfluence > 100 || parsed.jobs < 0 || parsed.jobs > 100 ||
-                        parsed.environment < 0 || parsed.environment > 100 || parsed.treasury < 0)
+                        parsed.environment < 0 || parsed.environment > 100 || parsed.treasury < 0 ||
+                        float.IsNaN(parsed.elapsedSeconds) || parsed.elapsedSeconds < 0)
                         continue;
                     State = parsed;
+                    recoveredFromBackup = path.EndsWith(".bak");
+                    if (State.investigationStages == null || State.investigationStages.Length != 12)
+                        State.investigationStages = new int[12];
+                    for (int n = 0; n < 12; n++)
+                        State.investigationStages[n] = Mathf.Clamp(State.investigationStages[n], 0, 2);
                     responseText = parsed.lastOutcome ?? "";
                     if (path.EndsWith(".bak")) Debug.LogWarning("Recovered SYNTERA from backup save.");
                     return;
@@ -446,6 +540,7 @@ namespace Syntera
             State = new CityState();
         }
 
+        private void OnApplicationPause(bool paused) { if (paused) Save(); }
         private void OnApplicationQuit() => Save();
     }
 }

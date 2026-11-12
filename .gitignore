@@ -1,0 +1,5 @@
+local-unity-logs/
+*.log
+.DS_Store
+__pycache__/
+.pytest_cache/
