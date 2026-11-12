@@ -48,9 +48,10 @@ namespace Syntera
         {
             if (player == null) return;
             // Place investigation points on walkable open ground near the player.
-            Vector3 offset = stage == 0 ? new Vector3(-7, 0, -6) : new Vector3(8, 0, -9);
-            Vector3 position = anchor + offset;
-            position.y = 1.25f;
+            float roadX = Mathf.Round(anchor.x / 32f) * 32f;
+            float roadZ = Mathf.Round(anchor.z / 32f) * 32f;
+            Vector3 position = new Vector3(roadX + (stage == 0 ? 0f : 5f), 1.25f,
+                                           roadZ + (stage == 0 ? -5f : 0f));
             marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             marker.name = "Mission investigation: " + Tasks[chapter, stage];
             marker.transform.position = position;
