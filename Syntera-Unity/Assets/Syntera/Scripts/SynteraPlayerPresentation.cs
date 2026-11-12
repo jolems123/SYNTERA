@@ -33,7 +33,7 @@ namespace Syntera
             var col = part.GetComponent<Collider>();
             if (col != null) Destroy(col);
             var renderer = part.GetComponent<Renderer>();
-            renderer.material = new Material(Shader.Find("Standard"));
+            renderer.material = SynteraMaterials.Make(Color.white);
             renderer.material.color = new Color(.2f,.6f,.76f);
             return part.transform;
         }

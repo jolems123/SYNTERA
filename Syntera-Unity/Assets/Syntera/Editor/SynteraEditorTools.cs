@@ -31,6 +31,7 @@ namespace Syntera.Editor
         {
             SynteraReleaseGate.Run();
             CreateScene();
+            EnsureStandardShaderIncluded();
             Directory.CreateDirectory("Builds/Windows");
             var options=new BuildPlayerOptions {
                 scenes=new[]{ScenePath},
@@ -43,6 +44,23 @@ namespace Syntera.Editor
                 throw new System.Exception("SYNTERA Windows build failed: "+report.summary.result);
             Debug.Log("Windows player built locally: Builds/Windows/SYNTERA.exe");
         }
+        // Materials are created at runtime with the Standard shader; without this, the player
+        // build strips it and Shader.Find returns null (blank screen).
+        private static void EnsureStandardShaderIncluded()
+        {
+            var shader = Shader.Find("Standard");
+            if (shader == null) throw new System.Exception("Standard shader not found in the editor.");
+            var so = new SerializedObject(UnityEngine.Rendering.GraphicsSettings.GetGraphicsSettings());
+            var list = so.FindProperty("m_AlwaysIncludedShaders");
+            for (int i = 0; i < list.arraySize; i++)
+                if (list.GetArrayElementAtIndex(i).objectReferenceValue == shader) return;
+            list.InsertArrayElementAtIndex(list.arraySize);
+            list.GetArrayElementAtIndex(list.arraySize - 1).objectReferenceValue = shader;
+            so.ApplyModifiedProperties();
+            AssetDatabase.SaveAssets();
+            Debug.Log("Added Standard shader to Always Included Shaders.");
+        }
+
         public static void BatchBuildWindows()
         {
             BuildWindows();

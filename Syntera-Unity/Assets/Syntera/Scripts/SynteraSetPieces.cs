@@ -316,7 +316,7 @@ namespace Syntera
             g.transform.SetParent(parent != null ? parent : root);
             g.transform.position = pos;
             g.transform.localScale = scale;
-            var m = new Material(Shader.Find("Standard")) { color = color };
+            var m = SynteraMaterials.Make(color);
             g.GetComponent<Renderer>().material = m;
             return g;
         }
