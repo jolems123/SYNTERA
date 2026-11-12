@@ -1,5 +1,7 @@
 # SYNTERA — Interactive campaign milestone
 
+> **Superseded (historical record of the v1.0 prototype).** This describes the old v1.0 campaign (wedding drones, deliveries in chapters 5 and 8, the old cast). The current game follows screenplay v1.1. See `CAMPAIGN_RULES_V1_1.md`, `90_MINUTE_PRODUCTION_ACCEPTANCE.md` and `RELEASE_STATUS.md`.
+
 ## Current source behavior
 - Eight named world characters are tagged as interactable characters.
 - Twelve chapters have a designated mission contact. Approach the contact within five world units and press E to open a consequential choice.

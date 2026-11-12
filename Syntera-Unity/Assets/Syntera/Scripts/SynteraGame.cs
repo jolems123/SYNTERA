@@ -498,7 +498,7 @@ namespace Syntera
             GUILayout.BeginArea(new Rect(r.x + 14, r.y + 10, r.width - 28, r.height - 20));
             GUILayout.Label("Syntera: The Last Human Decision", heading);
             GUILayout.Label("WASD walk or drive · Shift sprint · Right mouse orbit camera\n" +
-                            "E interact with orange objective markers and your contact · F enter/exit the e-boda pod\n" +
+                            "E interact with orange objective markers and your contact · F enter/exit the e-moto pod\n" +
                             "Space or Enter: next line · M map · F3 mute · + / - text size · Esc help", paragraph);
             GUILayout.Label("A fictional city. Every number is a game rule, not a forecast. Costs, shortfalls and council votes are always shown in full.", small);
             if (!string.IsNullOrEmpty(notice)) GUILayout.Label(notice, small);

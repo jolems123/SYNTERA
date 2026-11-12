@@ -210,6 +210,15 @@ class Dialogue(unittest.TestCase):
             self.assertIn(line["speaker"], self.doc["speakers"], line["id"])
             self.assertTrue(line["text"].strip(), line["id"])
 
+    def test_only_agreed_english_names_in_game_text(self):
+        # Screenplay-only names, v1.0 leftovers and untranslated local terms (see Docs/CAMPAIGN_RULES_V1_1.md).
+        import re
+        forbidden = r"Ssemakula|Achieng|Nabirye|Rehema|Atim|Mukasa|Okello|Nansubuga|Wanjiru|Mutesi|Kibira|Bulungi|Ssomero|Nalubale|Kiyira|Mirembe|Wansi|Adrian Cross|SENTINEL|Elias Morgan|boda|rolex|kwanjula|Luganda|Swahili"
+        sources = [DIALOGUE_PATH, RULES_PATH] + sorted((RULES_PATH.parents[1] / "Scripts").glob("*.cs"))
+        for path in sources:
+            hits = re.findall(r"(?i)" + forbidden, path.read_text(encoding="utf-8"))
+            self.assertEqual([], hits, path.name)
+
     def test_references_match_rules(self):
         decisions = {d["id"]: d for d in self.rules["decisions"]}
         flags = {f for d in decisions.values() for o in d["options"] for f in o.get("setFlags", [])}

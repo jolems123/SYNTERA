@@ -1,68 +1,52 @@
-# SYNTERA — The Last Human Decision
+# SYNTERA: The Last Human Decision
 
-A fictional futuristic 3D city game where your decisions shape the struggle between humans and AI. The first campaign spans 2026–2028; its longer-term creative vision extends to 2050.
+A third-person story and civic-strategy game set in Syntera City, a fictional lakeside metropolis. You inherit a stake in Loopline, a failing moto-taxi delivery company. Over twelve chapters from 2026 to 2028, you decide what a corporate AI may buy, whether to trust the cooperative AI that misled you, and which charter you put to a nine-seat council vote. The story follows *Screenplay v1.1*. The game is in English. Every number is a game rule, not a forecast.
 
 ## Current status
 
-This is the **new** repository. Its prior contents were deleted by the owner. A clean Unity 6 source prototype has been committed here as the new baseline. The previous v1.9 source archive remains available only as a separate downloadable artifact from the earlier conversation and is **not** represented here as fully restored.
+The status of every feature, including what has and hasn't been verified, is in [Docs/RELEASE_STATUS.md](Docs/RELEASE_STATUS.md). In short:
+- **Verified locally:** the campaign compiles in Unity 6000.3.0f1, all 22 EditMode tests pass, the in-editor release check passes, and a local Windows build has been produced.
+- **Not yet done:** nobody has play-tested the build, and the art is placeholder primitive shapes, not production art. There are no voice recordings yet (subtitles only).
 
-**Playability is not yet certified.** The procedural low-poly city, third-person movement, 12 decision chapters, three endings, autosave, districts and ambient traffic are implemented in C# source. Professional art, cinematic audio, spoken dialogue, rigorous gameplay QA, full 90-minute content and actual Unity builds are not complete.
+## How it is built
 
-## Open and run (local, without GitHub CI)
+| Part | Where |
+|---|---|
+| Rule table (economy, year changes, credit line, evidence cards, council) | `Syntera-Unity/Assets/Syntera/Resources/syntera_campaign_rules.json` |
+| Dialogue for all 12 chapters (210 lines, permanent IDs such as `ST01_KATO_003`) | `Syntera-Unity/Assets/Syntera/Resources/syntera_campaign_dialogue.json` |
+| Rules engine, chapter flow controller, save format (plain C#, no Unity dependency) | `Syntera-Unity/Assets/Syntera/Core/` |
+| Unity presentation: world, movement, e-moto, UI | `Syntera-Unity/Assets/Syntera/Scripts/` |
+| Tests | `Syntera-Unity/Assets/Syntera/Tests/Editor/` (Unity) and `tools/test_*.py` (Python) |
 
-1. Install Unity Hub and Unity **6.3** editor with Windows Build Support if creating an executable.
-2. Use **Add project from disk** and select the repository's \`Syntera-Unity/\` folder.
-3. From the Unity editor select **SYNTERA → Create Starter Scene**.
-4. Open \`Assets/Syntera/Scenes/City.unity\` if it is not already open, then press **Play**.
-5. Move with **WASD / arrows**, **Shift** to sprint, right mouse drag for camera, **M** for map, **Esc** for help. Choose an option on the mission card to resolve a crisis and advance toward 2028.
-6. To package locally use **SYNTERA → Build Windows Player Locally**; inspect Console and test the resulting executable.
+Design rules, the cast and place names, and how the save format works are in [Docs/CAMPAIGN_RULES_V1_1.md](Docs/CAMPAIGN_RULES_V1_1.md).
 
-You can also use Unity batch mode from a Windows computer with the editor installed:
+## Open and play
 
-\`\`\`powershell
-& "C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe" -batchmode -quit -projectPath "$PWD\Syntera-Unity" -executeMethod Syntera.Editor.SynteraEditorTools.BatchBuildWindows -logFile "$PWD\unity-build.log"
-\`\`\`
+1. Install Unity Hub and the Unity **6000.3.0f1** editor, and activate a licence in Hub.
+2. Add the `Syntera-Unity/` folder as a project. Open `Assets/Syntera/Scenes/City.unity` and press **Play**.
+3. Controls:
+   - **WASD**: walk or drive.
+   - **Shift**: sprint.
+   - **Right mouse**: orbit the camera.
+   - **E**: use orange objective markers and talk to your contact.
+   - **F**: enter or exit the e-moto.
+   - **Space** or **Enter**: next dialogue line.
+   - **M**: map.
+   - **+ / -**: text size.
+   - **F3**: mute.
+   - **Esc**: help.
 
-Adjust path for your installed editor version. This is an **example only**; it has not been executed here.
+## Local verification (no GitHub-hosted CI)
 
-## No GitHub-hosted CI
+**Never create or enable GitHub Actions workflows.** All tests and builds run locally.
 
-**Never create or enable GitHub Actions workflows, or run GitHub-hosted CI/build jobs.** All tests and builds must run locally or on an explicitly approved, non-GitHub runner. Do not confuse "no CI" with "no testing."
-
-## Story, driving and cinematic controls (source milestone)
-
-This version adds authored dialogue across twelve chapters, chapter-specific economic outcomes, two orange-beacon delivery objectives (chapters 5 and 8), a cyan drivable pod, procedural NPC gestures and skippable in-engine captioned camera sequences.
-
-- **WASD**: walk or drive; **Shift**: sprint on foot.
-- **E**: talk to the current mission contact within range; advance dialogue on-screen.
-- **F**: enter/exit the cyan pod while stopped; **Space**: brake in the pod.
-- Drive to the orange mission beacon for delivery objectives before a choice can be completed.
-- **Space/Enter**: skip cinematic; **M**: city map; **Esc**: close help or dialogue.
-
-Run local source tests using `python -m unittest discover -s tools -p 'test_*.py'` and `python tools/verify_source.py`. See `Docs/NARRATIVE_DRIVING_MILESTONE.md` for Unity Play Mode acceptance cases. **Neither script certifies a real Unity build or a 90-minute playthrough.** Do not enable GitHub Actions.
-
-
-## Extended production milestone — local-only verification
-
-The current source extends the 2026–2028 story to **120 authored dialogue lines** across 12 chapters. Ten chapters now have two on-foot investigation checkpoints each; chapters 5 and 8 retain player-operated delivery-pod objectives with spring/damper suspension and lateral grip. Story progression and investigation stages persist in saves.
-
-The game also includes a three-shot cinematic camera sequence, original generated background tones, optional recorded-voice playback, procedural NPC/player gestures, and a validated Humanoid prefab importer. These are **engineering foundations**, not supplied professional actors, recorded voiceovers, photorealistic models or a mastered score.
-
-A 120-row voice handoff is available at Docs/VOICE_RECORDING_CUES.csv. All entries are marked NOT_RECORDED / NOT_VERIFIED.
-
-**No GitHub-hosted CI is allowed.** For source checks run Python test scripts locally. On a Windows computer with Unity 6.3 installed, run:
-
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1
-
-To validate and attempt a Windows build locally:
-
+    python tools/verify_source.py
+    python -m unittest discover -s tools -p "test_*.py"
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1             # release check + EditMode tests
     powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verify-unity-local.ps1 -BuildWindows
 
-Inspect local-unity-logs/ and test the executable manually. The 90-minute goal is unverified until a full timed playthrough is performed. See Docs/90_MINUTE_PRODUCTION_ACCEPTANCE.md.
+The Unity script finds the editor at `D:\Unity\6000.3.0f1` or in the Unity Hub folder, or you can pass `-UnityExe`. Logs go to `local-unity-logs/`. None of these checks replace playing the build.
 
-## Next requirements
+## Next
 
-- Resolve Unity compile errors found by the editor, add local EditMode and PlayMode tests.
-- Restore and extend the 90-minute screenplay with cinematic dialogue, characters, 12 missions and meaningful pacing.
-- Professional rigged characters, clothing, photorealistic assets, reliable vehicle physics, performance and accessibility.
-- Save integrity tests, Windows smoke tests, and independent player testing before release.
+See [Docs/90_MINUTE_PRODUCTION_ACCEPTANCE.md](Docs/90_MINUTE_PRODUCTION_ACCEPTANCE.md) for the remaining gameplay, art, audio and release work.
