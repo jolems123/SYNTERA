@@ -1,11 +1,11 @@
 # SYNTERA — Narrative, driving and cinematics milestone
 
 ## Delivered in source
-- Twelve authored conversations using the existing named characters. Each includes multiple lines and a player decision.
+- Twelve authored conversations using existing named characters, with dialogue progression before choices and 24 distinct consequence outcomes. Each decision has specific resource and reputation effects, validated against the player's credits and public treasury.
 - Mission choice buttons are unavailable until the dialogue has advanced.
 - Chapters 5 (wedding drones, index 4) and 8 (ledger evidence, index 7) require delivering a pod to an orange checkpoint.
 - The pod uses Rigidbody forces, acceleration, steering, braking, obstacle-aware exit spacing, and an on-screen remaining-distance indicator. This is **arcade vehicle handling**, not professional wheel/suspension simulation.
-- Mission completion is stored in the save as a bit mask, so route progression survives reload.
+- Mission completion is stored in the save as a bit mask, so route progression survives reload. The story contact moves to the delivery destination; replay resets the car, player and contact positions.
 - A lightweight skippable camera/caption sequence opens the game and plays between chapters.
 - NPCs have simple procedural arm, head and idle motion. These are **placeholder animations**, not professional character performances.
 - Save/replay includes backup recovery and resets vehicle state.
