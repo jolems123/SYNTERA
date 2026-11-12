@@ -25,6 +25,7 @@ namespace Syntera
         public bool finished;
         public int completedRouteMask;
         public string lastOutcome = "";
+        public float elapsedSeconds;
         public int[] investigationStages = new int[12];
     }
 
@@ -51,6 +52,7 @@ namespace Syntera
         private string responseText = "";
         private bool showCredits;
         private string notice = "Welcome to Syntera City.";
+        private bool recoveredFromBackup;
         private readonly string[] districts = {"Nexus Central", "Horizon Commons", "Quantum Valley", "Nova Heights", "Helix Medical", "Forge Industrial", "Eden Gardens", "The Underground"};
         private static readonly string[] titles = {
             "The Strike That Stopped the Sky", "Company for Sale", "The Mayor Who Quit", "School of Tomorrow",
@@ -159,6 +161,8 @@ namespace Syntera
 
         private void Update()
         {
+            if (!showHelp && !showMap && !State.finished)
+                State.elapsedSeconds += Time.unscaledDeltaTime;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (dialogueOpen) { dialogueOpen = false; if (audioDirector != null) audioDirector.StopVoice();
@@ -283,7 +287,8 @@ namespace Syntera
             float width = Mathf.Min(Screen.width - 24, 620);
             GUI.Box(new Rect(12, 12, Mathf.Min(Screen.width - 24, 470), 97), "");
             GUI.Label(new Rect(23, 18, 450, 33), "SYNTERA · " + State.year, heading);
-            GUI.Label(new Rect(23, 57, 460, 44), "Credits " + State.credits + "  |  Trust " + State.trust + "  |  Jobs " + State.jobs + "  |  AI " + State.aiInfluence, small);
+            GUI.Label(new Rect(23, 57, 460, 44), "Credits " + State.credits + " | Trust " + State.trust + " | Jobs " + State.jobs + " | AI " + State.aiInfluence +
+                " | " + Mathf.FloorToInt(State.elapsedSeconds / 60f) + "m", small);
             if (GUI.Button(new Rect(Screen.width - 120, 15, 108, 36), "MAP [M]")) showMap = !showMap;
             if (GUI.Button(new Rect(Screen.width - 120, 57, 108, 36), "HELP [Esc]")) showHelp = !showHelp;
             if (showHelp)
@@ -318,7 +323,7 @@ namespace Syntera
             {
                 GUI.Box(new Rect(12, panelY - 85, width, 340), "");
                 GUI.Label(new Rect(26, panelY - 72, width - 32, 35), "Your Syntera ending", heading);
-                GUI.Label(new Rect(26, panelY - 33, width - 40, 112), EndingText(), paragraph);
+                GUI.Label(new Rect(26, panelY - 33, width - 40, 112), EndingText() + "\nPlaytime: " + Mathf.FloorToInt(State.elapsedSeconds / 60f) + "m " + Mathf.FloorToInt(State.elapsedSeconds % 60f) + "s", paragraph);
                 if (GUI.Button(new Rect(26, panelY + 102, width / 2 - 26, 52), "Replay 2026–2028")) Restart();
                 if (GUI.Button(new Rect(width / 2 + 8, panelY + 102, width / 2 - 10, 52), "Continue to 2050")) { State.finished = false; State.year = 2029; State.chapter = 12; Save(); }
                 return;
@@ -482,9 +487,24 @@ namespace Syntera
                 string temp = SavePath + ".tmp";
                 string backup = SavePath + ".bak";
                 File.WriteAllText(temp, JsonUtility.ToJson(State, true));
-                if (File.Exists(SavePath)) File.Copy(SavePath, backup, true);
-                if (File.Exists(SavePath)) File.Delete(SavePath);
-                File.Move(temp, SavePath);
+                if (recoveredFromBackup)
+                {
+                    // Preserve the last known-good backup. Never overwrite it with a corrupt primary.
+                    if (File.Exists(SavePath)) File.Delete(SavePath);
+                    File.Move(temp, SavePath);
+                    recoveredFromBackup = false;
+                }
+                else if (File.Exists(SavePath))
+                {
+                    try { File.Replace(temp, SavePath, backup); }
+                    catch (PlatformNotSupportedException)
+                    {
+                        File.Copy(SavePath, backup, true);
+                        File.Delete(SavePath);
+                        File.Move(temp, SavePath);
+                    }
+                }
+                else File.Move(temp, SavePath);
             }
             catch (Exception ex) { Debug.LogWarning("SYNTERA save failed: " + ex.Message); }
         }
@@ -501,9 +521,11 @@ namespace Syntera
                         parsed.chapter < 0 || parsed.chapter > 12 || parsed.year < 2026 || parsed.year > 2050 ||
                         parsed.credits < 0 || parsed.trust < 0 || parsed.trust > 100 ||
                         parsed.aiInfluence < 0 || parsed.aiInfluence > 100 || parsed.jobs < 0 || parsed.jobs > 100 ||
-                        parsed.environment < 0 || parsed.environment > 100 || parsed.treasury < 0)
+                        parsed.environment < 0 || parsed.environment > 100 || parsed.treasury < 0 ||
+                        float.IsNaN(parsed.elapsedSeconds) || parsed.elapsedSeconds < 0)
                         continue;
                     State = parsed;
+                    recoveredFromBackup = path.EndsWith(".bak");
                     if (State.investigationStages == null || State.investigationStages.Length != 12)
                         State.investigationStages = new int[12];
                     for (int n = 0; n < 12; n++)
@@ -517,6 +539,7 @@ namespace Syntera
             State = new CityState();
         }
 
+        private void OnApplicationPause(bool paused) { if (paused) Save(); }
         private void OnApplicationQuit() => Save();
     }
 }
