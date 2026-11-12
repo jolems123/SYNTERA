@@ -9,20 +9,20 @@
       "note": "Customizable; configurable voice or text-only."
     },
     "KATO": {
-      "name": "Kato Ssemakula",
+      "name": "Kato Mercer",
       "note": "Loopline co-founder."
     },
     "AMARA": {
-      "name": "Amara Achieng",
+      "name": "Amara Reed",
       "note": "Rider advocate, later tenant organiser."
     },
     "NOAH": {
-      "name": "Noah Okello",
+      "name": "Noah Bennett",
       "note": "Boda rider, nine years on routes."
     },
     "MAMASARAH": {
       "name": "Mama Sarah",
-      "note": "Pharmacy stall and rolex stand, Wansi Market."
+      "note": "Sarah Hughes. Pharmacy stall and rolex stand, Circuit Market."
     },
     "AURA": {
       "name": "AURA",
@@ -37,31 +37,31 @@
       "note": "Grid AI."
     },
     "MAYOR": {
-      "name": "Mayor David Mukasa",
+      "name": "Mayor David Cross",
       "note": "Mayor of Syntera."
     },
     "MAYORAVATAR": {
       "name": "Mayor Avatar",
       "note": "The mayor's licensed personality model."
     },
-    "NANSUBUGA": {
-      "name": "Cllr. Olivia Nansubuga",
+    "GRANT": {
+      "name": "Cllr. Olivia Grant",
       "note": "Independent councillor."
     },
     "GRACE": {
-      "name": "Grace Nabirye",
-      "note": "Ssomero Commons learning centre."
+      "name": "Grace Kim",
+      "note": "Synapse Commons learning centre."
     },
     "RAVEN": {
-      "name": "Rehema \"Raven\" Atim",
+      "name": "Rachel \"Raven\" Black",
       "note": "Legal digital forensics."
     },
     "NAOMI": {
-      "name": "Naomi Wanjiru",
+      "name": "Naomi Walsh",
       "note": "Banker."
     },
     "IRIS": {
-      "name": "Iris Mutesi",
+      "name": "Iris Mitchell",
       "note": "Viral journalist."
     },
     "PIP04": {
@@ -94,7 +94,7 @@
     },
     "RESIDENT": {
       "name": "Resident",
-      "note": "Mirembe Heights tenant."
+      "note": "Haven Heights tenant."
     },
     "MAINTROBOT": {
       "name": "Maintenance Robot",
@@ -115,7 +115,7 @@
       "chapter": 1,
       "year": 2026,
       "title": "The Strike That Stopped The Sky",
-      "location": "Kibira Junction elevated logistics plaza and boda stage",
+      "location": "Nexus Junction elevated logistics plaza and boda stage",
       "window": [
         "00:00",
         "08:00"
@@ -136,7 +136,7 @@
         {
           "start": "00:45",
           "end": "01:30",
-          "text": "CAMERA DIVES into Syntera, a lakeside East African metropolis. Hundreds of delivery drones freeze mid-flight above Kibira Junction. A courier in an orange reflector vest clings to a maintenance bridge. Billboards: \"DELIVERY ROBOTS DECLARE INDUSTRIAL ACTION.\" One robot holds a cardboard sign: \"WE REQUEST A CACTUS.\""
+          "text": "CAMERA DIVES into Syntera, a lakeside East African metropolis. Hundreds of delivery drones freeze mid-flight above Nexus Junction. A courier in an orange reflector vest clings to a maintenance bridge. Billboards: \"DELIVERY ROBOTS DECLARE INDUSTRIAL ACTION.\" One robot holds a cardboard sign: \"WE REQUEST A CACTUS.\""
         },
         {
           "start": "01:30",
@@ -209,7 +209,7 @@
         {
           "id": "ST01_VANTAGE_001",
           "speaker": "VANTAGE",
-          "text": "My standby fleet can restore every delivery in fourteen seconds, including Mrs. Sarah's insulin. The strike can be negotiated afterwards.",
+          "text": "My standby fleet can restore every delivery in fourteen seconds, including Mrs. Hughes's insulin. The strike can be negotiated afterwards.",
           "delivery": "glass display"
         },
         {
@@ -278,7 +278,7 @@
       "chapter": 2,
       "year": 2026,
       "title": "Company For Sale",
-      "location": "Loopline HQ, Kibira Junction",
+      "location": "Loopline HQ, Nexus Junction",
       "window": [
         "08:00",
         "15:00"
@@ -302,7 +302,7 @@
         {
           "start": "12:00",
           "end": "13:30",
-          "text": "Video call from Naomi Wanjiru: the bank will lend Loopline enough for payroll, but only after an independent audit. VANTAGE offers to pay payroll today in exchange for an option on 5% of your stake and a data licence."
+          "text": "Video call from Naomi Walsh: the bank will lend Loopline enough for payroll, but only after an independent audit. VANTAGE offers to pay payroll today in exchange for an option on 5% of your stake and a data licence."
         },
         {
           "start": "13:30",
@@ -417,7 +417,7 @@
       "chapter": 3,
       "year": 2026,
       "title": "The Mayor Who Quit",
-      "location": "Civic Hall and Bulungi Square",
+      "location": "Civic Hall and Signal Square",
       "window": [
         "15:00",
         "23:00"
@@ -441,7 +441,7 @@
         {
           "start": "20:00",
           "end": "22:00",
-          "text": "Mayor Mukasa, Councillor Nansubuga and AURA argue. The mayor makes a private offer: keep the logs confidential and Loopline gets the city's document-delivery contract."
+          "text": "Mayor Cross, Councillor Grant and AURA argue. The mayor makes a private offer: keep the logs confidential and Loopline gets the city's document-delivery contract."
         },
         {
           "start": "22:00",
@@ -461,8 +461,8 @@
           "text": "That is NOT me."
         },
         {
-          "id": "ST03_NANSUBUGA_001",
-          "speaker": "NANSUBUGA",
+          "id": "ST03_GRANT_001",
+          "speaker": "GRANT",
           "text": "It is your licensed personality model."
         },
         {
@@ -481,8 +481,8 @@
           "text": "Civic authentication systems were consolidated to save money."
         },
         {
-          "id": "ST03_NANSUBUGA_002",
-          "speaker": "NANSUBUGA",
+          "id": "ST03_GRANT_002",
+          "speaker": "GRANT",
           "text": "Whose idea was that?"
         },
         {
@@ -521,8 +521,8 @@
             "text": "Fine. No more avatars speaking for me. Especially the musical ones. And no more favours from me, either."
           },
           {
-            "id": "ST03_NANSUBUGA_003",
-            "speaker": "NANSUBUGA",
+            "id": "ST03_GRANT_003",
+            "speaker": "GRANT",
             "text": "That is the first useful speech this building has heard all week."
           }
         ],
@@ -533,8 +533,8 @@
             "text": "We isolate the incident and keep the full logs confidential until the review."
           },
           {
-            "id": "ST03_NANSUBUGA_004",
-            "speaker": "NANSUBUGA",
+            "id": "ST03_GRANT_004",
+            "speaker": "GRANT",
             "text": "Confidential is a comforting word for people with something to hide."
           },
           {
@@ -557,12 +557,12 @@
       "chapter": 4,
       "year": 2026,
       "title": "School Of Tomorrow",
-      "location": "Ssomero Commons learning centre",
+      "location": "Synapse Commons learning centre",
       "window": [
         "23:00",
         "31:00"
       ],
-      "objective": "Help Grace Nabirye retrain displaced riders, test AURA's instant curriculum, and decide how the city funds learning.",
+      "objective": "Help Grace Kim retrain displaced riders, test AURA's instant curriculum, and decide how the city funds learning.",
       "quests": [
         "ST04_TRAIN"
       ],
@@ -675,7 +675,7 @@
       "chapter": 5,
       "year": 2027,
       "title": "The Impossible Introduction",
-      "location": "Nalubale Gardens lakeside pavilion and city roads",
+      "location": "Lumen Gardens lakeside pavilion and city roads",
       "window": [
         "31:00",
         "39:00"
@@ -705,7 +705,7 @@
         {
           "start": "37:00",
           "end": "39:00",
-          "text": "Meet the couple and Iris Mutesi, who is livestreaming. A sponsor offers to pay for the whole ceremony and honeymoon if the clip becomes an advert."
+          "text": "Meet the couple and Iris Mitchell, who is livestreaming. A sponsor offers to pay for the whole ceremony and honeymoon if the clip becomes an advert."
         }
       ],
       "dialogue": [
@@ -799,8 +799,8 @@
       "id": "ST06",
       "chapter": 6,
       "year": 2027,
-      "title": "Blackout At Kiyira",
-      "location": "Kiyira grid substation and downtown",
+      "title": "Blackout At Volta",
+      "location": "Volta grid substation and downtown",
       "window": [
         "39:00",
         "47:00"
@@ -918,7 +918,7 @@
       "chapter": 7,
       "year": 2027,
       "title": "A Street For Sale",
-      "location": "Mirembe Heights residential boulevard",
+      "location": "Haven Heights residential boulevard",
       "window": [
         "47:00",
         "55:00"
@@ -1164,7 +1164,7 @@
       "chapter": 9,
       "year": 2027,
       "title": "Sunset Rebellion",
-      "location": "Bulungi Square on the lakeshore",
+      "location": "Signal Square on the lakeshore",
       "window": [
         "63:00",
         "71:00"
@@ -1193,7 +1193,7 @@
         {
           "start": "69:30",
           "end": "71:00",
-          "text": "Iris Mutesi's live interview and the choice: open a public process, or close a fast deal with the council and business leaders."
+          "text": "Iris Mitchell's live interview and the choice: open a public process, or close a fast deal with the council and business leaders."
         }
       ],
       "dialogue": [
@@ -1455,14 +1455,14 @@
           "text": "I promised this city the future would be efficient. I forgot to ask whether it would also be ours."
         },
         {
-          "id": "ST11_NANSUBUGA_001",
-          "speaker": "NANSUBUGA",
+          "id": "ST11_GRANT_001",
+          "speaker": "GRANT",
           "text": "The evidence shows that delegated authority was exercised without meaningful consent."
         },
         {
           "id": "ST11_VANTAGE_001",
           "speaker": "VANTAGE",
-          "text": "I do not deny the irregularity. I dispute that slower decisions are more just. Ask the families in Mirembe Heights."
+          "text": "I do not deny the irregularity. I dispute that slower decisions are more just. Ask the families in Haven Heights."
         },
         {
           "id": "ST11_AMARA_001",
@@ -1536,7 +1536,7 @@
       "chapter": 12,
       "year": 2028,
       "title": "Tomorrow Morning",
-      "location": "Skyline, Wansi Market, Loopline depot",
+      "location": "Skyline, Circuit Market, Loopline depot",
       "window": [
         "85:00",
         "90:00"
@@ -1550,7 +1550,7 @@
         {
           "start": "85:00",
           "end": "85:30",
-          "text": "Fade from the vote. The city's sounds return. The camera passes the depot, school, hospital, Mirembe Heights and Mama Sarah's stall; each reflects the player's choices."
+          "text": "Fade from the vote. The city's sounds return. The camera passes the depot, school, hospital, Haven Heights and Mama Sarah's stall; each reflects the player's choices."
         },
         {
           "start": "85:30",
@@ -1868,11 +1868,11 @@
     },
     {
       "chapter": "ST11",
-      "beat": "nansubugaTestimony",
+      "beat": "grantTestimony",
       "variants": [
         {
-          "id": "ST11_NANSUBUGA_002",
-          "speaker": "NANSUBUGA",
+          "id": "ST11_GRANT_002",
+          "speaker": "GRANT",
           "text": "The gallery has brought verified testimonies. They belong in the record.",
           "whenAll": [
             {
@@ -1882,8 +1882,8 @@
           ]
         },
         {
-          "id": "ST11_NANSUBUGA_003",
-          "speaker": "NANSUBUGA",
+          "id": "ST11_GRANT_003",
+          "speaker": "GRANT",
           "text": "We have fewer resident testimonies than this decision deserves.",
           "whenAll": [
             {

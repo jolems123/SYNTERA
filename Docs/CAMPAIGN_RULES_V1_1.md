@@ -56,6 +56,34 @@ How each was run:
 - **Python reference:** 4 of 4 tests passed.
 - **Unity Editor run of the same tests:** NOT RUN YET. It needs Unity 6000.3.0f1 to be installed. Then run `tools/verify-unity-local.ps1`.
 
+## Cast and place names (project decision, overrides the screenplay)
+
+The story structure, roles, arcs and dialogue are screenplay v1.1. Only the names differ: characters use English names, and places use modern AI-era names.
+
+| v1.1 screenplay | In game |
+|---|---|
+| Kato Ssemakula | Kato Mercer |
+| Amara Achieng | Amara Reed |
+| Noah Okello | Noah Bennett |
+| Mama Sarah | Mama Sarah (Sarah Hughes) |
+| Mayor David Mukasa | Mayor David Cross |
+| Cllr. Olivia Nansubuga | Cllr. Olivia Grant (council bloc `grant`) |
+| Grace Nabirye | Grace Kim |
+| Rehema "Raven" Atim | Rachel "Raven" Black |
+| Naomi Wanjiru | Naomi Walsh |
+| Iris Mutesi | Iris Mitchell |
+| Kibira Junction | Nexus Junction |
+| Bulungi Square | Signal Square |
+| Ssomero Commons | Synapse Commons |
+| Nalubale Gardens | Lumen Gardens |
+| Kiyira substation | Volta substation |
+| Mirembe Heights | Haven Heights |
+| Wansi Market | Circuit Market |
+
+AURA, VANTAGE, GAIA, Pip-04, Loopline, Civic Hall and Quantum Hill are unchanged.
+
+The v1.0 prototype characters are not part of the new structure: Mayor Adrian Cross, SENTINEL, and the drone-wedding and doorbell-consent plots. They remain only in the old prototype scripts until Sprint 2 replaces them.
+
 ## Dialogue data
 
 `syntera_campaign_dialogue.json` holds all 12 chapters. For each one it has the staging beats, the main dialogue, the reactions to each option, the CH11 charter speeches and the CH12 ending scripts. It also holds the conditional lines from section 8. There are 210 lines, all copied word for word from the screenplay.
@@ -63,7 +91,7 @@ How each was run:
 - **Line IDs** look like `ST01_KATO_003` (chapter, speaker, number) and are **permanent**. A new line gets the next free number for that speaker. Existing lines are never renumbered, because audio, subtitles and translations will refer to these IDs.
 - **What dialogue can do.** It can only test flags. It never changes Credits, Treasury or ownership. `DialogueLibrary.Load` rejects any reference to an unknown decision, option, charter, ending, flag or speaker.
 - **Conditional beats.** The game picks exactly one matching variant. If none matches, the beat is skipped. The screenplay doesn't write neutral fallback lines, and I haven't invented any.
-- **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms that are part of the English script stay as written: boda, rolex, kwanjula, Wansi Market.
+- **Language.** The game is English only. The screenplay's notes about Luganda and Swahili lines (CH04, section 10) don't apply. Grace corrects the robot tutor as staging only, with no spoken line. Local terms that are part of the English script stay as written: boda, rolex, kwanjula, Circuit Market.
 
 ## Any balance change
 

@@ -91,7 +91,7 @@
       ]
     },
     {
-      "id": "ST06_BLACKOUT", "chapter": 6, "year": 2027, "title": "Blackout At Kiyira",
+      "id": "ST06_BLACKOUT", "chapter": 6, "year": 2027, "title": "Blackout At Volta",
       "options": [
         { "id": "A", "label": "Public load-shedding plan", "summary": "Hospital first. Homes take published rolling cuts for three nights; factories pause. The grid is fixed properly.",
           "effects": [ { "stat": "treasury", "delta": -70 }, { "stat": "grid", "delta": 12 }, { "stat": "trust", "delta": 1 }, { "stat": "jobs", "delta": -3 }, { "stat": "autonomy", "delta": 4 }, { "stat": "mayor", "delta": -6 } ],
@@ -187,7 +187,7 @@
       { "id": "people", "name": "People's bloc", "seats": 3 },
       { "id": "business", "name": "Business bloc", "seats": 3 },
       { "id": "mayor", "name": "Mayor's bloc", "seats": 2 },
-      { "id": "nansubuga", "name": "Cllr. Nansubuga", "seats": 1 }
+      { "id": "grant", "name": "Cllr. Grant", "seats": 1 }
     ],
     "charters": [
       {
@@ -197,7 +197,7 @@
           "people": [ { "seats": 3, "whenAny": [ [ { "stat": "trust", "min": 65 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "trust", "min": 52 } ] ] } ],
           "business": [ { "seats": 2, "whenAny": [ [ { "stat": "jobs", "min": 55 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "jobs", "min": 48 } ] ] } ],
           "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 45 } ] ] } ],
-          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 5 } ] ] } ]
+          "grant": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 5 } ] ] } ]
         }
       },
       {
@@ -207,7 +207,7 @@
           "people": [ { "seats": 1, "whenAny": [ [ { "stat": "jobs", "min": 55 } ] ] } ],
           "business": [ { "seats": 3, "whenAny": [ [ { "stat": "vantageInfluence", "min": 45 } ], [ { "stat": "jobs", "min": 58 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "vantageInfluence", "min": 40 } ] ] } ],
           "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 50 } ] ] } ],
-          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "grid", "min": 60 }, { "stat": "evidence", "max": 3 } ] ] } ]
+          "grant": [ { "seats": 1, "whenAny": [ [ { "stat": "grid", "min": 60 }, { "stat": "evidence", "max": 3 } ] ] } ]
         }
       },
       {
@@ -217,7 +217,7 @@
           "people": [ { "seats": 3, "whenAny": [ [ { "stat": "autonomy", "min": 55 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "autonomy", "min": 50 } ] ] } ],
           "business": [ { "seats": 1, "whenAny": [ [ { "stat": "grid", "min": 60 } ] ] } ],
           "mayor": [ { "seats": 2, "whenAny": [ [ { "stat": "mayor", "min": 50 } ] ] }, { "seats": 1, "whenAny": [ [ { "stat": "mayor", "min": 40 } ] ] } ],
-          "nansubuga": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 3 } ] ] } ]
+          "grant": [ { "seats": 1, "whenAny": [ [ { "stat": "evidence", "min": 3 } ] ] } ]
         }
       }
     ],

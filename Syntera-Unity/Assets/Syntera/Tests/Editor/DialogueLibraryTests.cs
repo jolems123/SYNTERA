@@ -32,7 +32,7 @@ namespace Syntera.Core.Tests
             Assert.AreEqual(210, Library.LineCount, "line count changed: new lines need new IDs, never renumbering");
             Assert.AreEqual("Hey! You! They locked the maintenance bridge while I was still on it!", Library.Line("ST01_NOAH_001").Text);
             Assert.AreEqual("A cactus has been nominated. Its name is Management.", Library.Line("ST01_PIP04_002").Text);
-            Assert.AreEqual("Kato Ssemakula", Library.Line("ST01_KATO_001").SpeakerName);
+            Assert.AreEqual("Kato Mercer", Library.Line("ST01_KATO_001").SpeakerName);
         }
 
         [Test]
