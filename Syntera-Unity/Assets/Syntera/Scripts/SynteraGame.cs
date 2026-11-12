@@ -191,7 +191,10 @@ namespace Syntera
             var npc = GetMissionCharacter();
             if (npc == null || player == null) return;
             Vector3 target = player.transform.position + new Vector3(3.5f, -.15f, -1.5f);
-            npc.transform.position = new Vector3(target.x, 1.15f, target.z);
+            Vector3 position = new Vector3(target.x, 1.15f, target.z);
+            var animator = npc.GetComponent<SynteraActorAnimation>();
+            if (animator != null) animator.SetHomePosition(position);
+            else npc.transform.position = position;
         }
 
         private void MovePlayer()
