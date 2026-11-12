@@ -390,17 +390,22 @@ namespace Syntera
             State = new CityState { version = next };
             if (drivePod != null)
             {
-                drivePod.ForceExit();
+                drivePod.ResetPod();
                 drivePod.ConfigureDelivery(0);
             }
+            if (player != null)
+            {
+                controller.enabled = false;
+                player.transform.position = new Vector3(-9.5f, 1.3f, -7.5f);
+                controller.enabled = true;
+            }
             PositionMissionContact();
-            Save();
             showHelp = false;
-            dialogueIndex = 0;
             showMap = false;
             dialogueOpen = false;
+            dialogueIndex = 0;
             responseText = "";
-            if (player != null) player.transform.position = new Vector3(-9.5f, 1.3f, -7.5f);
+            Save();
         }
 
         public void Save()
